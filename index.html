@@ -1,0 +1,798 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width,initial-scale=1.0"
+    >
+
+    <title>日本語助詞学習RPG</title>
+
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
+<h1>日本語助詞学習RPG</h1>
+
+<p>ユーザー名</p>
+
+<input
+    id="playerName"
+    type="text"
+    placeholder="名前を入力"
+>
+
+<br>
+
+<button
+    id="loadUserBtn"
+    onclick="loadUser()"
+>
+    ユーザーを読み込む
+</button>
+
+<p
+    id="userMessage"
+    style="font-size:24px;"
+></p>
+
+
+<!-- =========================
+     新規ユーザー
+========================= -->
+
+<div
+    id="newUserArea"
+    style="display:none;"
+>
+
+    <h2>
+        はじめてのユーザーです！
+    </h2>
+
+    <p class="topText">
+        正しい助詞を選んでモンスターを倒そう！
+    </p>
+
+    <h2>
+        最初の属性を選ぼう！
+    </h2>
+
+    <div class="elementButtons">
+
+        <button
+            onclick="startNewGame('火')"
+        >
+            火属性🔥
+        </button>
+
+        <button
+            onclick="startNewGame('水')"
+        >
+            水属性💧
+        </button>
+
+        <button
+            onclick="startNewGame('地')"
+        >
+            地属性🍀
+        </button>
+
+    </div>
+
+
+    <!-- 初期仲間 -->
+
+    <h2>
+        最初から持っている仲間
+    </h2>
+
+    <div id="newCharacterChoices">
+
+        <label class="characterCheck">
+            <input
+                type="checkbox"
+                name="newCharacter"
+                value="風"
+            >
+            風
+        </label>
+
+        <label class="characterCheck">
+            <input
+                type="checkbox"
+                name="newCharacter"
+                value="雷"
+            >
+            雷
+        </label>
+
+        <label class="characterCheck">
+            <input
+                type="checkbox"
+                name="newCharacter"
+                value="光"
+            >
+            光
+        </label>
+
+        <label class="characterCheck">
+            <input
+                type="checkbox"
+                name="newCharacter"
+                value="闇"
+            >
+            闇
+        </label>
+
+    </div>
+
+</div>
+
+
+<!-- =========================
+     既存ユーザー
+========================= -->
+
+<div
+    id="existingUserArea"
+    style="display:none;"
+>
+
+    <h2>
+        おかえりなさい！
+    </h2>
+
+    <p
+        id="continueInfo"
+        style="font-size:24px;"
+    ></p>
+
+
+    <!-- 現在の属性 -->
+
+    <h2>
+        現在の属性
+    </h2>
+
+    <p
+        id="currentElement"
+        style="font-size:30px;"
+    ></p>
+
+
+    <!-- 所持キャラクター -->
+
+    <h2>
+        所持している仲間
+    </h2>
+
+    <div
+        id="ownedCharacterChoices"
+    ></div>
+
+
+    <p
+        style="font-size:22px;"
+    >
+        一緒に戦う仲間を選んでください
+    </p>
+
+
+    <button
+        onclick="continueGame()"
+    >
+        この組み合わせで<br>
+        続きからプレイ
+    </button>
+
+</div>
+
+
+<!-- =========================
+     復習モード
+========================= -->
+
+<div
+    id="reviewArea"
+    style="display:none;"
+>
+
+    <h2 style="margin-top:60px;">
+        復習モード
+    </h2>
+
+    <div class="elementButtons">
+
+        <button
+            onclick="startReview('火')"
+        >
+            火で復習
+        </button>
+
+        <button
+            onclick="startReview('水')"
+        >
+            水で復習
+        </button>
+
+        <button
+            onclick="startReview('地')"
+        >
+            地で復習
+        </button>
+
+    </div>
+
+</div>
+
+
+<script>
+
+
+// =========================
+// 現在読み込んでいるユーザー
+// =========================
+
+let currentUserData = null;
+
+
+// =========================
+// ユーザー読み込み
+// =========================
+
+function loadUser(){
+
+    const playerName =
+        document
+        .getElementById("playerName")
+        .value
+        .trim();
+
+
+    if(playerName === ""){
+
+        alert(
+            "ユーザー名を入力してください"
+        );
+
+        return;
+
+    }
+
+
+    const saveKey =
+        "save_" + playerName;
+
+
+    const savedData =
+        localStorage.getItem(
+            saveKey
+        );
+
+
+    // =========================
+    // 新規ユーザー
+    // =========================
+
+    if(!savedData){
+
+        currentUserData = null;
+
+
+        document
+        .getElementById(
+            "userMessage"
+        )
+        .textContent =
+        "新しいユーザーです。";
+
+
+        document
+        .getElementById(
+            "newUserArea"
+        )
+        .style.display =
+        "block";
+
+
+        document
+        .getElementById(
+            "existingUserArea"
+        )
+        .style.display =
+        "none";
+
+
+        document
+        .getElementById(
+            "reviewArea"
+        )
+        .style.display =
+        "none";
+
+
+        return;
+
+    }
+
+
+    // =========================
+    // 既存ユーザー
+    // =========================
+
+    try{
+
+        currentUserData =
+            JSON.parse(
+                savedData
+            );
+
+    }
+    catch(error){
+
+        alert(
+            "保存データを読み込めませんでした。"
+        );
+
+        return;
+
+    }
+
+
+    // 以前のデータに
+    // partyCharactersがない場合
+    // ownedCharactersをそのまま使う
+
+    if(
+        !Array.isArray(
+            currentUserData.partyCharacters
+        )
+    ){
+
+        currentUserData.partyCharacters =
+            Array.isArray(
+                currentUserData.ownedCharacters
+            )
+            ? [
+                ...currentUserData.ownedCharacters
+              ]
+            : [];
+
+    }
+
+
+    document
+    .getElementById(
+        "userMessage"
+    )
+    .textContent =
+    "保存されているデータがあります。";
+
+
+    document
+    .getElementById(
+        "newUserArea"
+    )
+    .style.display =
+    "none";
+
+
+    document
+    .getElementById(
+        "existingUserArea"
+    )
+    .style.display =
+    "block";
+
+
+    document
+    .getElementById(
+        "reviewArea"
+    )
+    .style.display =
+    "block";
+
+
+    // 現在の属性
+
+    document
+    .getElementById(
+        "currentElement"
+    )
+    .textContent =
+    "属性：" +
+    (
+        currentUserData.playerElement
+        || "火"
+    );
+
+
+    // 進行状況
+
+    document
+    .getElementById(
+        "continueInfo"
+    )
+    .innerHTML =
+    "Lv：" +
+    (
+        currentUserData.level
+        || 1
+    )
+    +
+    "<br>" +
+    "撃破数：" +
+    (
+        currentUserData.enemyCount
+        || 0
+    );
+
+
+    showOwnedCharacters();
+
+}
+
+
+// =========================
+// 所持キャラクター表示
+// =========================
+
+function showOwnedCharacters(){
+
+    const area =
+        document
+        .getElementById(
+            "ownedCharacterChoices"
+        );
+
+
+    area.innerHTML = "";
+
+
+    const owned =
+        Array.isArray(
+            currentUserData.ownedCharacters
+        )
+        ? currentUserData.ownedCharacters
+        : [];
+
+
+    const party =
+        Array.isArray(
+            currentUserData.partyCharacters
+        )
+        ? currentUserData.partyCharacters
+        : [];
+
+
+    if(owned.length === 0){
+
+        area.innerHTML =
+        "<p>現在、仲間はいません。</p>";
+
+        return;
+
+    }
+
+
+    owned.forEach(
+        character => {
+
+        const label =
+            document.createElement(
+                "label"
+            );
+
+
+        label.className =
+            "characterCheck";
+
+
+        const input =
+            document.createElement(
+                "input"
+            );
+
+
+        input.type =
+            "checkbox";
+
+
+        input.name =
+            "partyCharacter";
+
+
+        input.value =
+            character;
+
+
+        input.checked =
+            party.includes(
+                character
+            );
+
+
+        label.appendChild(
+            input
+        );
+
+
+        label.appendChild(
+            document.createTextNode(
+                " " + character
+            )
+        );
+
+
+        area.appendChild(
+            label
+        );
+
+    });
+
+}
+
+
+// =========================
+// 新規ゲーム開始
+// =========================
+
+function startNewGame(element){
+
+    const playerName =
+        document
+        .getElementById(
+            "playerName"
+        )
+        .value
+        .trim();
+
+
+    if(playerName === ""){
+
+        alert(
+            "ユーザー名を入力してください"
+        );
+
+        return;
+
+    }
+
+
+    const initialCharacters = [];
+
+
+    document
+    .querySelectorAll(
+        'input[name="newCharacter"]:checked'
+    )
+    .forEach(
+        input => {
+
+        initialCharacters.push(
+            input.value
+        );
+
+    });
+
+
+    // 新規データ
+
+    const newData = {
+
+        playerName:
+            playerName,
+
+        playerElement:
+            element,
+
+        level:
+            1,
+
+        exp:
+            0,
+
+        expToNext:
+            100,
+
+        playerHp:
+            150,
+
+        maxHp:
+            150,
+
+        attackPower:
+            25,
+
+        enemyCount:
+            0,
+
+        solveCount:
+            0,
+
+        combo:
+            0,
+
+        specialGauge:
+            0,
+
+        specialUnlocked:
+            false,
+
+        // 所持しているキャラ
+        ownedCharacters:
+            [
+                ...initialCharacters
+            ],
+
+        // 最初に選んだパーティ
+        partyCharacters:
+            [
+                ...initialCharacters
+            ]
+
+    };
+
+
+    localStorage.setItem(
+        "save_" + playerName,
+        JSON.stringify(
+            newData
+        )
+    );
+
+
+    localStorage.setItem(
+        "currentPlayer",
+        playerName
+    );
+
+
+    location.href =
+        "game.html"
+        + "?element="
+        + encodeURIComponent(element)
+        + "&mode=normal";
+
+}
+
+
+// =========================
+// 既存ユーザーを続きから
+// =========================
+
+function continueGame(){
+
+    if(!currentUserData){
+
+        return;
+
+    }
+
+
+    const playerName =
+        document
+        .getElementById(
+            "playerName"
+        )
+        .value
+        .trim();
+
+
+    if(playerName === ""){
+
+        return;
+
+    }
+
+
+    const selectedCharacters = [];
+
+
+    document
+    .querySelectorAll(
+        'input[name="partyCharacter"]:checked'
+    )
+    .forEach(
+        input => {
+
+        selectedCharacters.push(
+            input.value
+        );
+
+    });
+
+
+    // パーティだけ変更
+    // 所持キャラは変更しない
+
+    currentUserData.partyCharacters =
+        selectedCharacters;
+
+
+    // 念のためユーザー名を保存
+
+    currentUserData.playerName =
+        playerName;
+
+
+    localStorage.setItem(
+        "save_" + playerName,
+        JSON.stringify(
+            currentUserData
+        )
+    );
+
+
+    localStorage.setItem(
+        "currentPlayer",
+        playerName
+    );
+
+
+    const element =
+        currentUserData.playerElement
+        || "火";
+
+
+    location.href =
+        "game.html"
+        + "?element="
+        + encodeURIComponent(element)
+        + "&mode=normal";
+
+}
+
+
+// =========================
+// 復習
+// =========================
+
+function startReview(element){
+
+    const playerName =
+        document
+        .getElementById(
+            "playerName"
+        )
+        .value
+        .trim();
+
+
+    if(playerName === ""){
+
+        alert(
+            "ユーザー名を入力してください"
+        );
+
+        return;
+
+    }
+
+
+    localStorage.setItem(
+        "currentPlayer",
+        playerName
+    );
+
+
+    location.href =
+        "game.html"
+        + "?element="
+        + encodeURIComponent(element)
+        + "&mode=review";
+
+}
+
+</script>
+
+</body>
+
+</html>

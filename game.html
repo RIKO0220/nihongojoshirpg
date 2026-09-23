@@ -1,0 +1,272 @@
+<!-- game.html -->
+
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width,initial-scale=1.0"
+    >
+
+    <title>助詞RPG</title>
+
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
+    <!-- 左上情報 -->
+
+    <div id="gameInfo">
+
+        <div id="solveCount">
+            解いた問題数：0
+        </div>
+
+    </div>
+
+    <h1>助詞RPGバトル</h1>
+
+    <div id="battleArea">
+
+        <!-- 味方 -->
+
+        <div id="playerArea">
+
+            <img
+                id="playerImage"
+                class="characterImage"
+                src="images/player.png"
+            >
+
+            <p id="playerInfo"></p>
+
+            <div id="friendArea">
+
+    <h3>仲間</h3>
+
+    <div id="friendImages"></div>
+
+</div>
+
+            <div id="friendCharacters">
+                <h3>仲間</h3>
+                <div id="friendCharacterImages"></div>
+            </div>
+
+<div class="statusBar">
+
+    <div class="statusLabel">
+
+        <span>HP</span>
+
+        <span id="hpText">
+            150 / 150
+        </span>
+
+    </div>
+
+    <div class="barBackground">
+
+        <div
+            id="hpBar"
+            class="barFill hpBar"
+        ></div>
+
+    </div>
+
+</div>
+
+<div class="statusBar">
+
+    <div class="statusLabel">
+
+        <span>EXP</span>
+
+        <span id="expText">
+            0 / 100
+        </span>
+
+    </div>
+
+    <div class="barBackground">
+
+        <div
+            id="expBar"
+            class="barFill expBar"
+        ></div>
+
+    </div>
+
+</div>
+
+<div class="statusBar">
+
+    <div class="statusLabel">
+
+        <span>必殺</span>
+
+        <span id="specialText">
+            0 / 100
+        </span>
+
+    </div>
+
+    <div class="barBackground">
+
+        <div
+            id="specialBar"
+            class="barFill specialBar"
+        ></div>
+
+    </div>
+
+</div>
+
+        </div>
+
+        <!-- 敵 -->
+
+        <div id="enemyArea">
+
+            <img
+                id="enemyImage"
+                class="characterImage"
+                src="images/slime_fire.png"
+            >
+
+            <p id="enemyInfo"></p>
+
+        </div>
+
+    </div>
+
+    <hr>
+
+    <div id="questionArea">
+
+        <div id="sentence"></div>
+
+        <div id="choices"></div>
+
+        <!-- ボタン -->
+
+        <button
+            id="actionBtn"
+            onclick="buttonAction()"
+        >
+            決定
+        </button>
+
+        <button
+        id="specialBtn"
+        onclick="useSpecial()"
+        >
+            必殺技
+        </button>
+
+        <p id="result"></p>
+
+    </div>
+
+    <div id="questionId"></div>
+
+    <!-- =========================
+     開始前ゲーム説明ポップアップ
+========================= -->
+
+<div id="tutorialOverlay">
+
+    <div id="tutorialPopup">
+
+        <h2>ゲームの遊び方</h2>
+
+        <div id="tutorialCharacter">
+            <img
+                id="tutorialCharacterImage"
+                src="images/player_fire.png"
+            >
+        </div>
+
+        <div id="tutorialMessage">
+
+            <p>
+                こんにちは！
+            </p>
+
+            <p>
+                このゲームでは、<br>
+                文の中に入る正しい助詞を選んで<br>
+                モンスターを倒します！
+            </p>
+
+            <p>
+                文をよく読んで、<br>
+                正しい助詞を選びましょう。
+            </p>
+
+            <p>
+                正解するとモンスターに攻撃できます。<br>
+                不正解だとダメージを受けます。
+            </p>
+
+            <p>
+                準備ができたらゲームを始めましょう！
+            </p>
+
+        </div>
+
+        <p id="tutorialTimer">
+            あと 5 秒
+        </p>
+
+        <button
+            id="tutorialClose"
+            disabled
+        >
+            ゲームを始める
+        </button>
+
+    </div>
+
+</div>
+
+
+<!-- =========================
+     問題解説ポップアップ
+========================= -->
+
+<div id="explanationOverlay">
+
+    <div id="explanationPopup">
+
+        <h2 id="explanationTitle">
+            解説
+        </h2>
+
+        <div id="explanationText"></div>
+
+        <p id="explanationTimer">
+            あと 5 秒
+        </p>
+
+        <button
+            id="explanationClose"
+            disabled
+        >
+            次の問題へ
+        </button>
+
+    </div>
+
+</div>
+    
+    <script src="script.js"></script>
+
+</body>
+</html>
