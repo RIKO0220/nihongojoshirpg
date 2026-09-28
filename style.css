@@ -942,84 +942,121 @@ button{
 
 }
 
-/* =========================
-   バトル画面をコンパクトにする
-========================= */
+/* ========================================
+   バトル画面レイアウト 最終調整
+======================================== */
 
+/* 味方・敵を横並び */
 #battleArea{
-    width: 94%;
+    width: 92%;
     max-width: 1000px;
     margin: 10px auto 0;
 
     display: flex;
-    justify-content: space-around;
+    justify-content: space-between;
     align-items: flex-start;
 
-    gap: 20px;
+    gap: 15px;
 }
 
-/* 味方 */
+/* 味方側 */
 #playerArea{
-    width: 45%;
+    width: 48%;
     text-align: left;
 }
 
-/* 敵 */
+/* 敵側 */
 #enemyArea{
-    width: 45%;
+    width: 48%;
     text-align: right;
 }
 
-/* メインキャラクター */
-.characterImage{
-    width: 210px;
-    height: auto;
-}
-
-/* 仲間 */
-#friendsArea{
-    margin-top: 5px;
-}
-
-#friendsArea h2{
-    font-size: 28px;
-    margin: 5px 0;
-}
-
-#friendsList{
-    display: flex;
-    gap: 4px;
-    flex-wrap: wrap;
-    align-items: center;
-}
-
-.friendImage{
-    width: 65px;
-    height: 65px;
+/* 味方・敵のメイン画像 */
+#playerImage,
+#enemyImage{
+    width: 170px;
+    height: 170px;
     object-fit: contain;
 }
 
-/* HP・EXP・必殺ゲージ */
-.statusBar{
-    margin-top: 6px;
-    margin-bottom: 6px;
+/* 仲間エリア */
+#friendsArea{
+    margin-top: 3px;
+    text-align: left;
 }
 
-/* 問題部分 */
+/* 仲間の見出し */
+#friendsArea h2{
+    font-size: 24px;
+    margin: 3px 0;
+}
+
+/* 仲間画像を横並び */
+#friendsList{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 3px;
+
+    align-items: center;
+}
+
+/* 仲間画像 */
+#friendsList .friendImage{
+    width: 60px !important;
+    height: 60px !important;
+
+    object-fit: contain;
+}
+
+/* 仲間画像を表示する別方式にも対応 */
+#friendCharacterImages{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 3px;
+}
+
+/* 仲間画像 */
+#friendCharacterImages .friendCharacter{
+    width: 60px !important;
+    height: 60px !important;
+
+    object-fit: contain;
+}
+
+/* 仲間の名前 */
+#friendCharacterImages .friendCharacterName{
+    font-size: 12px;
+}
+
+/* 仲間1人分 */
+#friendCharacterImages .friendCharacterItem{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* HP・EXP・必殺ゲージ */
+#playerArea .statusBar{
+    margin-top: 4px;
+    margin-bottom: 4px;
+}
+
+/* 問題エリアとの間隔 */
 #questionArea{
-    margin-top: 10px;
+    margin-top: 8px;
 }
 
 /* 問題文 */
 #sentence{
-    margin-top: 10px;
+    margin-top: 5px;
 }
 
 /* 選択肢 */
 #choices{
-    margin-top: 15px;
+    margin-top: 10px;
 }
 
+/* 選択肢ボタン */
 .choice{
-    margin: 8px;
+    margin: 5px;
 }
