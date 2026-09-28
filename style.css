@@ -941,3 +941,85 @@ button{
     object-fit:contain;
 
 }
+
+/* =========================
+   バトル画面をコンパクトにする
+========================= */
+
+#battleArea{
+    width: 94%;
+    max-width: 1000px;
+    margin: 10px auto 0;
+
+    display: flex;
+    justify-content: space-around;
+    align-items: flex-start;
+
+    gap: 20px;
+}
+
+/* 味方 */
+#playerArea{
+    width: 45%;
+    text-align: left;
+}
+
+/* 敵 */
+#enemyArea{
+    width: 45%;
+    text-align: right;
+}
+
+/* メインキャラクター */
+.characterImage{
+    width: 210px;
+    height: auto;
+}
+
+/* 仲間 */
+#friendsArea{
+    margin-top: 5px;
+}
+
+#friendsArea h2{
+    font-size: 28px;
+    margin: 5px 0;
+}
+
+#friendsList{
+    display: flex;
+    gap: 4px;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.friendImage{
+    width: 65px;
+    height: 65px;
+    object-fit: contain;
+}
+
+/* HP・EXP・必殺ゲージ */
+.statusBar{
+    margin-top: 6px;
+    margin-bottom: 6px;
+}
+
+/* 問題部分 */
+#questionArea{
+    margin-top: 10px;
+}
+
+/* 問題文 */
+#sentence{
+    margin-top: 10px;
+}
+
+/* 選択肢 */
+#choices{
+    margin-top: 15px;
+}
+
+.choice{
+    margin: 8px;
+}
