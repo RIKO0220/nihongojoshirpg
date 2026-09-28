@@ -476,22 +476,42 @@ playerImage;
     .textContent =
     "解いた問題数：" + solveCount;
 
-    // =========================
+// =========================
 // 仲間画像表示
 // =========================
 
-const friendImages =
-    document.getElementById("friendImages");
+const friendsList =
+    document.getElementById("friendsList");
 
-if(friendImages){
+if(friendsList){
 
-    friendImages.innerHTML = "";
+    // 一度全部消す
+    friendsList.innerHTML = "";
 
-    ownedCharacters.forEach(character => {
+    // 同じキャラが重複しないようにする
+    const uniqueCharacters =
+        [...new Set(ownedCharacters)];
+
+    uniqueCharacters.forEach(character => {
 
         let image = "";
 
         switch(character){
+
+            case "火":
+                image =
+                    "images/player_fire.png";
+                break;
+
+            case "水":
+                image =
+                    "images/player_water.png";
+                break;
+
+            case "地":
+                image =
+                    "images/player_earth.png";
+                break;
 
             case "風":
                 image =
@@ -515,6 +535,7 @@ if(friendImages){
 
         }
 
+        // 画像が設定されている場合だけ表示
         if(image){
 
             const img =
@@ -523,18 +544,19 @@ if(friendImages){
             img.src = image;
 
             img.className =
-                "friendCharacterImage";
+                "friendImage";
 
             img.alt =
                 character + "属性の仲間";
 
-            friendImages.appendChild(img);
+            friendsList.appendChild(img);
 
         }
 
     });
 
 }
+
     // =========================
     // メーター更新
     // =========================
