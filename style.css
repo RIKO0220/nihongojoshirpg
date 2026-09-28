@@ -1239,135 +1239,60 @@ button{
     text-align: right !important;
 }
 
-/* =========================
-   バトル画面 最終配置
-========================= */
-
-#battleArea {
-    width: 92%;
-    max-width: 1100px;
-    margin: 10px auto 0;
-
-    display: flex !important;
-    flex-direction: row !important;
-    justify-content: space-between;
-    align-items: flex-start;
-
-    gap: 30px;
-}
-
-/* 味方 */
-#playerArea {
-    width: 48% !important;
-    text-align: left;
-}
-
-/* 敵 */
-#enemyArea {
-    width: 48% !important;
-    text-align: right;
-
-    display: block !important;
-}
-
-/* メインキャラクター */
-#playerImage,
-#enemyImage {
-    width: 170px;
-    height: 170px;
-    object-fit: contain;
-}
-
-/* 敵画像を右寄せ */
-#enemyImage {
-    display: block;
-    margin-left: auto;
-}
-
-/* 仲間 */
-#friendsArea {
-    margin-top: 5px;
-}
-
-#friendsList,
-#friendCharacterImages {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 3px;
-}
-
 /* ========================================
-   バトル配置を強制修正
-   味方＝左　敵＝右
+   バトル画面 最終版
 ======================================== */
 
 #battleArea {
-    display: flex !important;
-    flex-direction: row !important;
-
     width: 94% !important;
     max-width: 1100px !important;
 
     margin: 10px auto 0 !important;
 
-    justify-content: space-between !important;
-    align-items: flex-start !important;
+    display: grid !important;
 
-    gap: 10px !important;
+    grid-template-columns: 1fr 1fr !important;
+    grid-template-rows: auto !important;
+
+    column-gap: 30px !important;
+
+    align-items: start !important;
 }
 
 /* 味方 */
-#playerArea {
-    display: block !important;
+#battleArea > #playerArea {
+    grid-column: 1 !important;
+    grid-row: 1 !important;
 
-    width: 48% !important;
-    flex: 0 0 48% !important;
-
+    width: 100% !important;
     margin: 0 !important;
-    padding: 0 !important;
 
     text-align: left !important;
-
-    box-sizing: border-box !important;
 }
 
 /* 敵 */
-#enemyArea {
-    display: block !important;
+#battleArea > #enemyArea {
+    grid-column: 2 !important;
+    grid-row: 1 !important;
 
-    width: 48% !important;
-    flex: 0 0 48% !important;
-
+    width: 100% !important;
     margin: 0 !important;
-    padding: 0 !important;
 
     text-align: right !important;
-
-    box-sizing: border-box !important;
 }
 
-/* 敵画像 */
-#enemyArea #enemyImage {
-    display: inline-block !important;
-
+/* プレイヤー画像 */
+#playerImage {
     width: 170px !important;
     height: 170px !important;
-
-    max-width: 170px !important;
-    max-height: 170px !important;
 
     object-fit: contain !important;
 }
 
-/* 味方画像 */
-#playerArea #playerImage {
-    display: inline-block !important;
-
+/* 敵画像 */
+#enemyImage {
     width: 170px !important;
     height: 170px !important;
-
-    max-width: 170px !important;
-    max-height: 170px !important;
 
     object-fit: contain !important;
 }
@@ -1375,32 +1300,43 @@ button{
 /* 仲間 */
 #friendsArea {
     margin-top: 3px !important;
+    width: 100% !important;
 }
 
-/* スマホ・タブレット */
-@media screen and (max-width: 800px) {
+/* 仲間一覧 */
+#friendsList {
+    display: flex !important;
+    flex-wrap: wrap !important;
 
-    #battleArea {
-        display: flex !important;
-        flex-direction: row !important;
+    gap: 3px !important;
 
-        width: 96% !important;
+    align-items: flex-start !important;
+}
 
-        gap: 5px !important;
-    }
+/* 仲間画像 */
+#friendsList img,
+.friendImage,
+.friendCharacter,
+.friendCharacterImage {
+    width: 55px !important;
+    height: 55px !important;
 
-    #playerArea,
-    #enemyArea {
-        width: 48% !important;
-        flex: 0 0 48% !important;
-    }
+    max-width: 55px !important;
+    max-height: 55px !important;
 
-    #playerArea #playerImage,
-    #enemyArea #enemyImage {
-        width: 140px !important;
-        height: 140px !important;
+    object-fit: contain !important;
+}
 
-        max-width: 140px !important;
-        max-height: 140px !important;
-    }
+/* HPなど */
+#playerArea .statusBar {
+    width: 330px !important;
+    max-width: 100% !important;
+
+    margin-top: 5px !important;
+    margin-bottom: 5px !important;
+}
+
+/* 問題 */
+#questionArea {
+    margin-top: 5px !important;
 }
