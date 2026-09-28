@@ -469,7 +469,6 @@ playerImage;
     攻撃力：${attackPower}<br>
     コンボ：${combo}<br>
     撃破数：${enemyCount}<br>
-    仲間：${friendText}
     `;
 
     document
@@ -557,6 +556,70 @@ if(friendImages){
 
     document.getElementById("specialBar").style.width =
     specialGauge + "%";
+}
+
+// =========================
+// 仲間画像表示
+// =========================
+
+const friendsList =
+    document.getElementById("friendsList");
+
+if(friendsList){
+
+    friendsList.innerHTML = "";
+
+    ownedCharacters.forEach(function(character){
+
+        const img =
+            document.createElement("img");
+
+        img.className =
+            "friendImage";
+
+        switch(character){
+
+            case "火":
+                img.src =
+                    "images/player_fire.png";
+                break;
+
+            case "水":
+                img.src =
+                    "images/player_water.png";
+                break;
+
+            case "地":
+                img.src =
+                    "images/player_earth.png";
+                break;
+
+            case "風":
+                img.src =
+                    "images/player_wind.png";
+                break;
+
+            case "雷":
+                img.src =
+                    "images/player_thunder.png";
+                break;
+
+            case "光":
+                img.src =
+                    "images/player_light.png";
+                break;
+
+            case "闇":
+                img.src =
+                    "images/player_dark.png";
+                break;
+
+        }
+
+        friendsList.appendChild(img);
+
+    });
+
 }
 
 // =========================
