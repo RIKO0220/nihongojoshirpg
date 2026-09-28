@@ -1060,3 +1060,50 @@ button{
 .choice{
     margin: 5px;
 }
+
+/* =================================
+   仲間画像を強制的に小さくする
+================================= */
+
+#friendsList img,
+#friendCharacterImages img,
+#friendsArea img,
+#friendCharacters img {
+    width: 60px !important;
+    height: 60px !important;
+    max-width: 60px !important;
+    max-height: 60px !important;
+    object-fit: contain !important;
+}
+
+/* 仲間エリア自体 */
+#friendsArea,
+#friendCharacters {
+    margin-top: 5px !important;
+    padding: 0 !important;
+}
+
+/* 仲間の見出し */
+#friendsArea h2,
+#friendCharacters h3 {
+    font-size: 24px !important;
+    margin: 3px 0 !important;
+}
+
+/* 仲間を横並び */
+#friendsList,
+#friendCharacterImages {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    gap: 3px !important;
+    align-items: flex-start !important;
+}
+
+/* 仲間1体分 */
+.friendCharacterItem {
+    width: 65px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    text-align: center !important;
+    font-size: 11px !important;
+}
