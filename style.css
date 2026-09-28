@@ -99,41 +99,6 @@ h2{
    バトル画面
 ========================= */
 
-#battleArea{
-
-    width:100%;
-
-    max-width:1200px;
-
-    margin:0 auto;
-
-    display:flex;
-
-    justify-content:space-between;
-
-    align-items:flex-end;
-
-    margin-top:30px;
-}
-
-/* 味方 */
-
-#playerArea{
-
-    width:40%;
-
-    text-align:left;
-}
-
-/* 敵 */
-
-#enemyArea{
-
-    width:40%;
-
-    text-align:right;
-}
-
 .characterImage{
 
     width:250px;
@@ -942,124 +907,7 @@ button{
 
 }
 
-/* ========================================
-   バトル画面レイアウト 最終調整
-======================================== */
 
-/* 味方・敵を横並び */
-#battleArea{
-    width: 92%;
-    max-width: 1000px;
-    margin: 10px auto 0;
-
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-
-    gap: 15px;
-}
-
-/* 味方側 */
-#playerArea{
-    width: 48%;
-    text-align: left;
-}
-
-/* 敵側 */
-#enemyArea{
-    width: 48%;
-    text-align: right;
-}
-
-/* 味方・敵のメイン画像 */
-#playerImage,
-#enemyImage{
-    width: 170px;
-    height: 170px;
-    object-fit: contain;
-}
-
-/* 仲間エリア */
-#friendsArea{
-    margin-top: 3px;
-    text-align: left;
-}
-
-/* 仲間の見出し */
-#friendsArea h2{
-    font-size: 24px;
-    margin: 3px 0;
-}
-
-/* 仲間画像を横並び */
-#friendsList{
-    display: flex;
-    flex-wrap: wrap;
-    gap: 3px;
-
-    align-items: center;
-}
-
-/* 仲間画像 */
-#friendsList .friendImage{
-    width: 60px !important;
-    height: 60px !important;
-
-    object-fit: contain;
-}
-
-/* 仲間画像を表示する別方式にも対応 */
-#friendCharacterImages{
-    display: flex;
-    flex-wrap: wrap;
-    gap: 3px;
-}
-
-/* 仲間画像 */
-#friendCharacterImages .friendCharacter{
-    width: 60px !important;
-    height: 60px !important;
-
-    object-fit: contain;
-}
-
-/* 仲間の名前 */
-#friendCharacterImages .friendCharacterName{
-    font-size: 12px;
-}
-
-/* 仲間1人分 */
-#friendCharacterImages .friendCharacterItem{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-/* HP・EXP・必殺ゲージ */
-#playerArea .statusBar{
-    margin-top: 4px;
-    margin-bottom: 4px;
-}
-
-/* 問題エリアとの間隔 */
-#questionArea{
-    margin-top: 8px;
-}
-
-/* 問題文 */
-#sentence{
-    margin-top: 5px;
-}
-
-/* 選択肢 */
-#choices{
-    margin-top: 10px;
-}
-
-/* 選択肢ボタン */
-.choice{
-    margin: 5px;
-}
 
 /* =================================
    仲間画像を強制的に小さくする
@@ -1166,4 +1014,200 @@ button{
     display: flex !important;
     flex-wrap: wrap !important;
     gap: 3px !important;
+}
+
+/* ========================================
+   バトル画面 最終レイアウト
+======================================== */
+
+#battleArea {
+    position: relative;
+
+    width: 94%;
+    max-width: 1100px;
+
+    margin: 10px auto 0;
+
+    min-height: 430px;
+
+    display: grid !important;
+
+    grid-template-columns: 1fr 1fr;
+
+    column-gap: 20px;
+
+    align-items: start;
+}
+
+
+/* =========================
+   味方側
+========================= */
+
+#playerArea {
+    grid-column: 1;
+
+    width: 100% !important;
+
+    text-align: left !important;
+
+    box-sizing: border-box;
+}
+
+
+/* =========================
+   敵側
+========================= */
+
+#enemyArea {
+    grid-column: 2;
+
+    width: 100% !important;
+
+    text-align: right !important;
+
+    box-sizing: border-box;
+}
+
+
+/* =========================
+   味方・敵の画像
+========================= */
+
+#playerImage,
+#enemyImage {
+    width: 170px !important;
+    height: 170px !important;
+
+    object-fit: contain;
+
+    display: inline-block;
+}
+
+
+/* =========================
+   仲間
+========================= */
+
+#friendsArea {
+    margin-top: 3px !important;
+
+    width: 100%;
+
+    text-align: left;
+}
+
+
+/* 仲間一覧 */
+
+#friendsList {
+    display: flex !important;
+
+    flex-wrap: wrap;
+
+    gap: 3px !important;
+
+    align-items: flex-start;
+}
+
+
+/* 仲間画像 */
+
+#friendsList img,
+#friendCharacterImages img,
+.friendImage,
+.friendCharacter,
+.friendCharacterImage {
+    width: 55px !important;
+    height: 55px !important;
+
+    max-width: 55px !important;
+    max-height: 55px !important;
+
+    object-fit: contain;
+}
+
+
+/* 仲間の名前 */
+
+.friendCharacterName {
+    font-size: 11px !important;
+}
+
+
+/* 仲間1体 */
+
+.friendCharacterItem {
+    width: 60px !important;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    margin: 0 !important;
+
+    padding: 0 !important;
+}
+
+
+/* =========================
+   HP・EXP・必殺
+========================= */
+
+#playerArea .statusBar {
+    width: 330px;
+
+    max-width: 100%;
+
+    margin-top: 5px;
+
+    margin-bottom: 5px;
+}
+
+
+/* =========================
+   問題エリア
+========================= */
+
+#questionArea {
+    margin-top: 5px !important;
+}
+
+
+/* =========================
+   スマホ・タブレット
+========================= */
+
+@media screen and (max-width: 800px) {
+
+    #battleArea {
+        width: 96%;
+
+        grid-template-columns: 1fr 1fr;
+
+        column-gap: 10px;
+
+        min-height: 380px;
+    }
+
+    #playerImage,
+    #enemyImage {
+        width: 140px !important;
+        height: 140px !important;
+    }
+
+    #friendsList img,
+    #friendCharacterImages img,
+    .friendImage,
+    .friendCharacter,
+    .friendCharacterImage {
+        width: 50px !important;
+        height: 50px !important;
+
+        max-width: 50px !important;
+        max-height: 50px !important;
+    }
+
 }
