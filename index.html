@@ -210,25 +210,13 @@
 
     <div class="elementButtons">
 
-        <button
-            onclick="startReview('火')"
-        >
-            火で復習
-        </button>
+    <button
+        onclick="startGame('','review')"
+    >
+        復習する
+    </button>
 
-        <button
-            onclick="startReview('水')"
-        >
-            水で復習
-        </button>
-
-        <button
-            onclick="startReview('地')"
-        >
-            地で復習
-        </button>
-
-    </div>
+</div>
 
 </div>
 
@@ -544,16 +532,18 @@ function showOwnedCharacters(){
 // 新規ゲーム開始
 // =========================
 
-function startNewGame(element){
+
+function startGame(element, mode){
 
     const playerName =
-        document
-        .getElementById(
+        document.getElementById(
             "playerName"
-        )
-        .value
-        .trim();
+        ).value.trim();
 
+
+    // =========================
+    // ユーザー名チェック
+    // =========================
 
     if(playerName === ""){
 
@@ -562,92 +552,12 @@ function startNewGame(element){
         );
 
         return;
-
     }
 
 
-    const initialCharacters = [];
-
-
-    document
-    .querySelectorAll(
-        'input[name="newCharacter"]:checked'
-    )
-    .forEach(
-        input => {
-
-        initialCharacters.push(
-            input.value
-        );
-
-    });
-
-
-    // 新規データ
-
-    const newData = {
-
-        playerName:
-            playerName,
-
-        playerElement:
-            element,
-
-        level:
-            1,
-
-        exp:
-            0,
-
-        expToNext:
-            100,
-
-        playerHp:
-            150,
-
-        maxHp:
-            150,
-
-        attackPower:
-            25,
-
-        enemyCount:
-            0,
-
-        solveCount:
-            0,
-
-        combo:
-            0,
-
-        specialGauge:
-            0,
-
-        specialUnlocked:
-            false,
-
-        // 所持しているキャラ
-        ownedCharacters:
-            [
-                ...initialCharacters
-            ],
-
-        // 最初に選んだパーティ
-        partyCharacters:
-            [
-                ...initialCharacters
-            ]
-
-    };
-
-
-    localStorage.setItem(
-        "save_" + playerName,
-        JSON.stringify(
-            newData
-        )
-    );
-
+    // =========================
+    // 現在のユーザーを保存
+    // =========================
 
     localStorage.setItem(
         "currentPlayer",
@@ -655,14 +565,114 @@ function startNewGame(element){
     );
 
 
+    // =========================
+    // ユーザーのセーブデータ確認
+    // =========================
+
+    const saveKey =
+        "save_" + playerName;
+
+    const savedData =
+        localStorage.getItem(
+            saveKey
+        );
+
+
+    // =========================
+    // 既存ユーザー
+    // =========================
+
+    if(savedData){
+
+        const data =
+            JSON.parse(savedData);
+
+
+        // 保存されている属性を使用
+        const savedElement =
+            data.playerElement || element;
+
+
+        // =========================
+        // 既存ユーザーは
+        // 保存データをそのまま使用
+        // =========================
+
+        location.href =
+            "game.html"
+            + "?element="
+            + encodeURIComponent(
+                savedElement
+            )
+            + "&mode="
+            + encodeURIComponent(
+                mode
+            );
+
+        return;
+    }
+
+
+    // =========================
+    // 新規ユーザー
+    // =========================
+
+    const newData = {
+
+        playerName:
+            playerName,
+
+        // 最初に選んだ属性
+        playerElement:
+            element,
+
+        level:1,
+
+        exp:0,
+
+        expToNext:100,
+
+        playerHp:150,
+
+        maxHp:150,
+
+        attackPower:25,
+
+        enemyCount:0,
+
+        solveCount:0,
+
+        combo:0,
+
+        // 最初は仲間なし
+        ownedCharacters:[],
+
+        specialGauge:0,
+
+        specialUnlocked:false,
+
+        currentEnemy:null
+    };
+
+
+    localStorage.setItem(
+        saveKey,
+        JSON.stringify(newData)
+    );
+
+
+    // =========================
+    // ゲーム開始
+    // =========================
+
     location.href =
         "game.html"
         + "?element="
         + encodeURIComponent(element)
-        + "&mode=normal";
+        + "&mode="
+        + encodeURIComponent(mode);
 
 }
-
 
 // =========================
 // 既存ユーザーを続きから

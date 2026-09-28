@@ -571,10 +571,9 @@ function saveGame(){
 
     const saveData = {
 
-        // ユーザー名
         playerName,
 
-        // プレイヤー情報
+        // 最初に選んだ属性
         playerElement,
 
         level,
@@ -583,43 +582,26 @@ function saveGame(){
 
         playerHp,
         maxHp,
+
         attackPower,
 
         enemyCount,
         solveCount,
         combo,
 
-        // =========================
-        // キャラクター情報
-        // =========================
-
-        // 今まで獲得した全キャラクター
+        // 現在持っている仲間
         ownedCharacters,
-
-        // 現在一緒に戦っているキャラクター
-        partyCharacters,
-
-        // =========================
-        // 必殺技
-        // =========================
 
         specialGauge,
         specialUnlocked,
 
-        // =========================
-        // 敵
-        // =========================
-
         currentEnemy
-
     };
-
 
     localStorage.setItem(
         "save_" + playerName,
         JSON.stringify(saveData)
     );
-
 }
 
 
@@ -690,181 +672,72 @@ function loadGame(){
             "save_" + playerName
         );
 
-
-    // =========================
-    // 保存データがない
-    // =========================
-    //
-    // → 新規ユーザー
-    //
-    // =========================
-
+    // セーブデータがない
     if(!rawData){
 
         loadInitialCharacters();
 
         return false;
-
     }
 
+    const data =
+        JSON.parse(rawData);
 
     // =========================
-    // 保存データあり
+    // 最初に選んだ属性を読み込む
     // =========================
 
-    let data;
+    if(data.playerElement){
 
-
-    try{
-
-        data =
-            JSON.parse(rawData);
+        playerElement =
+            data.playerElement;
 
     }
-    catch(error){
-
-        console.error(
-            "セーブデータの読み込みに失敗しました",
-            error
-        );
-
-        return false;
-
-    }
-
-
-    // =========================
-    // プレイヤー情報
-    // =========================
-
-    playerElement =
-        data.playerElement
-        ?? "火";
-
 
     level =
-        data.level
-        ?? 1;
-
+        data.level ?? 1;
 
     exp =
-        data.exp
-        ?? 0;
-
+        data.exp ?? 0;
 
     expToNext =
-        data.expToNext
-        ?? 100;
-
+        data.expToNext ?? 100;
 
     playerHp =
-        data.playerHp
-        ?? 150;
-
+        data.playerHp ?? 150;
 
     maxHp =
-        data.maxHp
-        ?? 150;
-
+        data.maxHp ?? 150;
 
     attackPower =
-        data.attackPower
-        ?? 25;
-
+        data.attackPower ?? 25;
 
     enemyCount =
-        data.enemyCount
-        ?? 0;
-
+        data.enemyCount ?? 0;
 
     solveCount =
-        data.solveCount
-        ?? 0;
-
+        data.solveCount ?? 0;
 
     combo =
-        data.combo
-        ?? 0;
-
+        data.combo ?? 0;
 
     // =========================
-    // 所持キャラクター
+    // 現在持っている仲間を読み込む
     // =========================
 
-    if(
-        Array.isArray(
-            data.ownedCharacters
-        )
-    ){
-
-        ownedCharacters =
-            [
-                ...data.ownedCharacters
-            ];
-
-    }
-    else{
-
-        ownedCharacters = [];
-
-    }
-
-
-    // =========================
-    // 現在のパーティ
-    // =========================
-
-    if(
-        Array.isArray(
-            data.partyCharacters
-        )
-    ){
-
-        partyCharacters =
-            [
-                ...data.partyCharacters
-            ];
-
-    }
-    else{
-
-        // 古いセーブデータには
-        // partyCharactersがないので、
-        // 所持キャラをそのまま使用する
-
-        partyCharacters =
-            [
-                ...ownedCharacters
-            ];
-
-    }
-
-
-    // =========================
-    // 必殺技
-    // =========================
+    ownedCharacters =
+        data.ownedCharacters ?? [];
 
     specialGauge =
-        data.specialGauge
-        ?? 0;
-
+        data.specialGauge ?? 0;
 
     specialUnlocked =
-        data.specialUnlocked
-        ?? false;
-
-
-    // =========================
-    // 敵
-    // =========================
+        data.specialUnlocked ?? false;
 
     currentEnemy =
-        data.currentEnemy
-        ?? null;
-
+        data.currentEnemy ?? null;
 
     return true;
-
 }
 
 // =========================
@@ -884,7 +757,7 @@ fetch("questions.json")
 
         const saved =
             localStorage.getItem(
-                "wrongQuestions"
+                "wrongQuestions" + playerName
             );
 
         if(saved){
@@ -1851,77 +1724,157 @@ function createAnswerText(){
 
 function checkJoinCharacters(){
 
+    // =================================
+    // 最初に選ばなかった
+    // 火・水・地を仲間にする
+    // =================================
+
+    const firstElements = [
+        "火",
+        "水",
+        "地"
+    ];
+
+    // 最初に選んだ属性以外
+    const otherElements =
+        firstElements.filter(
+            element =>
+                element !== playerElement
+        );
+
+    // =========================
+    // 5体撃破
+    // → 最初に選ばなかった属性①
+    // =========================
+
     if(
-        enemyCount === 5 &&
-        !ownedCharacters.includes("風")
+        enemyCount >= 5 &&
+        otherElements[0] &&
+        !ownedCharacters.includes(
+            otherElements[0]
+        )
+    ){
+
+        ownedCharacters.push(
+            otherElements[0]
+        );
+
+        alert(
+            otherElements[0] +
+            "属性が仲間になった！"
+        );
+    }
+
+
+    // =========================
+    // 10体撃破
+    // → 最初に選ばなかった属性②
+    // =========================
+
+    if(
+        enemyCount >= 10 &&
+        otherElements[1] &&
+        !ownedCharacters.includes(
+            otherElements[1]
+        )
+    ){
+
+        ownedCharacters.push(
+            otherElements[1]
+        );
+
+        alert(
+            otherElements[1] +
+            "属性が仲間になった！"
+        );
+    }
+
+
+    // =========================
+    // 15体撃破
+    // → 風
+    // =========================
+
+    if(
+        enemyCount >= 15 &&
+        !ownedCharacters.includes("風") &&
+        playerElement !== "風"
     ){
 
         ownedCharacters.push("風");
 
-        if(
-        !partyCharacters.includes("風")
-    ){
-
-        partyCharacters.push("風");
-
+        alert(
+            "風属性が仲間になった！"
+        );
     }
 
-        alert("風属性が仲間になった！");
-    }
+
+    // =========================
+    // 30体撃破
+    // → 雷
+    // =========================
 
     if(
-        enemyCount === 15 &&
-        !ownedCharacters.includes("雷")
+        enemyCount >= 30 &&
+        !ownedCharacters.includes("雷") &&
+        playerElement !== "雷"
     ){
 
         ownedCharacters.push("雷");
 
-        if(
-        !partyCharacters.includes("雷")
-    ){
-
-        partyCharacters.push("雷");
-
+        alert(
+            "雷属性が仲間になった！"
+        );
     }
 
-        alert("雷属性が仲間になった！");
-    }
+
+    // =========================
+    // 50体撃破
+    // → 光
+    // =========================
 
     if(
-        enemyCount === 30 &&
-        !ownedCharacters.includes("光")
+        enemyCount >= 50 &&
+        !ownedCharacters.includes("光") &&
+        playerElement !== "光"
     ){
 
         ownedCharacters.push("光");
 
-        if(
-        !partyCharacters.includes("光")
-    ){
-
-        partyCharacters.push("光");
-
+        alert(
+            "光属性が仲間になった！"
+        );
     }
 
-        alert("光属性が仲間になった！");
-    }
+
+    // =========================
+    // 70体撃破
+    // → 闇
+    // =========================
 
     if(
-        enemyCount === 50 &&
-        !ownedCharacters.includes("闇")
+        enemyCount >= 70 &&
+        !ownedCharacters.includes("闇") &&
+        playerElement !== "闇"
     ){
 
         ownedCharacters.push("闇");
 
-        if(
-        !partyCharacters.includes("闇")
-    ){
-
-        partyCharacters.push("闇");
-
+        alert(
+            "闇属性が仲間になった！"
+        );
     }
 
-        alert("闇属性が仲間になった！");
-    }
+
+    // =========================
+    // ステータス再計算
+    // =========================
+
+    recalculatePartyStatus();
+
+    updatePlayer();
+
+    saveGame();
 }
 
 // =========================
