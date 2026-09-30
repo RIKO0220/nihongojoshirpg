@@ -1515,3 +1515,166 @@ button{
         padding: 8px 14px !important;
     }
 }
+
+/* ========================================
+   バトル画面 最終レイアウト調整
+======================================== */
+
+/* 味方と敵を必ず左右2列にする */
+#battleArea{
+    width:94%;
+    max-width:1000px;
+    margin:10px auto 0;
+
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    column-gap:30px;
+
+    align-items:start;
+    box-sizing:border-box;
+}
+
+/* 味方 */
+#playerArea{
+    width:100%;
+    min-width:0;
+    text-align:left;
+    box-sizing:border-box;
+}
+
+/* 敵 */
+#enemyArea{
+    width:100%;
+    min-width:0;
+    text-align:right;
+    box-sizing:border-box;
+}
+
+/* メインキャラクター */
+#playerImage,
+#enemyImage{
+    width:170px;
+    height:170px;
+    object-fit:contain;
+}
+
+/* ========================================
+   仲間
+======================================== */
+
+#friendsArea{
+    margin-top:3px;
+}
+
+#friendsArea h2{
+    font-size:26px;
+    margin:3px 0;
+}
+
+#friendsList{
+    display:flex;
+    flex-wrap:wrap;
+    gap:2px;
+    align-items:center;
+}
+
+#friendsList .friendImage{
+    width:55px !important;
+    height:55px !important;
+    object-fit:contain;
+}
+
+/* ========================================
+   ゲージを小さくする
+======================================== */
+
+#playerArea .statusBar{
+    width:240px;
+    max-width:100%;
+    margin-top:4px;
+    margin-bottom:4px;
+    box-sizing:border-box;
+}
+
+.statusLabel{
+    font-size:18px;
+    margin-bottom:3px;
+}
+
+.barBackground{
+    width:100%;
+    height:16px;
+    box-sizing:border-box;
+}
+
+.barFill{
+    height:100%;
+}
+
+/* ========================================
+   問題
+======================================== */
+
+#questionArea{
+    margin-top:8px;
+    width:100%;
+    box-sizing:border-box;
+}
+
+/* 問題文を小さく */
+#sentence{
+    font-size:32px;
+    line-height:1.5;
+    margin-top:5px;
+    max-width:800px;
+    margin-left:auto;
+    margin-right:auto;
+}
+
+/* 空欄 */
+.drop{
+    width:55px;
+    height:42px;
+    margin:0 5px;
+    border-bottom:3px solid #333;
+    font-size:28px;
+}
+
+/* ========================================
+   選択肢
+======================================== */
+
+#choices{
+    margin-top:10px;
+    max-width:700px;
+    margin-left:auto;
+    margin-right:auto;
+}
+
+.choice{
+    display:inline-block;
+    padding:12px 20px;
+    margin:5px;
+    border-radius:15px;
+    font-size:28px;
+    box-sizing:border-box;
+}
+
+/* ========================================
+   決定・必殺技ボタン
+======================================== */
+
+#actionBtn,
+#specialBtn{
+    padding:15px 30px;
+    font-size:26px;
+    margin-top:15px;
+}
+
+/* ========================================
+   問題番号
+======================================== */
+
+#questionId{
+    font-size:18px;
+}
