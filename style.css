@@ -868,3 +868,398 @@ button{
         font-size:20px;
     }
 }
+
+/* =========================================
+   バトル画面 強制レイアウト修正版
+   必ずCSSの一番最後に置く
+========================================= */
+
+
+/* ---------- 上段：味方と敵 ---------- */
+
+#battleArea{
+    width: 94% !important;
+    max-width: 1100px !important;
+
+    margin: 10px auto 0 !important;
+
+    display: grid !important;
+
+    grid-template-columns:
+        minmax(0, 1fr)
+        minmax(0, 1fr) !important;
+
+    align-items: start !important;
+
+    column-gap: 40px !important;
+}
+
+
+/* ---------- 味方 ---------- */
+
+#playerArea{
+    width: 100% !important;
+
+    text-align: left !important;
+
+    min-width: 0 !important;
+}
+
+
+/* 味方画像 */
+
+#playerImage{
+    display: block !important;
+
+    width: 140px !important;
+    height: 140px !important;
+
+    object-fit: contain !important;
+
+    margin: 0 !important;
+}
+
+
+/* 味方情報 */
+
+#playerInfo{
+    margin: 4px 0 !important;
+
+    font-size: 16px !important;
+    line-height: 1.35 !important;
+}
+
+
+/* ---------- 敵 ---------- */
+
+#enemyArea{
+    width: 100% !important;
+
+    min-width: 0 !important;
+
+    padding-top: 0 !important;
+
+    text-align: right !important;
+}
+
+
+/* 敵画像 */
+
+#enemyImage{
+    display: block !important;
+
+    width: 160px !important;
+    height: 160px !important;
+
+    object-fit: contain !important;
+
+    margin: 0 0 0 auto !important;
+}
+
+
+/* 敵情報 */
+
+#enemyInfo{
+    margin: 4px 0 !important;
+
+    font-size: 16px !important;
+    line-height: 1.35 !important;
+
+    text-align: right !important;
+}
+
+
+/* =========================================
+   仲間
+========================================= */
+
+#friendsArea{
+    margin-top: 5px !important;
+
+    text-align: left !important;
+}
+
+
+#friendsArea h2{
+    margin: 2px 0 !important;
+
+    font-size: 20px !important;
+}
+
+
+#friendsList{
+    display: flex !important;
+
+    flex-wrap: nowrap !important;
+
+    align-items: center !important;
+
+    gap: 4px !important;
+}
+
+
+#friendsList .friendImage{
+    width: 45px !important;
+    height: 45px !important;
+
+    object-fit: contain !important;
+}
+
+
+/* friendCharacterImages方式にも対応 */
+
+#friendCharacterImages{
+    display: flex !important;
+
+    flex-wrap: nowrap !important;
+
+    gap: 4px !important;
+}
+
+
+#friendCharacterImages .friendCharacter{
+    width: 45px !important;
+    height: 45px !important;
+
+    object-fit: contain !important;
+}
+
+
+/* =========================================
+   HP・EXP・必殺ゲージ
+========================================= */
+
+.statusBar{
+    width: 260px !important;
+
+    max-width: 100% !important;
+
+    margin: 4px 0 !important;
+}
+
+
+.statusLabel{
+    display: flex !important;
+
+    justify-content: space-between !important;
+
+    margin-bottom: 2px !important;
+
+    font-size: 15px !important;
+
+    line-height: 1.2 !important;
+}
+
+
+.barBackground{
+    width: 100% !important;
+
+    height: 16px !important;
+
+    border: 1px solid #888 !important;
+
+    border-radius: 20px !important;
+
+    overflow: hidden !important;
+}
+
+
+/* =========================================
+   問題エリア
+
+   battleAreaの「下」に置く
+========================================= */
+
+#questionArea{
+    display: block !important;
+
+    clear: both !important;
+
+    width: 94% !important;
+
+    max-width: 1100px !important;
+
+    margin: 15px auto 0 !important;
+
+    text-align: center !important;
+}
+
+
+/* 問題文 */
+
+#sentence{
+    width: 100% !important;
+
+    margin: 0 auto 15px !important;
+
+    font-size: 34px !important;
+
+    line-height: 1.6 !important;
+
+    text-align: center !important;
+}
+
+
+/* 空欄 */
+
+.drop{
+    display: inline-flex !important;
+
+    justify-content: center !important;
+    align-items: center !important;
+
+    width: 58px !important;
+    height: 42px !important;
+
+    margin: 0 4px !important;
+
+    font-size: 27px !important;
+
+    vertical-align: middle !important;
+}
+
+
+/* =========================================
+   選択肢
+
+   絶対に横1列
+========================================= */
+
+#choices{
+    width: 100% !important;
+
+    margin: 10px auto 0 !important;
+
+    display: flex !important;
+
+    flex-direction: row !important;
+
+    flex-wrap: nowrap !important;
+
+    justify-content: center !important;
+
+    align-items: center !important;
+
+    gap: 10px !important;
+}
+
+
+/* 選択肢 */
+
+#choices .choice{
+    flex: 0 0 auto !important;
+
+    min-width: 70px !important;
+
+    width: auto !important;
+
+    height: 58px !important;
+
+    margin: 0 !important;
+
+    padding: 5px 15px !important;
+
+    display: flex !important;
+
+    justify-content: center !important;
+    align-items: center !important;
+
+    font-size: 26px !important;
+
+    line-height: 1 !important;
+
+    white-space: nowrap !important;
+
+    border-radius: 14px !important;
+}
+
+
+/* =========================================
+   決定・必殺技
+========================================= */
+
+#actionBtn,
+#specialBtn{
+    min-width: 130px !important;
+
+    padding: 11px 24px !important;
+
+    margin: 12px 4px 0 !important;
+
+    font-size: 23px !important;
+
+    border-radius: 14px !important;
+}
+
+
+/* =========================================
+   結果表示
+========================================= */
+
+#result{
+    margin-top: 7px !important;
+
+    font-size: 20px !important;
+}
+
+
+/* =========================================
+   iPad横画面
+========================================= */
+
+@media screen and (min-width: 700px)
+               and (max-width: 1200px){
+
+    #battleArea{
+        width: 92% !important;
+
+        column-gap: 50px !important;
+    }
+
+
+    #playerImage{
+        width: 135px !important;
+        height: 135px !important;
+    }
+
+
+    #enemyImage{
+        width: 150px !important;
+        height: 150px !important;
+    }
+
+
+    .statusBar{
+        width: 250px !important;
+    }
+
+
+    #questionArea{
+        width: 92% !important;
+
+        margin-top: 10px !important;
+    }
+
+
+    #sentence{
+        font-size: 32px !important;
+
+        margin-bottom: 12px !important;
+    }
+
+
+    #choices{
+        gap: 8px !important;
+    }
+
+
+    #choices .choice{
+        min-width: 68px !important;
+
+        height: 55px !important;
+
+        padding: 5px 13px !important;
+
+        font-size: 25px !important;
+    }
+}
