@@ -164,39 +164,58 @@ h2{
    選択肢
 ========================= */
 
-#choices{
+/* =========================
+   選択肢：横一列に表示
+========================= */
 
-    margin-top:40px;
+#choices {
+    display: flex;
+    flex-wrap: nowrap;        /* 2段に折り返さない */
+    justify-content: center;  /* 中央に配置 */
+    align-items: center;
+    gap: 12px;                /* 選択肢どうしの間隔 */
+
+    width: 100%;
+    max-width: 1000px;
+    margin: 20px auto 0;
+    padding: 0 12px;
+    box-sizing: border-box;
 }
 
-.choice{
+/* 選択肢ボタン */
 
-    display:inline-block;
+.choice {
+    flex: 1 1 0;              /* 横幅を均等にする */
+    min-width: 0;
+    box-sizing: border-box;
 
-    background:#7bd389;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 
-    padding:20px 30px;
+    padding: 18px 4px;
+    margin: 0;                /* 以前の余白をリセット */
 
-    margin:15px;
+    background: #7bd389;
+    border-radius: 18px;
 
-    border-radius:20px;
+    font-size: clamp(20px, 3vw, 32px);
+    line-height: 1.3;
+    text-align: center;
 
-    font-size:40px;
+    white-space: nowrap;      /* 選択肢の文字を改行しない */
 
-    touch-action:none;
+    touch-action: none;
+    user-select: none;
 
-    user-select:none;
-
-    transition:transform 0.1s;
+    transition: transform 0.1s;
 }
 
 /* ドラッグ中 */
 
-.dragging{
-
-    transform:scale(1.2);
-
-    opacity:0.7;
+.choice.dragging {
+    transform: scale(1.05);
+    opacity: 0.7;
 }
 
 /* =========================
@@ -1339,4 +1358,323 @@ button{
 /* 問題 */
 #questionArea {
     margin-top: 5px !important;
+}
+
+/* ========================================
+   ★ バトル画面レイアウト完全リセット
+======================================== */
+
+/* バトル全体 */
+#battleArea {
+    width: 94% !important;
+    max-width: 1100px !important;
+    margin: 10px auto 0 !important;
+
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    column-gap: 40px !important;
+    align-items: start !important;
+}
+
+/* 味方 */
+#playerArea {
+    width: auto !important;
+    text-align: left !important;
+    grid-column: 1 !important;
+    grid-row: 1 !important;
+}
+
+/* 敵 */
+#enemyArea {
+    width: auto !important;
+    text-align: right !important;
+    grid-column: 2 !important;
+    grid-row: 1 !important;
+}
+
+/* 味方・敵のメイン画像 */
+#playerImage,
+#enemyImage {
+    width: 180px !important;
+    height: 180px !important;
+    object-fit: contain !important;
+}
+
+/* 敵側は右寄せ */
+#enemyArea #enemyImage {
+    display: block;
+    margin-left: auto;
+}
+
+/* ========================================
+   味方のステータス
+======================================== */
+
+#playerArea .statusBar {
+    width: 330px !important;
+    max-width: 100% !important;
+    margin-top: 8px !important;
+    margin-bottom: 8px !important;
+}
+
+#playerArea .statusLabel {
+    font-size: 20px !important;
+    margin-bottom: 4px !important;
+}
+
+/* ゲージ */
+#playerArea .barBackground {
+    height: 18px !important;
+}
+
+/* ========================================
+   仲間
+======================================== */
+
+#friendsArea {
+    margin-top: 10px !important;
+    text-align: left !important;
+}
+
+#friendsArea h2 {
+    font-size: 25px !important;
+    margin: 8px 0 !important;
+}
+
+#friendsList,
+#friendCharacterImages {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    gap: 4px !important;
+    align-items: flex-start !important;
+}
+
+#friendsList .friendImage,
+#friendCharacterImages .friendCharacter {
+    width: 55px !important;
+    height: 55px !important;
+    object-fit: contain !important;
+}
+
+#friendCharacterImages .friendCharacterName {
+    font-size: 11px !important;
+}
+
+/* ========================================
+   問題
+======================================== */
+
+#questionArea {
+    width: 94% !important;
+    max-width: 1100px !important;
+    margin: 20px auto 0 !important;
+    text-align: center !important;
+}
+
+#sentence {
+    font-size: 42px !important;
+    line-height: 1.7 !important;
+    margin: 10px 0 20px !important;
+}
+
+/* ========================================
+   決定・必殺技
+======================================== */
+
+#questionArea button {
+    font-size: 28px !important;
+    padding: 14px 30px !important;
+    margin: 15px 5px 0 !important;
+}
+
+/* ========================================
+   iPadなど縦画面
+======================================== */
+
+@media (max-width: 700px) {
+
+    #battleArea {
+        width: 94% !important;
+        column-gap: 15px !important;
+    }
+
+    #playerImage,
+    #enemyImage {
+        width: 150px !important;
+        height: 150px !important;
+    }
+
+    #sentence {
+        font-size: 36px !important;
+    }
+
+    .choice {
+        min-width: 80px !important;
+        min-height: 58px !important;
+        font-size: 27px !important;
+        padding: 8px 14px !important;
+    }
+}
+
+/* ========================================
+   バトル画面 最終レイアウト調整
+======================================== */
+
+/* 味方と敵を必ず左右2列にする */
+#battleArea{
+    width:94%;
+    max-width:1000px;
+    margin:10px auto 0;
+
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    column-gap:30px;
+
+    align-items:start;
+    box-sizing:border-box;
+}
+
+/* 味方 */
+#playerArea{
+    width:100%;
+    min-width:0;
+    text-align:left;
+    box-sizing:border-box;
+}
+
+/* 敵 */
+#enemyArea{
+    width:100%;
+    min-width:0;
+    text-align:right;
+    box-sizing:border-box;
+}
+
+/* メインキャラクター */
+#playerImage,
+#enemyImage{
+    width:170px;
+    height:170px;
+    object-fit:contain;
+}
+
+/* ========================================
+   仲間
+======================================== */
+
+#friendsArea{
+    margin-top:3px;
+}
+
+#friendsArea h2{
+    font-size:26px;
+    margin:3px 0;
+}
+
+#friendsList{
+    display:flex;
+    flex-wrap:wrap;
+    gap:2px;
+    align-items:center;
+}
+
+#friendsList .friendImage{
+    width:55px !important;
+    height:55px !important;
+    object-fit:contain;
+}
+
+/* ========================================
+   ゲージを小さくする
+======================================== */
+
+#playerArea .statusBar{
+    width:240px;
+    max-width:100%;
+    margin-top:4px;
+    margin-bottom:4px;
+    box-sizing:border-box;
+}
+
+.statusLabel{
+    font-size:18px;
+    margin-bottom:3px;
+}
+
+.barBackground{
+    width:100%;
+    height:16px;
+    box-sizing:border-box;
+}
+
+.barFill{
+    height:100%;
+}
+
+/* ========================================
+   問題
+======================================== */
+
+#questionArea{
+    margin-top:8px;
+    width:100%;
+    box-sizing:border-box;
+}
+
+/* 問題文を小さく */
+#sentence{
+    font-size:32px;
+    line-height:1.5;
+    margin-top:5px;
+    max-width:800px;
+    margin-left:auto;
+    margin-right:auto;
+}
+
+/* 空欄 */
+.drop{
+    width:55px;
+    height:42px;
+    margin:0 5px;
+    border-bottom:3px solid #333;
+    font-size:28px;
+}
+
+/* ========================================
+   選択肢
+======================================== */
+
+#choices{
+    margin-top:10px;
+    max-width:700px;
+    margin-left:auto;
+    margin-right:auto;
+}
+
+.choice{
+    display:inline-block;
+    padding:12px 20px;
+    margin:5px;
+    border-radius:15px;
+    font-size:28px;
+    box-sizing:border-box;
+}
+
+/* ========================================
+   決定・必殺技ボタン
+======================================== */
+
+#actionBtn,
+#specialBtn{
+    padding:15px 30px;
+    font-size:26px;
+    margin-top:15px;
+}
+
+/* ========================================
+   問題番号
+======================================== */
+
+#questionId{
+    font-size:18px;
 }
