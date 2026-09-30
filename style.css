@@ -1910,3 +1910,300 @@ button{
 
     margin: 10px 4px 0 !important;
 }
+
+/* ========================================
+   バトル画面・問題画面 最終調整
+   2026/09/30
+======================================== */
+
+/* -------------------------
+   バトル全体
+------------------------- */
+
+#battleArea{
+    position:relative;
+
+    width:94%;
+    max-width:1000px;
+
+    margin:10px auto 0;
+
+    display:flex;
+    justify-content:flex-start;
+    align-items:flex-start;
+
+    gap:0;
+}
+
+
+/* -------------------------
+   味方エリア
+------------------------- */
+
+#playerArea{
+    width:48%;
+
+    text-align:left;
+
+    flex-shrink:0;
+}
+
+
+/* -------------------------
+   敵エリア
+   → 右側に固定
+   → 味方のゲージ付近の高さ
+------------------------- */
+
+#enemyArea{
+    position:absolute;
+
+    right:0;
+
+    top:430px;
+
+    width:45%;
+
+    text-align:center;
+
+    box-sizing:border-box;
+}
+
+
+/* 敵画像 */
+
+#enemyArea .characterImage{
+    width:170px;
+    height:170px;
+
+    object-fit:contain;
+}
+
+
+/* 敵の名前・属性・HP */
+
+#enemyInfo{
+    font-size:20px;
+
+    line-height:1.5;
+
+    margin-top:5px;
+}
+
+
+/* -------------------------
+   味方画像
+------------------------- */
+
+#playerImage{
+    width:170px;
+    height:170px;
+
+    object-fit:contain;
+}
+
+
+/* -------------------------
+   プレイヤー情報
+------------------------- */
+
+#playerInfo{
+    font-size:20px;
+
+    line-height:1.45;
+
+    margin:5px 0;
+}
+
+
+/* -------------------------
+   仲間
+------------------------- */
+
+#friendsArea{
+    margin-top:8px;
+}
+
+#friendsArea h2{
+    font-size:24px;
+
+    margin:3px 0;
+}
+
+#friendsList{
+    display:flex;
+
+    flex-wrap:wrap;
+
+    gap:3px;
+
+    align-items:center;
+}
+
+#friendsList .friendImage{
+    width:55px !important;
+    height:55px !important;
+
+    object-fit:contain;
+}
+
+
+/* -------------------------
+   ゲージ
+------------------------- */
+
+#playerArea .statusBar{
+    width:260px;
+
+    margin-top:5px;
+    margin-bottom:5px;
+}
+
+.statusLabel{
+    font-size:18px;
+
+    margin-bottom:3px;
+}
+
+.barBackground{
+    width:100%;
+
+    height:20px;
+
+    border-radius:20px;
+}
+
+.barFill{
+    height:100%;
+}
+
+
+/* -------------------------
+   問題エリア
+------------------------- */
+
+#questionArea{
+    margin-top:15px;
+}
+
+
+/* -------------------------
+   問題文
+------------------------- */
+
+#sentence{
+    font-size:34px;
+
+    line-height:1.5;
+
+    margin-top:10px;
+
+    max-width:900px;
+
+    margin-left:auto;
+    margin-right:auto;
+
+    text-align:center;
+}
+
+
+/* -------------------------
+   空欄
+------------------------- */
+
+.drop{
+    width:55px;
+
+    height:38px;
+
+    margin:0 5px;
+
+    border-bottom:3px solid #333;
+
+    font-size:28px;
+}
+
+
+/* -------------------------
+   選択肢
+------------------------- */
+
+#choices{
+    margin-top:15px;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    flex-wrap:wrap;
+
+    gap:8px;
+}
+
+
+/* 全選択肢を同じ大きさにする */
+
+.choice{
+    display:flex;
+
+    justify-content:center;
+    align-items:center;
+
+    width:78px;
+    height:62px;
+
+    padding:0;
+
+    margin:0;
+
+    box-sizing:border-box;
+
+    border-radius:15px;
+
+    font-size:28px;
+
+    line-height:1;
+
+    touch-action:none;
+
+    user-select:none;
+
+    transition:transform 0.1s;
+}
+
+
+/* 「から」など2文字の選択肢も同じ幅 */
+
+.choice{
+    min-width:78px;
+}
+
+
+/* -------------------------
+   決定・必殺技ボタン
+------------------------- */
+
+#actionBtn,
+#specialBtn{
+    padding:15px 30px;
+
+    font-size:28px;
+
+    border-radius:15px;
+
+    margin-top:15px;
+}
+
+
+/* -------------------------
+   問題番号
+------------------------- */
+
+#questionId{
+    font-size:18px;
+
+    right:12px;
+    bottom:8px;
+}
