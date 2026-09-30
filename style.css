@@ -1,21 +1,19 @@
 /* =========================================================
    助詞RPG style.css
-   レイアウトを一度リセットして整理した版
-========================================================= */
+   ========================================================= */
 
-* {
-    box-sizing: border-box;
+*{
+    box-sizing:border-box;
 }
 
 html,
-body {
-    margin: 0;
-    padding: 0;
-    width: 100%;
-    min-height: 100%;
-}
+body{
+    margin:0;
+    padding:0;
 
-body {
+    width:100%;
+    min-height:100%;
+
     font-family:
         "Arial Rounded MT Bold",
         "Hiragino Maru Gothic ProN",
@@ -23,1049 +21,913 @@ body {
         "Yu Gothic",
         sans-serif;
 
-    background: #f4f7ff;
-    color: #333;
-    text-align: center;
+    background:#f4f7ff;
+    color:#222;
+
+    text-align:center;
 }
 
 
 /* =========================================================
    左上：解いた問題数
-========================================================= */
+   ========================================================= */
 
-#gameInfo {
-    position: fixed;
-    top: 10px;
-    left: 10px;
+#gameInfo{
+    position:fixed;
 
-    z-index: 1000;
+    top:10px;
+    left:10px;
 
-    padding: 10px 15px;
+    z-index:1000;
 
-    background: white;
-    color: #555;
+    padding:10px 15px;
 
-    border-radius: 15px;
+    background:white;
 
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+    border-radius:15px;
 
-    font-size: 20px;
-    line-height: 1.6;
+    box-shadow:0 2px 6px rgba(0,0,0,0.15);
+
+    font-size:20px;
+    line-height:1.5;
+
+    color:#555;
 }
 
 
 /* =========================================================
    タイトル
-========================================================= */
+   ========================================================= */
 
-h1 {
-    margin: 25px 0 10px;
+h1{
+    margin:25px 0 10px;
 
-    color: #333;
+    font-size:48px;
+    line-height:1.2;
 
-    font-size: 48px;
-    line-height: 1.2;
+    color:#333;
 }
 
-h2 {
-    color: #333;
-    font-size: 32px;
+h2{
+    color:#333;
 }
 
 
 /* =========================================================
    ホーム画面
-========================================================= */
+   ========================================================= */
 
-.menuArea {
-    margin-top: 60px;
+.menuArea{
+    margin-top:60px;
 }
 
-.menuButton {
-    width: 300px;
+.menuButton{
+    width:300px;
 
-    padding: 25px;
-    margin: 20px;
+    padding:25px;
 
-    font-size: 36px;
+    margin:20px;
 
-    border: none;
-    border-radius: 20px;
+    font-size:36px;
 
-    background: #ffd166;
-    color: #333;
+    border:none;
+    border-radius:20px;
 
-    cursor: pointer;
-}
-
-
-/* =========================================================
-   バトル画面全体
-========================================================= */
-
-#battleArea {
-    position: relative;
-
-    width: 94%;
-    max-width: 1100px;
-
-    min-height: 500px;
-
-    margin: 10px auto 0;
-
-    display: grid;
-
-    grid-template-columns: 1fr 1fr;
-
-    column-gap: 40px;
-
-    align-items: start;
+    background:#ffd166;
+    color:#333;
 }
 
 
 /* =========================================================
-   味方エリア
-========================================================= */
+   =========================================================
+   バトル画面
+   =========================================================
+   ========================================================= */
 
-#playerArea {
-    grid-column: 1;
-    grid-row: 1;
 
-    width: 100%;
+/* ---------------------------------------------------------
+   バトル全体
+   --------------------------------------------------------- */
 
-    text-align: left;
+#battleArea{
+    position:relative;
+
+    width:94%;
+    max-width:1100px;
+
+    height:470px;
+
+    margin:10px auto 0;
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:flex-start;
 }
 
 
-/* =========================================================
-   敵エリア
-========================================================= */
+/* ---------------------------------------------------------
+   プレイヤー側
+   --------------------------------------------------------- */
 
-#enemyArea {
-    grid-column: 2;
-    grid-row: 1;
+#playerArea{
+    width:42%;
 
-    width: 100%;
+    text-align:left;
 
-    /*
-       味方の画像・名前・ステータスの下あたりに
-       敵が来るようにする
-    */
-    padding-top: 360px;
-
-    text-align: right;
+    flex-shrink:0;
 }
 
 
-/* =========================================================
-   味方・敵のメイン画像
-========================================================= */
+/* プレイヤー画像 */
 
-#playerImage,
-#enemyImage {
-    display: block;
+#playerImage{
+    display:block;
 
-    width: 170px;
-    height: 170px;
+    width:170px;
+    height:170px;
 
-    object-fit: contain;
+    object-fit:contain;
+
+    margin:0;
 }
 
 
-/* 味方画像は左 */
+/* プレイヤー情報 */
 
-#playerArea #playerImage {
-    margin-left: 0;
-    margin-right: auto;
+#playerInfo{
+    margin:5px 0 0;
+
+    font-size:21px;
+
+    line-height:1.45;
 }
 
 
-/* 敵画像は右 */
+/* ---------------------------------------------------------
+   仲間
+   --------------------------------------------------------- */
 
-#enemyArea #enemyImage {
-    margin-left: auto;
-    margin-right: 0;
+#friendsArea{
+    margin-top:8px;
+
+    text-align:left;
 }
 
+#friendsArea h2{
+    margin:5px 0;
 
-/* =========================================================
-   HPなどの文字
-========================================================= */
-
-.hpText {
-    margin-top: 8px;
-
-    font-size: 24px;
+    font-size:26px;
 }
 
+#friendsList{
+    display:flex;
 
-/* =========================================================
-   仲間エリア
-========================================================= */
+    flex-wrap:wrap;
 
-#friendsArea {
-    width: 100%;
+    align-items:center;
 
-    margin-top: 8px;
+    gap:3px;
 
-    text-align: left;
-}
-
-#friendsArea h2 {
-    margin: 5px 0;
-
-    font-size: 24px;
-}
-
-
-/* 仲間一覧 */
-
-#friendsList,
-#friendCharacterImages {
-    display: flex;
-
-    flex-wrap: wrap;
-
-    align-items: flex-start;
-
-    gap: 4px;
-}
-
-
-/* 仲間1体 */
-
-.friendCharacterItem {
-    width: 60px;
-
-    margin: 0;
-    padding: 0;
-
-    display: flex;
-
-    flex-direction: column;
-
-    align-items: center;
-
-    text-align: center;
+    margin-bottom:5px;
 }
 
 
 /* 仲間画像 */
 
-#friendsList img,
-#friendCharacterImages img,
-.friendImage,
-.friendCharacter,
-.friendCharacterImage {
-    width: 55px;
-    height: 55px;
+.friendImage{
+    width:55px !important;
+    height:55px !important;
 
-    max-width: 55px;
-    max-height: 55px;
+    object-fit:contain;
+}
 
-    object-fit: contain;
+.friendCharacterImage{
+    width:55px;
+    height:55px;
+
+    object-fit:contain;
+}
+
+.friendCharacter{
+    width:55px !important;
+    height:55px !important;
+
+    object-fit:contain;
+}
+
+.friendCharacterItem{
+    display:flex;
+
+    flex-direction:column;
+
+    align-items:center;
+}
+
+.friendCharacterName{
+    font-size:11px;
 }
 
 
-/* 仲間の名前 */
+/* ---------------------------------------------------------
+   ステータスゲージ
+   --------------------------------------------------------- */
 
-.friendCharacterName {
-    margin: 0;
+.statusBar{
+    width:325px;
 
-    font-size: 11px;
+    max-width:100%;
 
-    text-align: center;
+    margin:7px 0;
 }
 
 
-/* =========================================================
-   ステータスメーター
-========================================================= */
+/* ゲージ上の文字 */
 
-.statusBar {
-    width: 280px;
+.statusLabel{
+    display:flex;
 
-    margin-top: 5px;
-    margin-bottom: 5px;
-}
+    justify-content:space-between;
+    align-items:center;
 
+    margin-bottom:3px;
 
-/* ステータス名と数値 */
+    font-size:22px;
 
-.statusLabel {
-    display: flex;
-
-    justify-content: space-between;
-    align-items: center;
-
-    margin-bottom: 3px;
-
-    color: #333;
-
-    font-size: 18px;
-    line-height: 1.2;
+    color:#333;
 }
 
 
 /* ゲージ本体 */
 
-.barBackground {
-    width: 100%;
-    height: 18px;
+.barBackground{
+    width:100%;
+    height:20px;
 
-    overflow: hidden;
+    background:#ddd;
 
-    background: #ddd;
+    border:2px solid #888;
 
-    border: 2px solid #888;
-    border-radius: 20px;
+    border-radius:20px;
+
+    overflow:hidden;
 }
 
 
-/* ゲージの中身 */
+/* ゲージ */
 
-.barFill {
-    width: 100%;
-    height: 100%;
+.barFill{
+    width:100%;
+    height:100%;
 
-    transition: width 0.4s ease;
+    transition:width .4s ease;
 }
 
 
 /* HP */
 
-.hpBar {
-    background: #4caf50;
+.hpBar{
+    background:#4CAF50;
 }
 
 
 /* EXP */
 
-.expBar {
-    background: #2196f3;
+.expBar{
+    background:#2196F3;
 }
 
 
 /* 必殺 */
 
-.specialBar {
-    background: #ffd700;
+.specialBar{
+    background:#FFD700;
 }
 
 
-/* 味方側のゲージ */
+/* ---------------------------------------------------------
+   敵側
+   --------------------------------------------------------- */
 
-#playerArea .statusBar {
-    width: 280px;
-    max-width: 100%;
+#enemyArea{
+    width:42%;
+
+    flex-shrink:0;
+
+    text-align:center;
+
+    /*
+       プレイヤー画像の一番上ではなく、
+       ゲージ付近の高さに敵を置く
+    */
+    padding-top:250px;
+}
+
+
+/* 敵画像 */
+
+#enemyImage{
+    display:block;
+
+    width:190px;
+    height:190px;
+
+    object-fit:contain;
+
+    margin:0 auto;
+}
+
+
+/* 敵情報 */
+
+#enemyInfo{
+    margin:5px 0 0;
+
+    font-size:21px;
+
+    line-height:1.5;
 }
 
 
 /* =========================================================
    問題エリア
-========================================================= */
+   ========================================================= */
 
-#questionArea {
-    width: 100%;
-    max-width: 1000px;
+#questionArea{
+    width:100%;
 
-    margin: 0 auto;
+    margin:0 auto;
 
-    padding: 0 20px;
-
-    text-align: center;
+    text-align:center;
 }
 
 
-/* =========================================================
+/* ---------------------------------------------------------
    問題文
-========================================================= */
+   --------------------------------------------------------- */
 
-#sentence {
-    width: 100%;
+#sentence{
+    width:90%;
+    max-width:900px;
 
-    margin: 10px auto 20px;
+    margin:0 auto 15px;
 
-    text-align: center;
+    text-align:center;
 
-    font-size: 38px;
+    font-size:38px;
 
-    line-height: 1.5;
+    line-height:1.5;
 
-    white-space: normal;
+    white-space:normal;
 }
 
 
-/* =========================================================
-   空欄
-========================================================= */
+/* 問題文内のふりがな */
 
-.drop {
-    display: inline-flex;
+.questionRuby rt{
+    font-size:.45em;
 
-    justify-content: center;
-    align-items: center;
-
-    width: 65px;
-    height: 45px;
-
-    margin: 0 5px;
-
-    border-bottom: 3px solid #333;
-
-    font-size: 32px;
-
-    vertical-align: middle;
+    line-height:1;
 }
 
 
-/* =========================================================
-   ふりがな
-========================================================= */
+/* ---------------------------------------------------------
+   解答欄
+   --------------------------------------------------------- */
 
-.questionRuby rt {
-    font-size: 0.45em;
-    line-height: 1;
+.drop{
+    display:inline-flex;
+
+    justify-content:center;
+    align-items:center;
+
+    width:65px;
+    height:45px;
+
+    margin:0 5px;
+
+    border-bottom:3px solid #333;
+
+    font-size:30px;
+
+    vertical-align:middle;
 }
 
 
 /* =========================================================
    選択肢
-========================================================= */
+   ========================================================= */
 
-#choices {
-    width: 100%;
-    max-width: 850px;
+#choices{
+    width:100%;
 
-    margin: 10px auto 0;
-    padding: 0;
+    display:flex;
 
-    display: flex;
+    justify-content:center;
 
-    flex-wrap: nowrap;
+    align-items:center;
 
-    justify-content: center;
-    align-items: center;
+    flex-wrap:wrap;
 
-    gap: 10px;
+    gap:8px;
+
+    margin:10px auto;
 }
 
 
 /* 選択肢 */
 
-.choice {
-    flex: 0 1 auto;
+.choice{
+    display:inline-flex;
 
-    display: flex;
+    justify-content:center;
+    align-items:center;
 
-    justify-content: center;
-    align-items: center;
+    min-width:70px;
+    height:55px;
 
-    min-width: 75px;
-    height: 55px;
+    padding:8px 15px;
 
-    margin: 0;
-    padding: 8px 16px;
+    margin:0;
 
-    background: #7bd389;
+    border:none;
+    border-radius:15px;
 
-    border-radius: 16px;
+    background:#7bd389;
 
-    font-size: 28px;
-    line-height: 1;
+    color:#111;
 
-    white-space: nowrap;
+    font-size:28px;
 
-    text-align: center;
+    touch-action:none;
+    user-select:none;
 
-    touch-action: none;
-    user-select: none;
-
-    transition: transform 0.1s;
+    transition:transform .1s;
 }
 
 
 /* ドラッグ中 */
 
-.choice.dragging {
-    transform: scale(1.08);
+.dragging{
+    transform:scale(1.12);
 
-    opacity: 0.7;
+    opacity:.7;
 }
 
 
 /* =========================================================
    決定・必殺技ボタン
-========================================================= */
+   ========================================================= */
 
-#questionArea button {
-    margin: 15px 5px 0;
+#actionBtn,
+#specialBtn{
+    display:inline-block;
 
-    padding: 14px 30px;
+    padding:14px 32px;
 
-    font-size: 28px;
+    margin:8px 3px 0;
 
-    border: none;
-    border-radius: 18px;
+    font-size:28px;
 
-    background: #ffd166;
-    color: #333;
+    border:none;
 
-    cursor: pointer;
-}
+    border-radius:15px;
 
+    background:#ffd166;
 
-/* 通常ボタン */
+    color:#333;
 
-button {
-    border: none;
-    border-radius: 18px;
-
-    cursor: pointer;
+    cursor:pointer;
 }
 
 
 /* =========================================================
-   名前入力
-========================================================= */
+   結果
+   ========================================================= */
 
-#playerName {
-    width: 500px;
-    max-width: 90%;
+#result{
+    margin-top:15px;
 
-    height: 70px;
+    font-size:28px;
 
-    margin-top: 30px;
-    margin-bottom: 25px;
+    line-height:1.6;
 
-    padding: 10px;
-
-    border: 3px solid #666;
-    border-radius: 15px;
-
-    font-size: 34px;
-
-    text-align: center;
-}
-
-
-#playerName::placeholder {
-    color: #999;
-
-    font-size: 30px;
-}
-
-
-/* =========================================================
-   結果画面
-========================================================= */
-
-#result {
-    margin-top: 30px;
-
-    font-size: 32px;
-    line-height: 1.8;
-
-    white-space: pre-line;
+    white-space:pre-line;
 }
 
 
 /* =========================================================
    問題番号
-========================================================= */
+   ========================================================= */
 
-#questionId {
-    position: fixed;
+#questionId{
+    position:fixed;
 
-    right: 15px;
-    bottom: 10px;
+    right:15px;
+    bottom:10px;
 
-    color: gray;
+    color:gray;
 
-    font-size: 20px;
+    font-size:20px;
 }
 
 
 /* =========================================================
-   チュートリアル
-========================================================= */
+   名前入力
+   ========================================================= */
 
-#tutorialOverlay {
-    position: fixed;
+#playerName{
+    width:500px;
+    max-width:90%;
 
-    top: 0;
-    left: 0;
+    height:70px;
 
-    width: 100%;
-    height: 100%;
+    margin-top:30px;
+    margin-bottom:25px;
 
-    display: none;
+    padding:10px;
 
-    justify-content: center;
-    align-items: center;
+    box-sizing:border-box;
 
-    background: rgba(0, 0, 0, 0.65);
+    border:3px solid #666;
 
-    z-index: 10000;
+    border-radius:15px;
+
+    font-size:34px;
+
+    text-align:center;
+}
+
+#playerName::placeholder{
+    color:#999;
+
+    font-size:30px;
 }
 
 
-#tutorialPopup {
-    width: 750px;
-    max-width: 85%;
-    max-height: 85vh;
+/* =========================================================
+   汎用ボタン
+   ========================================================= */
 
-    overflow-y: auto;
-
-    padding: 40px;
-
-    background: white;
-
-    border-radius: 25px;
-
-    box-shadow: 0 5px 25px rgba(0, 0, 0, 0.4);
+button{
+    cursor:pointer;
 }
 
 
-#tutorialPopup h2 {
-    margin-top: 0;
-    margin-bottom: 20px;
+/* =========================================================
+   開始前ゲーム説明ポップアップ
+   ========================================================= */
 
-    font-size: 42px;
+#tutorialOverlay{
+    position:fixed;
+
+    top:0;
+    left:0;
+
+    width:100%;
+    height:100%;
+
+    display:none;
+
+    justify-content:center;
+    align-items:center;
+
+    background:rgba(0,0,0,.65);
+
+    z-index:10000;
 }
 
 
-#tutorialCharacter {
-    margin-bottom: 15px;
+#tutorialPopup{
+    width:750px;
+    max-width:85%;
+    max-height:85vh;
 
-    text-align: center;
+    overflow-y:auto;
+
+    padding:40px;
+
+    background:white;
+
+    border-radius:25px;
+
+    box-shadow:0 5px 25px rgba(0,0,0,.4);
+
+    text-align:center;
 }
 
 
-#tutorialCharacterImage {
-    width: 180px;
-    height: auto;
+#tutorialPopup h2{
+    margin-top:0;
+    margin-bottom:20px;
+
+    font-size:42px;
 }
 
 
-#tutorialMessage {
-    font-size: 27px;
-    line-height: 1.9;
+#tutorialCharacter{
+    margin-bottom:15px;
+
+    text-align:center;
 }
 
 
-#tutorialTimer {
-    margin-top: 25px;
-
-    font-size: 24px;
-    font-weight: bold;
+#tutorialCharacterImage{
+    width:180px;
+    height:auto;
 }
 
 
-#tutorialClose {
-    padding: 15px 40px;
+#tutorialMessage{
+    font-size:27px;
 
-    font-size: 28px;
-
-    border-radius: 15px;
+    line-height:1.9;
 }
 
 
-#tutorialClose:disabled {
-    background: #ccc;
-    color: #777;
+#tutorialTimer{
+    margin-top:25px;
 
-    cursor: not-allowed;
+    font-size:24px;
+
+    font-weight:bold;
+}
+
+
+#tutorialClose{
+    padding:15px 40px;
+
+    border-radius:15px;
+
+    font-size:28px;
+}
+
+
+#tutorialClose:disabled{
+    background:#ccc;
+
+    color:#777;
+
+    cursor:not-allowed;
 }
 
 
 /* =========================================================
    問題解説ポップアップ
-========================================================= */
+   ========================================================= */
 
-#explanationOverlay {
-    position: fixed;
+#explanationOverlay{
+    position:fixed;
 
-    top: 0;
-    left: 0;
+    top:0;
+    left:0;
 
-    width: 100%;
-    height: 100%;
+    width:100%;
+    height:100%;
 
-    display: none;
+    display:none;
 
-    justify-content: center;
-    align-items: center;
+    justify-content:center;
+    align-items:center;
 
-    background: rgba(0, 0, 0, 0.65);
+    background:rgba(0,0,0,.65);
 
-    z-index: 10001;
+    z-index:10001;
 }
 
 
-#explanationPopup {
-    width: 750px;
-    max-width: 85%;
-    max-height: 80vh;
+#explanationPopup{
+    width:750px;
+    max-width:85%;
+    max-height:80vh;
 
-    overflow-y: auto;
+    overflow-y:auto;
 
-    padding: 40px;
+    padding:40px;
 
-    background: white;
+    background:white;
 
-    border-radius: 25px;
+    border-radius:25px;
 
-    box-shadow: 0 5px 25px rgba(0, 0, 0, 0.4);
+    box-shadow:0 5px 25px rgba(0,0,0,.4);
 }
 
 
-#explanationTitle {
-    margin-top: 0;
-    margin-bottom: 25px;
+#explanationTitle{
+    margin-top:0;
+    margin-bottom:25px;
 
-    font-size: 42px;
+    font-size:42px;
 }
 
 
-#explanationText {
-    font-size: 28px;
-    line-height: 1.9;
+#explanationText{
+    text-align:left;
 
-    text-align: left;
+    font-size:28px;
 
-    white-space: pre-line;
+    line-height:1.9;
+
+    white-space:pre-line;
 }
 
 
-#explanationTimer {
-    margin-top: 30px;
+#explanationTimer{
+    margin-top:30px;
 
-    font-size: 24px;
-    font-weight: bold;
+    font-size:24px;
+
+    font-weight:bold;
 }
 
 
-#explanationClose {
-    padding: 15px 40px;
+#explanationClose{
+    padding:15px 40px;
 
-    font-size: 28px;
+    border-radius:15px;
 
-    border-radius: 15px;
+    font-size:28px;
 }
 
 
-#explanationClose:disabled {
-    background: #ccc;
-    color: #777;
+#explanationClose:disabled{
+    background:#ccc;
 
-    cursor: not-allowed;
+    color:#777;
+
+    cursor:not-allowed;
 }
 
 
 /* =========================================================
    初期仲間キャラクター選択
-========================================================= */
+   ========================================================= */
 
-.initialCharacterCards {
-    display: flex;
+.initialCharacterCards{
+    display:flex;
 
-    justify-content: center;
-    flex-wrap: wrap;
+    justify-content:center;
 
-    gap: 20px;
+    flex-wrap:wrap;
 
-    max-width: 900px;
+    gap:20px;
 
-    margin: 25px auto;
+    max-width:900px;
+
+    margin:25px auto;
 }
 
 
-.initialCharacterCard {
-    width: 160px;
-    min-height: 210px;
+.initialCharacterCard{
+    width:160px;
+    min-height:210px;
 
-    padding: 12px;
+    display:flex;
 
-    display: flex;
+    flex-direction:column;
 
-    flex-direction: column;
+    align-items:center;
+    justify-content:center;
 
-    align-items: center;
-    justify-content: center;
+    gap:8px;
 
-    gap: 8px;
+    padding:12px;
 
-    background: white;
+    border:3px solid #ddd;
 
-    border: 3px solid #ddd;
-    border-radius: 20px;
+    border-radius:20px;
 
-    cursor: pointer;
+    background:white;
+
+    cursor:pointer;
 
     transition:
-        transform 0.15s,
-        border-color 0.15s,
-        box-shadow 0.15s;
+        transform .15s,
+        border-color .15s,
+        box-shadow .15s;
 }
 
 
-.initialCharacterCard input {
-    width: 28px;
-    height: 28px;
+.initialCharacterCard input{
+    width:28px;
+    height:28px;
 }
 
 
-.initialCharacterCard img {
-    width: 120px;
-    height: 120px;
+.initialCharacterCard img{
+    width:120px;
+    height:120px;
 
-    object-fit: contain;
+    object-fit:contain;
 }
 
 
-.initialCharacterCard span {
-    font-size: 28px;
-    font-weight: bold;
+.initialCharacterCard span{
+    font-size:28px;
+
+    font-weight:bold;
 }
 
 
-.initialCharacterCard:has(input:checked) {
-    border-color: #555;
+.initialCharacterCard:has(input:checked){
+    border-color:#555;
 
-    transform: scale(1.04);
+    transform:scale(1.04);
 
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.18);
+    box-shadow:0 4px 12px rgba(0,0,0,.18);
 }
 
 
 /* =========================================================
    攻撃アニメーション
-========================================================= */
+   ========================================================= */
 
-.playerAttack {
-    animation: playerAttackAnimation 0.5s ease;
+.playerAttack{
+    animation:playerAttackAnimation .5s ease;
 }
 
 
-@keyframes playerAttackAnimation {
+@keyframes playerAttackAnimation{
 
-    0% {
-        transform: translateX(0) scale(1);
+    0%{
+        transform:translateX(0) scale(1);
     }
 
-    30% {
-        transform: translateX(50px) scale(1.08);
+    30%{
+        transform:translateX(80px) scale(1.1);
     }
 
-    60% {
-        transform: translateX(-5px) scale(1.04);
+    60%{
+        transform:translateX(-10px) scale(1.05);
     }
 
-    100% {
-        transform: translateX(0) scale(1);
-    }
-}
-
-
-/* =========================================================
-   敵の被弾
-========================================================= */
-
-.enemyDamage {
-    animation: enemyDamageAnimation 0.5s ease;
-}
-
-
-@keyframes enemyDamageAnimation {
-
-    0% {
-        transform: translateX(0);
-        opacity: 1;
-    }
-
-    20% {
-        transform: translateX(-15px);
-        opacity: 0.3;
-    }
-
-    40% {
-        transform: translateX(15px);
-        opacity: 1;
-    }
-
-    60% {
-        transform: translateX(-15px);
-        opacity: 0.3;
-    }
-
-    80% {
-        transform: translateX(15px);
-        opacity: 1;
-    }
-
-    100% {
-        transform: translateX(0);
-        opacity: 1;
+    100%{
+        transform:translateX(0) scale(1);
     }
 }
 
 
-/* =========================================================
-   味方の被ダメージ
-========================================================= */
-
-.playerDamage {
-    animation: playerDamageAnimation 0.6s ease;
+.enemyDamage{
+    animation:enemyDamageAnimation .5s ease;
 }
 
 
-@keyframes playerDamageAnimation {
+@keyframes enemyDamageAnimation{
 
-    0%,
-    100% {
-        opacity: 1;
-        transform: translateX(0);
+    0%{
+        transform:translateX(0);
+        opacity:1;
     }
 
-    15%,
-    45%,
-    75% {
-        opacity: 0.25;
+    20%{
+        transform:translateX(-15px);
+        opacity:.3;
     }
 
-    30% {
-        transform: translateX(-10px);
+    40%{
+        transform:translateX(15px);
+        opacity:1;
     }
 
-    60% {
-        transform: translateX(10px);
-    }
-}
-
-
-/* =========================================================
-   iPad・タブレット用
-========================================================= */
-
-@media screen and (max-width: 800px) {
-
-    h1 {
-        font-size: 44px;
+    60%{
+        transform:translateX(-15px);
+        opacity:.3;
     }
 
-
-    #battleArea {
-        width: 94%;
-
-        column-gap: 20px;
-
-        min-height: 480px;
+    80%{
+        transform:translateX(15px);
+        opacity:1;
     }
 
-
-    #playerImage,
-    #enemyImage {
-        width: 150px;
-        height: 150px;
-    }
-
-
-    #enemyArea {
-        padding-top: 330px;
-    }
-
-
-    #playerArea .statusBar {
-        width: 260px;
-    }
-
-
-    .statusLabel {
-        font-size: 17px;
-    }
-
-
-    #sentence {
-        font-size: 34px;
-
-        line-height: 1.5;
-    }
-
-
-    .drop {
-        width: 58px;
-        height: 42px;
-
-        margin: 0 4px;
-
-        font-size: 28px;
-    }
-
-
-    #choices {
-        gap: 8px;
-
-        max-width: 700px;
-    }
-
-
-    .choice {
-        min-width: 65px;
-        height: 52px;
-
-        padding: 7px 12px;
-
-        font-size: 25px;
-    }
-
-
-    #questionArea button {
-        padding: 12px 25px;
-
-        font-size: 25px;
+    100%{
+        transform:translateX(0);
+        opacity:1;
     }
 }
 
 
-/* =========================================================
-   iPad縦画面向け
-========================================================= */
+.playerDamage{
+    animation:playerDamageAnimation .6s ease;
+}
 
-@media screen and (min-width: 801px) and (max-width: 1100px) {
 
-    #battleArea {
-        width: 94%;
+@keyframes playerDamageAnimation{
 
-        column-gap: 25px;
-
-        min-height: 500px;
+    0%,100%{
+        opacity:1;
+        transform:translateX(0);
     }
 
-
-    #playerImage,
-    #enemyImage {
-        width: 160px;
-        height: 160px;
+    15%,45%,75%{
+        opacity:.25;
     }
 
-
-    #enemyArea {
-        padding-top: 350px;
+    30%{
+        transform:translateX(-10px);
     }
 
-
-    #playerArea .statusBar {
-        width: 280px;
-    }
-
-
-    #sentence {
-        font-size: 36px;
-    }
-
-
-    .choice {
-        font-size: 27px;
+    60%{
+        transform:translateX(10px);
     }
 }
