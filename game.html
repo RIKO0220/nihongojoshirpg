@@ -34,114 +34,105 @@
 
     <div id="battleArea">
 
-        <!-- 味方 -->
+    <!-- =====================
+         味方側
+    ====================== -->
+    <div id="playerArea">
 
-        <div id="playerArea">
+        <img
+            id="playerImage"
+            class="characterImage"
+            src="images/player.png"
+            alt="プレイヤー"
+        >
 
-            <img
-                id="playerImage"
-                class="characterImage"
-                src="images/player.png"
-                alt="プレイヤー"
-            >
+        <p id="playerInfo"></p>
 
-            <p id="playerInfo"></p>
+        <!-- 仲間 -->
+        <div id="friendsArea">
 
-    <div id="friendsArea">
+            <h2>仲間</h2>
 
-    <h2>仲間</h2>
-
-    <div id="friendsList"></div>
-
-<div class="statusBar">
-
-    <div class="statusLabel">
-
-        <span>HP</span>
-
-        <span id="hpText">
-            150 / 150
-        </span>
-
-    </div>
-
-    <div class="barBackground">
-
-        <div
-            id="hpBar"
-            class="barFill hpBar"
-        ></div>
-
-    </div>
-
-</div>
-
-<div class="statusBar">
-
-    <div class="statusLabel">
-
-        <span>EXP</span>
-
-        <span id="expText">
-            0 / 100
-        </span>
-
-    </div>
-
-    <div class="barBackground">
-
-        <div
-            id="expBar"
-            class="barFill expBar"
-        ></div>
-
-    </div>
-
-</div>
-
-<div class="statusBar">
-
-    <div class="statusLabel">
-
-        <span>必殺</span>
-
-        <span id="specialText">
-            0 / 100
-        </span>
-
-    </div>
-
-    <div class="barBackground">
-
-        <div
-            id="specialBar"
-            class="barFill specialBar"
-        ></div>
-
-    </div>
-
-</div>
+            <div id="friendsList"></div>
 
         </div>
 
-        <!-- 敵 -->
 
-        <div id="enemyArea">
+        <!-- HP -->
+        <div class="statusBar">
 
-            <img
-                id="enemyImage"
-                class="characterImage"
-                src="images/slime_fire.png"
-                alt="敵"
-            >
+            <div class="statusLabel">
+                <span>HP</span>
+                <span id="hpText">150 / 150</span>
+            </div>
 
-            <p id="enemyInfo"></p>
+            <div class="barBackground">
+                <div
+                    id="hpBar"
+                    class="barFill hpBar"
+                ></div>
+            </div>
+
+        </div>
+
+
+        <!-- EXP -->
+        <div class="statusBar">
+
+            <div class="statusLabel">
+                <span>EXP</span>
+                <span id="expText">0 / 100</span>
+            </div>
+
+            <div class="barBackground">
+                <div
+                    id="expBar"
+                    class="barFill expBar"
+                ></div>
+            </div>
+
+        </div>
+
+
+        <!-- 必殺 -->
+        <div class="statusBar">
+
+            <div class="statusLabel">
+                <span>必殺</span>
+                <span id="specialText">0 / 100</span>
+            </div>
+
+            <div class="barBackground">
+                <div
+                    id="specialBar"
+                    class="barFill specialBar"
+                ></div>
+            </div>
 
         </div>
 
     </div>
 
-    <hr>
+
+    <!-- =====================
+         敵側
+    ====================== -->
+    <div id="enemyArea">
+
+        <img
+            id="enemyImage"
+            class="characterImage"
+            src="images/slime_fire.png"
+            alt="敵"
+        >
+
+        <p id="enemyInfo"></p>
+
+    </div>
+
+</div>
+
+<hr>
 
     <div id="questionArea">
 
