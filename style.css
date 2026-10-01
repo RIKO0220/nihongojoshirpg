@@ -548,11 +548,15 @@ button{
    ふりがな
 ======================================== */
 
-.questionRuby rt{
-    font-size:.45em;
-    line-height:1;
+ruby{
+    ruby-position:over;
 }
 
+rt{
+    font-size:0.5em;
+    line-height:1;
+    font-weight:normal;
+}
 
 /* ========================================
    チュートリアル

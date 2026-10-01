@@ -220,6 +220,110 @@ const elementTable = {
 };
 
 // =========================
+// ふりがな
+// =========================
+
+const furiganaMap = {
+
+    // ゲーム画面
+    "日本語": "にほんご",
+    "助詞": "じょし",
+    "学習": "がくしゅう",
+    "問題": "もんだい",
+    "正解": "せいかい",
+    "不正解": "ふせいかい",
+    "解説": "かいせつ",
+    "次": "つぎ",
+    "準備": "じゅんび",
+    "攻撃": "こうげき",
+    "属性": "ぞくせい",
+    "仲間": "なかま",
+    "名前": "なまえ",
+    "撃破数": "げきはすう",
+    "攻撃力": "こうげきりょく",
+    "必殺技": "ひっさつわざ",
+    "復習": "ふくしゅう",
+
+    // 問題でよく使う語
+    "学校": "がっこう",
+    "先生": "せんせい",
+    "友達": "ともだち",
+    "図書館": "としょかん",
+    "公園": "こうえん",
+    "家": "いえ",
+    "駅": "えき",
+    "電車": "でんしゃ",
+    "勉強": "べんきょう",
+    "宿題": "しゅくだい",
+    "教室": "きょうしつ",
+    "大学": "だいがく",
+    "会社": "かいしゃ",
+    "仕事": "しごと",
+    "朝": "あさ",
+    "昼": "ひる",
+    "夕方": "ゆうがた",
+    "夜": "よる",
+    "今日": "きょう",
+    "明日": "あした",
+    "昨日": "きのう",
+    "行く": "いく",
+    "来る": "くる",
+    "帰る": "かえる",
+    "食べる": "たべる",
+    "飲む": "のむ",
+    "読む": "よむ",
+    "書く": "かく",
+    "聞く": "きく",
+    "見る": "みる"
+};
+
+
+// HTMLで使う文字を安全にする
+function escapeHtml(text){
+
+    return String(text)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+}
+
+
+// 漢字にふりがなを付ける
+function addFurigana(text){
+
+    let result =
+        escapeHtml(text);
+
+    const words =
+        Object.keys(furiganaMap)
+        .sort(
+            (a,b) =>
+                b.length - a.length
+        );
+
+    words.forEach(word => {
+
+        const reading =
+            furiganaMap[word];
+
+        result =
+            result.split(word).join(
+                "<ruby>" +
+                word +
+                "<rt>" +
+                reading +
+                "</rt>" +
+                "</ruby>"
+            );
+
+    });
+
+    return result;
+}
+
+// =========================
 // 共通
 // =========================
 
@@ -784,7 +888,7 @@ fetch("questions.json")
 
     questions =
         data.filter(
-            q => q.id <= 1179
+            q => q.id <= 2500
         );
 
     if(mode === "review"){
@@ -898,7 +1002,8 @@ function renderQuestion(q){
         const span =
             document.createElement("span");
 
-        span.textContent = part;
+        span.innerHTML = 
+            addFurigana(part);
 
         sentence.appendChild(span);
 
@@ -1454,8 +1559,9 @@ function showExplanation(
         explanationText;
 
 
-    text.textContent =
-        message;
+    text.innerHTML =
+    addFurigana(message)
+    .replaceAll("\n", "<br>");
 
 
     // =========================
@@ -2350,3 +2456,62 @@ function goHome(){
     // ホームへ戻る
     location.href = "index.html";
 }
+
+function applyFuriganaToPage(){
+
+    const walker =
+        document.createTreeWalker(
+            document.body,
+            NodeFilter.SHOW_TEXT
+        );
+
+    const nodes = [];
+
+    while(walker.nextNode()){
+        nodes.push(
+            walker.currentNode
+        );
+    }
+
+    nodes.forEach(node => {
+
+        const parent =
+            node.parentElement;
+
+        if(!parent){
+            return;
+        }
+
+        // 変換してはいけない場所
+        if(
+            parent.closest(
+                "script, style, ruby, rt, input, textarea"
+            )
+        ){
+            return;
+        }
+
+        const text =
+            node.nodeValue;
+
+        // 漢字がなければ何もしない
+        if(
+            !/[一-龯々]/.test(text)
+        ){
+            return;
+        }
+
+        const span =
+            document.createElement("span");
+
+        span.innerHTML =
+            addFurigana(text);
+
+        node.replaceWith(span);
+    });
+}
+
+document.addEventListener(
+    "DOMContentLoaded",
+    applyFuriganaToPage
+);
