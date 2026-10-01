@@ -1068,10 +1068,13 @@ function useSpecial(){
     specialGauge = 0;
 
     playerAttackAnimation();
+
     enemyDamageAnimation();
+
 
     let damage =
         attackPower * 5;
+
 
     damage =
         Math.floor(
@@ -1082,11 +1085,14 @@ function useSpecial(){
             )
         );
 
+
     currentEnemy.hp -= damage;
+
 
     if(currentEnemy.hp < 0){
         currentEnemy.hp = 0;
     }
+
 
     alert(
         "属性必殺技発動！\n" +
@@ -1094,8 +1100,9 @@ function useSpecial(){
         "ダメージ！"
     );
 
+
     // =========================
-    // 敵を倒した場合
+    // 敵を倒した
     // =========================
 
     if(currentEnemy.hp <= 0){
@@ -1104,7 +1111,8 @@ function useSpecial(){
 
         exp += 30;
 
-        // レベルアップ判定
+
+        // レベルアップ
         while(exp >= expToNext){
 
             exp -= expToNext;
@@ -1126,25 +1134,30 @@ function useSpecial(){
             );
         }
 
-        // 必殺技解放
+
         if(level >= 5){
             specialUnlocked = true;
         }
 
-        // 仲間加入
+
         checkJoinCharacters();
 
         recalculatePartyStatus();
 
-        // 次の敵
+
+        // ★次の敵
         createEnemy();
+
     }
     else{
 
         updateEnemy();
+
     }
 
+
     updatePlayer();
+
     saveGame();
 }
 
