@@ -1783,38 +1783,131 @@ const uniqueAnswerSentences =
 // ポップアップ表示用
 // =========================
 
+// =========================
+// 自分の答えを文章にする
+// =========================
+
+let userAnswerText = "";
+
+currentQuestion.textParts.forEach(
+    (part, i) => {
+
+        userAnswerText += part;
+
+        if(i < userAnswer.length){
+            userAnswerText += userAnswer[i];
+        }
+
+    }
+);
+
+
+// =========================
+// 別解を作る
+// =========================
+
+let alternativeAnswers = [];
+
+currentQuestion.answers.forEach(
+    pattern => {
+
+        // 自分が答えたパターンか確認
+        const isUserAnswer =
+            pattern.length === userAnswer.length &&
+            pattern.every(
+                (ans, i) =>
+                    ans === userAnswer[i]
+            );
+
+        // 自分の答えは別解に入れない
+        if(isUserAnswer){
+            return;
+        }
+
+
+        // 正解パターンを文章にする
+        let sentence = "";
+
+        currentQuestion.textParts.forEach(
+            (part, i) => {
+
+                sentence += part;
+
+                if(i < pattern.length){
+                    sentence += pattern[i];
+                }
+
+            }
+        );
+
+        alternativeAnswers.push(sentence);
+
+    }
+);
+
+
+// 重複削除
+alternativeAnswers =
+    [...new Set(alternativeAnswers)];
+
+
+// =========================
+// ポップアップ表示用
+// =========================
+
 let correctAnswerText = "";
 
-if(uniqueAnswerSentences.length > 0){
+// 正解した場合
+if(correct){
 
     correctAnswerText +=
-        uniqueAnswerSentences[0];
+        "あなたの答え：\n" +
+        userAnswerText;
 
-}
-
-
-// 別解がある場合
-if(uniqueAnswerSentences.length > 1){
-
-    correctAnswerText +=
-        "\n\n【別解】\n";
-
-    for(
-        let i = 1;
-        i < uniqueAnswerSentences.length;
-        i++
-    ){
+    // 別解がある場合だけ表示
+    if(alternativeAnswers.length > 0){
 
         correctAnswerText +=
-            uniqueAnswerSentences[i];
+            "\n\n別解：\n" +
+            alternativeAnswers.join("\n");
 
-        if(
-            i <
-            uniqueAnswerSentences.length - 1
-        ){
-            correctAnswerText += "\n";
-        }
     }
+
+}
+// 不正解の場合
+else{
+
+    // 不正解のときは正しい答えを表示
+    let correctSentences = [];
+
+    currentQuestion.answers.forEach(
+        pattern => {
+
+            let sentence = "";
+
+            currentQuestion.textParts.forEach(
+                (part, i) => {
+
+                    sentence += part;
+
+                    if(i < pattern.length){
+                        sentence += pattern[i];
+                    }
+
+                }
+            );
+
+            correctSentences.push(sentence);
+
+        }
+    );
+
+    correctSentences =
+        [...new Set(correctSentences)];
+
+    correctAnswerText =
+        correctSentences.join("\n");
+
 }
 
 
