@@ -743,9 +743,22 @@ function loadGame(){
         data.specialUnlocked ?? false;
 
     currentEnemy =
-        data.currentEnemy ?? null;
+    data.currentEnemy ?? null;
 
-    return true;
+
+// =========================
+// HP0以下の敵はロードしない
+// =========================
+
+if(
+    currentEnemy &&
+    currentEnemy.hp <= 0
+){
+    currentEnemy = null;
+}
+
+
+return true;
 }
 
 // =========================
@@ -1682,7 +1695,7 @@ if(!alreadySaved){
         explanationText
     );
 
-    if(currentEnemy.hp <= 0){
+    if(correct && currentEnemy.hp <= 0){
 
     // =========================
     // 敵撃破
