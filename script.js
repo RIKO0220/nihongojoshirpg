@@ -1445,7 +1445,6 @@ function showExplanation(
 
 
     message +=
-        "答え：\n" +
         answerText +
         "\n\n";
 
