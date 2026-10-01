@@ -1572,19 +1572,35 @@ function checkAnswer(){
         resultText += "不正解...\n";
         resultText += "15ダメージ受けた\n\n";
 
-        let savedWrong =
-            JSON.parse(
-                localStorage.getItem(
-                    "wrongQuestions"
-                ) || "[]"
-            );
+        // =========================
+// 間違えた問題をユーザー別に保存
+// =========================
 
-        savedWrong.push(currentQuestion);
+const wrongQuestionsKey =
+    "wrongQuestions" + playerName;
 
-        localStorage.setItem(
-            "wrongQuestions",
-            JSON.stringify(savedWrong)
-        );
+let savedWrong =
+    JSON.parse(
+        localStorage.getItem(
+            wrongQuestionsKey
+        ) || "[]"
+    );
+
+// 同じ問題を重複保存しない
+const alreadySaved =
+    savedWrong.some(
+        q => q.id === currentQuestion.id
+    );
+
+if(!alreadySaved){
+
+    savedWrong.push(currentQuestion);
+
+    localStorage.setItem(
+        wrongQuestionsKey,
+        JSON.stringify(savedWrong)
+    );
+}
     }
 
     resultText += createAnswerText();
