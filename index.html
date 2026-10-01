@@ -584,33 +584,17 @@ function startGame(element, mode){
 
     if(savedData){
 
-        const data =
-            JSON.parse(savedData);
+    // 既存ユーザーの場合は
+    // ここから直接ゲームを開始しない
+    // 仲間選択画面のチェック状態を使う
 
+    currentUserData =
+        JSON.parse(savedData);
 
-        // 保存されている属性を使用
-        const savedElement =
-            data.playerElement || element;
+    showContinueArea();
 
-
-        // =========================
-        // 既存ユーザーは
-        // 保存データをそのまま使用
-        // =========================
-
-        location.href =
-            "game.html"
-            + "?element="
-            + encodeURIComponent(
-                savedElement
-            )
-            + "&mode="
-            + encodeURIComponent(
-                mode
-            );
-
-        return;
-    }
+    return;
+}
 
 
     // =========================
