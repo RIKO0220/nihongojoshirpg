@@ -736,16 +736,18 @@ function loadGame(){
     // =========================
 
     ownedCharacters =
-        data.ownedCharacters ?? [];
+    data.ownedCharacters ?? [];
 
-        partyCharacters =
+
+// 選択した仲間だけパーティにする
+partyCharacters =
     Array.isArray(data.partyCharacters)
     ? data.partyCharacters
-    : [...ownedCharacters];
+    : [];
 
 
-    specialGauge =
-        data.specialGauge ?? 0;
+specialGauge =
+    data.specialGauge ?? 0;
 
     specialUnlocked =
         data.specialUnlocked ?? false;
