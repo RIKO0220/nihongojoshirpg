@@ -1255,13 +1255,38 @@ hr{
     color: #999;
 }
 
+.battleButtons{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
 .homeButtonArea{
-    display: flex;
-    justify-content: center;
-    margin-top: 10px;
+    display:flex;
+    justify-content:center;
+    margin-top:8px;
+}
+
+#actionBtn,
+#specialBtn,
+#homeBtn{
+    width:140px;
+    height:55px;
+
+    margin:4px;
+
+    padding:0;
+
+    font-size:23px;
+
+    border:none;
+    border-radius:14px;
+
+    background:#ffd166;
+
+    cursor:pointer;
 }
 
 #homeBtn{
-    font-size: 18px;
-    padding: 10px 20px;
+    display:block;
 }
