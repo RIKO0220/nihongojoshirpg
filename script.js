@@ -1139,48 +1139,69 @@ function useSpecial(){
 
 
         // レベルアップ
-        while(exp >= expToNext){
-
-            exp -= expToNext;
-
-            level++;
-
-            expToNext =
-                Math.floor(
-                    expToNext * 1.3
-                );
-
-            // レベルアップ前の最大HPを保存
+        // 変更前の最大HPを保存
 const oldMaxHp = maxHp;
 
-// レベルアップ後のステータスを計算
-recalculatePartyStatus();
 
-// 最大HPが増えた分だけ回復
-const hpIncrease = maxHp - oldMaxHp;
+// =========================
+// レベルアップ
+// =========================
 
-playerHp += hpIncrease;
+while(exp >= expToNext){
 
-// 最大HPを超えないようにする
-if(playerHp > maxHp){
-    playerHp = maxHp;
+    exp -= expToNext;
+
+    level++;
+
+    expToNext =
+        Math.floor(
+            expToNext * 1.3
+        );
+
+    alert(
+        "レベルアップ！ Lv" +
+        level
+    );
 }
 
-            alert(
-                "レベルアップ！ Lv" +
-                level
-            );
-        }
+
+// =========================
+// 必殺技解放
+// =========================
+
+if(level >= 5){
+    specialUnlocked = true;
+}
 
 
-        if(level >= 5){
-            specialUnlocked = true;
-        }
+// =========================
+// 仲間加入判定
+// =========================
+
+checkJoinCharacters();
 
 
-        checkJoinCharacters();
+// =========================
+// レベルアップ＋仲間分を反映
+// =========================
 
-        recalculatePartyStatus();
+// 新しいレベル・新しい仲間で
+// 最大HPを再計算
+recalculatePartyStatus();
+
+// 最大HPがどれだけ増えたか
+const hpIncrease =
+    maxHp - oldMaxHp;
+
+// 増えた最大HP分だけ現在HPも回復
+if(hpIncrease > 0){
+
+    playerHp += hpIncrease;
+
+    if(playerHp > maxHp){
+        playerHp = maxHp;
+    }
+}
 
 
         // ★次の敵
@@ -1734,54 +1755,69 @@ if(!alreadySaved){
     // レベルアップ
     // =========================
 
-    while(exp >= expToNext){
-
-        exp -= expToNext;
-
-        level++;
-
-        expToNext =
-            Math.floor(
-                expToNext * 1.3
-            );
-
-        // レベルアップ前の最大HPを保存
+    // 変更前の最大HPを保存
 const oldMaxHp = maxHp;
 
-// レベルアップ後のステータスを計算
-recalculatePartyStatus();
 
-// 最大HPが増えた分だけ回復
-const hpIncrease = maxHp - oldMaxHp;
+// =========================
+// レベルアップ
+// =========================
 
-playerHp += hpIncrease;
+while(exp >= expToNext){
 
-// 最大HPを超えないようにする
-if(playerHp > maxHp){
-    playerHp = maxHp;
+    exp -= expToNext;
+
+    level++;
+
+    expToNext =
+        Math.floor(
+            expToNext * 1.3
+        );
+
+    alert(
+        "レベルアップ！ Lv" +
+        level
+    );
 }
 
-        alert(
-            "レベルアップ！ Lv" +
-            level
-        );
+
+// =========================
+// 必殺技解放
+// =========================
+
+if(level >= 5){
+    specialUnlocked = true;
+}
+
+
+// =========================
+// 仲間加入判定
+// =========================
+
+checkJoinCharacters();
+
+
+// =========================
+// レベルアップ＋仲間分を反映
+// =========================
+
+// 新しいレベル・新しい仲間で
+// 最大HPを再計算
+recalculatePartyStatus();
+
+// 最大HPがどれだけ増えたか
+const hpIncrease =
+    maxHp - oldMaxHp;
+
+// 増えた最大HP分だけ現在HPも回復
+if(hpIncrease > 0){
+
+    playerHp += hpIncrease;
+
+    if(playerHp > maxHp){
+        playerHp = maxHp;
     }
-
-    // =========================
-    // 必殺技解放
-    // =========================
-
-    if(level >= 5){
-        specialUnlocked = true;
-    }
-
-    // =========================
-    // 仲間加入判定
-    // =========================
-
-    checkJoinCharacters();
-
-    recalculatePartyStatus();
+}
 
     // =========================
     // 次の敵を生成
