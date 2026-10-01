@@ -1068,8 +1068,7 @@ function useSpecial(){
     specialGauge = 0;
 
     playerAttackAnimation();
-
-enemyDamageAnimation();
+    enemyDamageAnimation();
 
     let damage =
         attackPower * 5;
@@ -1095,7 +1094,56 @@ enemyDamageAnimation();
         "ダメージ！"
     );
 
-    updateEnemy();
+    // =========================
+    // 敵を倒した場合
+    // =========================
+
+    if(currentEnemy.hp <= 0){
+
+        enemyCount++;
+
+        exp += 30;
+
+        // レベルアップ判定
+        while(exp >= expToNext){
+
+            exp -= expToNext;
+
+            level++;
+
+            expToNext =
+                Math.floor(
+                    expToNext * 1.3
+                );
+
+            recalculatePartyStatus();
+
+            playerHp = maxHp;
+
+            alert(
+                "レベルアップ！ Lv" +
+                level
+            );
+        }
+
+        // 必殺技解放
+        if(level >= 5){
+            specialUnlocked = true;
+        }
+
+        // 仲間加入
+        checkJoinCharacters();
+
+        recalculatePartyStatus();
+
+        // 次の敵
+        createEnemy();
+    }
+    else{
+
+        updateEnemy();
+    }
+
     updatePlayer();
     saveGame();
 }
@@ -1605,44 +1653,73 @@ function checkAnswer(){
         explanationText
     );
 
-
     if(currentEnemy.hp <= 0){
 
-        enemyCount++;
+    // =========================
+    // 敵撃破
+    // =========================
 
-        exp += 30;
+    enemyCount++;
 
-        while(exp >= expToNext){
+    exp += 30;
 
-            exp -= expToNext;
+    // =========================
+    // レベルアップ
+    // =========================
 
-            level++;
+    while(exp >= expToNext){
 
-            expToNext =
-                Math.floor(
-                    expToNext * 1.3
-                );
+        exp -= expToNext;
 
-            playerHp = maxHp;
+        level++;
 
-            alert(
-                "レベルアップ！ Lv" +
-                level
+        expToNext =
+            Math.floor(
+                expToNext * 1.3
             );
-        }
-
-        if(level >= 5){
-            specialUnlocked = true;
-        }
-
-        checkJoinCharacters();
 
         recalculatePartyStatus();
+
+        // レベルアップ時HP全回復
+        playerHp = maxHp;
+
+        alert(
+            "レベルアップ！ Lv" +
+            level
+        );
     }
 
+    // =========================
+    // 必殺技解放
+    // =========================
+
+    if(level >= 5){
+        specialUnlocked = true;
+    }
+
+    // =========================
+    // 仲間加入判定
+    // =========================
+
+    checkJoinCharacters();
+
+    recalculatePartyStatus();
+
+    // =========================
+    // 次の敵を生成
+    // ★ここが今まで無かった
+    // =========================
+
+    createEnemy();
+}
+else{
+
+    // まだ敵が生きている場合
     updateEnemy();
-    updatePlayer();
-    saveGame();
+}
+
+updatePlayer();
+saveGame();
 
     if(playerHp <= 0){
 
