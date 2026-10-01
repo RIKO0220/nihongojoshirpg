@@ -609,6 +609,8 @@ function saveGame(){
         // 現在持っている仲間
         ownedCharacters,
 
+        partyCharacters,
+
         specialGauge,
         specialUnlocked,
 
@@ -735,6 +737,12 @@ function loadGame(){
 
     ownedCharacters =
         data.ownedCharacters ?? [];
+
+        partyCharacters =
+    Array.isArray(data.partyCharacters)
+    ? data.partyCharacters
+    : [...ownedCharacters];
+
 
     specialGauge =
         data.specialGauge ?? 0;
