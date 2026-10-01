@@ -2338,3 +2338,16 @@ function playerDamageAnimation(){
     },500);
 
 }
+
+// =========================
+// ホームに戻る
+// =========================
+
+function goHome(){
+
+    // 現在の状態を保存
+    saveGame();
+
+    // ホームへ戻る
+    location.href = "index.html";
+}

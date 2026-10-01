@@ -1254,3 +1254,14 @@ hr{
     font-size: 28px;
     color: #999;
 }
+
+.homeButtonArea{
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+#homeBtn{
+    font-size: 18px;
+    padding: 10px 20px;
+}
