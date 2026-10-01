@@ -663,10 +663,13 @@ function loadInitialCharacters(){
     // 最初は所持キャラを
     // そのままパーティにする
 
-    partyCharacters =
-        [
-            ...ownedCharacters
-        ];
+    // =========================
+// 初期パーティ
+// =========================
+
+// 所持していても
+// 選択していない仲間は戦闘に参加させない
+partyCharacters = [];
 
 }
 
