@@ -490,7 +490,7 @@ if(friendsList){
 
     // 同じキャラが重複しないようにする
     const uniqueCharacters =
-        [...new Set(ownedCharacters)];
+    [...new Set(partyCharacters)];
 
     uniqueCharacters.forEach(character => {
 
