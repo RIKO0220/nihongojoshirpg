@@ -1714,21 +1714,108 @@ if(!alreadySaved){
 
 
     // =========================
-    // 正解文を作る
-    // =========================
+// 正解文・別解を作る
+// =========================
 
-    let correctAnswerText = "";
+// 正解パターンを全部取得
+let answerPatterns =
+    [...currentQuestion.answers];
 
-    currentQuestion.textParts.forEach((part, i) => {
+// ユーザーが選んだ答えが正解なら、
+// そのパターンを一番最初にする
+if(correct){
 
-        correctAnswerText += part;
+    const selectedIndex =
+        answerPatterns.findIndex(pattern =>
+            pattern.length === userAnswer.length &&
+            pattern.every(
+                (ans, i) =>
+                    ans === userAnswer[i]
+            )
+        );
 
-        if(i < currentQuestion.answers[0].length){
-            correctAnswerText +=
-                currentQuestion.answers[0][i];
-        }
+    if(selectedIndex > 0){
 
+        const selectedPattern =
+            answerPatterns.splice(
+                selectedIndex,
+                1
+            )[0];
+
+        answerPatterns.unshift(
+            selectedPattern
+        );
+    }
+}
+
+
+// =========================
+// 各パターンを文章にする
+// =========================
+
+const answerSentences =
+    answerPatterns.map(pattern => {
+
+        let sentence = "";
+
+        currentQuestion.textParts.forEach(
+            (part, i) => {
+
+                sentence += part;
+
+                if(i < pattern.length){
+                    sentence += pattern[i];
+                }
+
+            }
+        );
+
+        return sentence;
     });
+
+
+// 重複を削除
+const uniqueAnswerSentences =
+    [...new Set(answerSentences)];
+
+
+// =========================
+// ポップアップ表示用
+// =========================
+
+let correctAnswerText = "";
+
+if(uniqueAnswerSentences.length > 0){
+
+    correctAnswerText +=
+        uniqueAnswerSentences[0];
+
+}
+
+
+// 別解がある場合
+if(uniqueAnswerSentences.length > 1){
+
+    correctAnswerText +=
+        "\n\n【別解】\n";
+
+    for(
+        let i = 1;
+        i < uniqueAnswerSentences.length;
+        i++
+    ){
+
+        correctAnswerText +=
+            uniqueAnswerSentences[i];
+
+        if(
+            i <
+            uniqueAnswerSentences.length - 1
+        ){
+            correctAnswerText += "\n";
+        }
+    }
+}
 
 
     // =========================
