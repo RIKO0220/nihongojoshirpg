@@ -1150,9 +1150,21 @@ function useSpecial(){
                     expToNext * 1.3
                 );
 
-            recalculatePartyStatus();
+            // レベルアップ前の最大HPを保存
+const oldMaxHp = maxHp;
 
-            playerHp = maxHp;
+// レベルアップ後のステータスを計算
+recalculatePartyStatus();
+
+// 最大HPが増えた分だけ回復
+const hpIncrease = maxHp - oldMaxHp;
+
+playerHp += hpIncrease;
+
+// 最大HPを超えないようにする
+if(playerHp > maxHp){
+    playerHp = maxHp;
+}
 
             alert(
                 "レベルアップ！ Lv" +
@@ -1733,10 +1745,21 @@ if(!alreadySaved){
                 expToNext * 1.3
             );
 
-        recalculatePartyStatus();
+        // レベルアップ前の最大HPを保存
+const oldMaxHp = maxHp;
 
-        // レベルアップ時HP全回復
-        playerHp = maxHp;
+// レベルアップ後のステータスを計算
+recalculatePartyStatus();
+
+// 最大HPが増えた分だけ回復
+const hpIncrease = maxHp - oldMaxHp;
+
+playerHp += hpIncrease;
+
+// 最大HPを超えないようにする
+if(playerHp > maxHp){
+    playerHp = maxHp;
+}
 
         alert(
             "レベルアップ！ Lv" +
