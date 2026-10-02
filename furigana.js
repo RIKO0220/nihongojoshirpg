@@ -576,6 +576,108 @@ const furiganaMap = {
 };
 
 // ========================================
+// 送り仮名がある言葉
+// 漢字部分だけにふりがなを付ける
+// ========================================
+
+const okuriganaMap = {
+
+    "遊び方": [
+        ["遊", "あそ"],
+        ["び", ""],
+        ["方", "かた"]
+    ],
+
+    "正しい": [
+        ["正", "ただ"],
+        ["しい", ""]
+    ],
+
+    "選んで": [
+        ["選", "えら"],
+        ["んで", ""]
+    ],
+
+    "選びましょう": [
+        ["選", "えら"],
+        ["びましょう", ""]
+    ],
+
+    "倒します": [
+        ["倒", "たお"],
+        ["します", ""]
+    ],
+
+    "読んで": [
+        ["読", "よ"],
+        ["んで", ""]
+    ],
+
+    "受けます": [
+        ["受", "う"],
+        ["けます", ""]
+    ],
+
+    "始めましょう": [
+        ["始", "はじ"],
+        ["めましょう", ""]
+    ],
+
+    "読み終えたら": [
+        ["読", "よ"],
+        ["み", ""],
+        ["終", "お"],
+        ["えたら", ""]
+    ],
+
+    "始めよう": [
+        ["始", "はじ"],
+        ["めよう", ""]
+    ],
+
+    "ゲームを始める": [
+        ["ゲームを", ""],
+        ["始", "はじ"],
+        ["める", ""]
+    ],
+
+    "戻る": [
+        ["戻", "もど"],
+        ["る", ""]
+    ],
+
+    "続ける": [
+        ["続", "つづ"],
+        ["ける", ""]
+    ],
+
+    "戦う": [
+        ["戦", "たたか"],
+        ["う", ""]
+    ],
+
+    "読み込む": [
+        ["読", "よ"],
+        ["み", ""],
+        ["込", "こ"],
+        ["む", ""]
+    ],
+
+    "解いた": [
+        ["解", "と"],
+        ["いた", ""]
+    ],
+
+    "組み合わせ": [
+        ["組", "く"],
+        ["み", ""],
+        ["合", "あ"],
+        ["わせ", ""]
+    ]
+};
+
+
+// ========================================
 // HTMLとして安全な文字に変換
 // ========================================
 
@@ -590,365 +692,121 @@ function escapeHtml(text){
 }
 
 
-// ========================================
-// 正規表現用エスケープ
-// ========================================
+function addFurigana(text){
 
-function escapeRegExp(text){
+    let result = escapeHtml(text);
 
-    return String(text)
-        .replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-}
+    // ========================================
+    // ① 送り仮名付きの言葉を先に処理
+    // ========================================
 
+    const specialWords =
+        Object.keys(okuriganaMap)
+        .sort((a,b) => b.length - a.length);
 
-// ========================================
-// 漢字を含むか
-// ========================================
+    const savedRuby = [];
 
-function hasKanji(text){
+    specialWords.forEach(word => {
 
-    return /[一-龯々]/.test(text);
-}
-
-
-// ========================================
-// カタカナ → ひらがな
-// 読み合わせ用
-// ========================================
-
-function toHiragana(text){
-
-    return String(text).replace(
-        /[\u30a1-\u30f6]/g,
-        function(match){
-
-            return String.fromCharCode(
-                match.charCodeAt(0) - 0x60
-            );
-
+        if(!result.includes(word)){
+            return;
         }
-    );
-}
 
+        const parts = okuriganaMap[word];
 
-// ========================================
-// 1つの辞書語をruby化
-//
-// 例：
-// 正しい → <ruby>正<rt>ただ</rt></ruby>しい
-// 遊び方 → <ruby>遊<rt>あそ</rt></ruby>び
-//            <ruby>方<rt>かた</rt></ruby>
-// ========================================
+        let html = "";
 
-function makeRubyWord(surface, reading){
+        parts.forEach(part => {
 
-    surface = String(surface);
-    reading = String(reading);
+            const surface = part[0];
+            const reading = part[1];
 
-    // 漢字がなければそのまま
-    if(!hasKanji(surface)){
-        return escapeHtml(surface);
-    }
-
-
-    // --------------------------------
-    // 漢字部分・かな部分に分割
-    // --------------------------------
-
-    const parts =
-        surface.match(
-            /[一-龯々]+|[ぁ-んァ-ヶー]+|[^一-龯々ぁ-んァ-ヶー]+/g
-        );
-
-    if(!parts){
-        return escapeHtml(surface);
-    }
-
-
-    // 全部漢字だけなら
-    // 単語全体にruby
-    if(
-        parts.length === 1 &&
-        hasKanji(parts[0])
-    ){
-
-        return (
-            "<ruby>" +
-            escapeHtml(surface) +
-            "<rt>" +
-            escapeHtml(reading) +
-            "</rt>" +
-            "</ruby>"
-        );
-    }
-
-
-    const normalizedReading =
-        toHiragana(reading);
-
-    let readingPosition = 0;
-
-    let html = "";
-
-
-    for(
-        let i = 0;
-        i < parts.length;
-        i++
-    ){
-
-        const part = parts[i];
-
-
-        // =========================
-        // 漢字部分
-        // =========================
-
-        if(hasKanji(part)){
-
-            let nextKana = null;
-
-
-            // 次に出てくる「かな部分」を探す
-            for(
-                let j = i + 1;
-                j < parts.length;
-                j++
-            ){
-
-                if(
-                    /^[ぁ-んァ-ヶー]+$/.test(
-                        parts[j]
-                    )
-                ){
-
-                    nextKana =
-                        toHiragana(parts[j]);
-
-                    break;
-                }
-
-            }
-
-
-            let kanjiReading = "";
-
-
-            if(nextKana){
-
-                const nextPosition =
-                    normalizedReading.indexOf(
-                        nextKana,
-                        readingPosition
-                    );
-
-
-                // 対応するかなが見つからない場合
-                // 無理に分割しない
-                if(nextPosition === -1){
-
-                    return (
-                        "<ruby>" +
-                        escapeHtml(surface) +
-                        "<rt>" +
-                        escapeHtml(reading) +
-                        "</rt>" +
-                        "</ruby>"
-                    );
-
-                }
-
-
-                kanjiReading =
-                    reading.slice(
-                        readingPosition,
-                        nextPosition
-                    );
-
-                readingPosition =
-                    nextPosition;
-
-            }
-            else{
-
-                // 後ろにかながない場合
-                // 残り全部が漢字部分の読み
-                kanjiReading =
-                    reading.slice(
-                        readingPosition
-                    );
-
-                readingPosition =
-                    reading.length;
-
-            }
-
-
-            if(kanjiReading){
+            if(reading){
 
                 html +=
                     "<ruby>" +
-                    escapeHtml(part) +
+                    escapeHtml(surface) +
                     "<rt>" +
-                    escapeHtml(kanjiReading) +
+                    escapeHtml(reading) +
                     "</rt>" +
                     "</ruby>";
 
-            }
-            else{
+            }else{
 
                 html +=
-                    escapeHtml(part);
+                    escapeHtml(surface);
 
             }
 
-        }
+        });
+
+        const token =
+            "@@SPECIAL_" +
+            savedRuby.length +
+            "@@";
+
+        savedRuby.push(html);
+
+        result =
+            result
+            .split(escapeHtml(word))
+            .join(token);
+
+    });
 
 
-        // =========================
-        // かな部分
-        // =========================
+    // ========================================
+    // ② 普通の漢字語
+    // ========================================
 
-        else if(
-            /^[ぁ-んァ-ヶー]+$/.test(part)
-        ){
-
-            html +=
-                escapeHtml(part);
-
-            const kana =
-                toHiragana(part);
-
-            const readingKana =
-                normalizedReading.slice(
-                    readingPosition,
-                    readingPosition +
-                    kana.length
-                );
-
-
-            if(readingKana === kana){
-
-                readingPosition +=
-                    kana.length;
-
-            }
-
-        }
-
-
-        // =========================
-        // 記号など
-        // =========================
-
-        else{
-
-            html +=
-                escapeHtml(part);
-
-        }
-
-    }
-
-
-    return html;
-}
-
-
-// ========================================
-// 文章にふりがなを付ける
-// ========================================
-
-function addFurigana(text){
-
-    const source =
-        String(text);
-
-
-    // 辞書の長い語を優先
     const words =
         Object.keys(furiganaMap)
-        .sort(
-            (a,b) =>
-                b.length - a.length
-        );
+        .sort((a,b) => b.length - a.length);
 
+    words.forEach(word => {
 
-    if(words.length === 0){
-
-        return escapeHtml(source);
-
-    }
-
-
-    // --------------------------------
-    // 一度の走査だけで変換する
-    //
-    // 作った <ruby> の中を
-    // もう一度変換しないため重要
-    // --------------------------------
-
-    const pattern =
-        new RegExp(
-            words
-            .map(escapeRegExp)
-            .join("|"),
-            "g"
-        );
-
-
-    let result = "";
-
-    let lastIndex = 0;
-
-    let match;
-
-
-    while(
-        (match = pattern.exec(source))
-        !== null
-    ){
-
-        const word =
-            match[0];
-
-
-        // 辞書語より前の普通の文字
-        result +=
-            escapeHtml(
-                source.slice(
-                    lastIndex,
-                    match.index
-                )
-            );
-
-
-        // 辞書語
-        result +=
-            makeRubyWord(
-                word,
-                furiganaMap[word]
-            );
-
-
-        lastIndex =
-            match.index +
-            word.length;
-
-
-        // 念のため無限ループ防止
-        if(match[0].length === 0){
-            pattern.lastIndex++;
+        // 送り仮名辞書にある語は
+        // ここでは処理しない
+        if(okuriganaMap[word]){
+            return;
         }
 
-    }
+        const escapedWord =
+            escapeHtml(word);
+
+        const reading =
+            furiganaMap[word];
+
+        result =
+            result
+            .split(escapedWord)
+            .join(
+                "<ruby>" +
+                escapedWord +
+                "<rt>" +
+                escapeHtml(reading) +
+                "</rt>" +
+                "</ruby>"
+            );
+
+    });
 
 
-    // 最後の残り
-    result +=
-        escapeHtml(
-            source.slice(lastIndex)
-        );
+    // ========================================
+    // ③ 送り仮名付きのrubyを戻す
+    // ========================================
+
+    savedRuby.forEach((html,i) => {
+
+        result =
+            result.replaceAll(
+                "@@SPECIAL_" +
+                i +
+                "@@",
+                html
+            );
+
+    });
 
 
     return result;
