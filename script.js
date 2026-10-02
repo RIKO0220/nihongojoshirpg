@@ -1361,8 +1361,8 @@ function showTutorial(){
                     countdown
                 );
 
-                timer.textContent =
-                    "説明を読み終えたら始めよう！";
+                timer.innerHTML =
+    addFurigana("説明を読み終えたら始めよう！");
 
                 closeButton.disabled =
                     false;
