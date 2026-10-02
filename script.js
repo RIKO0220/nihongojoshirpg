@@ -830,6 +830,8 @@ fetch("questions.json")
 
     updatePlayer();
 
+    setupStaticFurigana();
+
     nextQuestion();
 
     showTutorial();
@@ -849,8 +851,9 @@ function nextQuestion(){
     .textContent = "";
 
     document
-    .getElementById("actionBtn")
-    .textContent = "決定";
+.getElementById("actionBtn")
+.innerHTML =
+    addFurigana("決定");
 
     if(mode === "review"){
 
@@ -1234,6 +1237,133 @@ if(hpIncrease > 0){
 }
 
 // =========================
+// ゲーム画面の固定文字
+// ここで1回だけふりがなを付ける
+// =========================
+
+function setupStaticFurigana(){
+
+    const targets = [
+
+        ["h1", "助詞RPGバトル"],
+
+        [
+            "#friendsArea h2",
+            "仲間"
+        ],
+
+        [
+            "#specialBtn",
+            "必殺技"
+        ],
+
+        [
+            "#homeBtn",
+            "ホームに戻る"
+        ],
+
+        [
+            "#tutorialPopup h2",
+            "ゲームの遊び方"
+        ],
+
+        [
+            "#tutorialClose",
+            "ゲームを始める"
+        ],
+
+        [
+            "#explanationClose",
+            "次の問題へ"
+        ]
+
+    ];
+
+
+    targets.forEach(
+        function(item){
+
+            const element =
+                document.querySelector(
+                    item[0]
+                );
+
+            if(element){
+
+                element.innerHTML =
+                    addFurigana(
+                        item[1]
+                    );
+
+            }
+
+        }
+    );
+
+
+    // =========================
+    // 必殺ゲージ
+    // =========================
+
+    const specialLabel =
+        document.querySelector(
+            "#specialText"
+        )
+        ?.parentElement
+        ?.querySelector(
+            "span:first-child"
+        );
+
+    if(specialLabel){
+
+        specialLabel.innerHTML =
+            addFurigana("必殺");
+
+    }
+
+
+    // =========================
+    // チュートリアル本文
+    // =========================
+
+    const tutorialMessage =
+        document.getElementById(
+            "tutorialMessage"
+        );
+
+    if(tutorialMessage){
+
+        tutorialMessage.innerHTML = `
+            <p>
+                こんにちは！
+            </p>
+
+            <p>
+                ${addFurigana("このゲームでは、")}<br>
+                ${addFurigana("文の中に入る正しい助詞を選んで")}<br>
+                ${addFurigana("モンスターを倒します！")}
+            </p>
+
+            <p>
+                ${addFurigana("文をよく読んで、")}<br>
+                ${addFurigana("正しい助詞を選びましょう。")}
+            </p>
+
+            <p>
+                ${addFurigana("正解するとモンスターに攻撃できます。")}<br>
+                ${addFurigana("不正解だとダメージを受けます。")}
+            </p>
+
+            <p>
+                ${addFurigana("準備ができたらゲームを始めましょう！")}
+            </p>
+        `;
+
+    }
+
+}
+
+// =========================
 // 開始前ゲーム説明
 // =========================
 
@@ -1515,8 +1645,8 @@ function showExplanation(
                     countdown
                 );
 
-                timer.textContent =
-                    "解説を読み終えたら次へ進もう！";
+                timer.innerHTML =
+    addFurigana("解説を読み終えたら次へ進もう！");
 
                 closeButton.disabled =
                     false;
