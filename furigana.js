@@ -588,6 +588,99 @@ const furiganaMap = {
     "注文": "ちゅうもん"
 };
 
+// ========================================
+// 送り仮名がある言葉
+// 漢字部分だけにふりがなを付ける
+// ========================================
+
+const okuriganaMap = {
+
+    "遊び方": [
+        ["遊", "あそ"],
+        ["び", ""],
+        ["方", "かた"]
+    ],
+
+    "正しい": [
+        ["正", "ただ"],
+        ["しい", ""]
+    ],
+
+    "始める": [
+        ["始", "はじ"],
+        ["める", ""]
+    ],
+
+    "受ける": [
+        ["受", "う"],
+        ["ける", ""]
+    ],
+
+    "読み終える": [
+        ["読", "よ"],
+        ["み", ""],
+        ["終", "お"],
+        ["える", ""]
+    ],
+
+    "読み込む": [
+        ["読", "よ"],
+        ["み", ""],
+        ["込", "こ"],
+        ["む", ""]
+    ],
+
+    "解いた": [
+        ["解", "と"],
+        ["いた", ""]
+    ],
+
+    "選ぶ": [
+        ["選", "えら"],
+        ["ぶ", ""]
+    ],
+
+    "倒す": [
+        ["倒", "たお"],
+        ["す", ""]
+    ],
+
+    "読む": [
+        ["読", "よ"],
+        ["む", ""]
+    ],
+
+    "戻る": [
+        ["戻", "もど"],
+        ["る", ""]
+    ],
+
+    "続ける": [
+        ["続", "つづ"],
+        ["ける", ""]
+    ],
+
+    "戦う": [
+        ["戦", "たたか"],
+        ["う", ""]
+    ],
+
+    "保存": [
+        ["保存", "ほぞん"]
+    ],
+
+    "所持": [
+        ["所持", "しょじ"]
+    ],
+
+    "組み合わせ": [
+        ["組", "く"],
+        ["み", ""],
+        ["合", "あ"],
+        ["わせ", ""]
+    ]
+};
+
 
 // ========================================
 // HTMLとして安全な文字に変換
@@ -604,72 +697,122 @@ function escapeHtml(text){
 }
 
 
-// ========================================
-// ふりがなを付ける
-// ========================================
-
 function addFurigana(text){
 
-    let result =
-        escapeHtml(text);
+    let result = escapeHtml(text);
 
-    // 長い単語を先に変換する
-    // 例：
-    // 「攻撃」より「攻撃力」
-    // 「比較」より「比較構文」
+    // ========================================
+    // ① 送り仮名付きの言葉を先に処理
+    // ========================================
+
+    const specialWords =
+        Object.keys(okuriganaMap)
+        .sort((a,b) => b.length - a.length);
+
+    const savedRuby = [];
+
+    specialWords.forEach(word => {
+
+        if(!result.includes(word)){
+            return;
+        }
+
+        const parts = okuriganaMap[word];
+
+        let html = "";
+
+        parts.forEach(part => {
+
+            const surface = part[0];
+            const reading = part[1];
+
+            if(reading){
+
+                html +=
+                    "<ruby>" +
+                    escapeHtml(surface) +
+                    "<rt>" +
+                    escapeHtml(reading) +
+                    "</rt>" +
+                    "</ruby>";
+
+            }else{
+
+                html +=
+                    escapeHtml(surface);
+
+            }
+
+        });
+
+        const token =
+            "@@SPECIAL_" +
+            savedRuby.length +
+            "@@";
+
+        savedRuby.push(html);
+
+        result =
+            result
+            .split(escapeHtml(word))
+            .join(token);
+
+    });
+
+
+    // ========================================
+    // ② 普通の漢字語
+    // ========================================
+
     const words =
         Object.keys(furiganaMap)
-        .sort(
-            (a,b) =>
-                b.length - a.length
-        );
-
-    const rubyParts = [];
+        .sort((a,b) => b.length - a.length);
 
     words.forEach(word => {
 
-        const reading =
-            furiganaMap[word];
+        // 送り仮名辞書にある語は
+        // ここでは処理しない
+        if(okuriganaMap[word]){
+            return;
+        }
 
         const escapedWord =
             escapeHtml(word);
 
-        // すでにruby化した部分は一時退避
-        result =
-            result.replace(
-                /<ruby>[\s\S]*?<\/ruby>/g,
-                match => {
-
-                    const token =
-                        `@@RUBY_${rubyParts.length}@@`;
-
-                    rubyParts.push(match);
-
-                    return token;
-                }
-            );
+        const reading =
+            furiganaMap[word];
 
         result =
             result
             .split(escapedWord)
             .join(
-                `<ruby>${escapedWord}<rt>${escapeHtml(reading)}</rt></ruby>`
+                "<ruby>" +
+                escapedWord +
+                "<rt>" +
+                escapeHtml(reading) +
+                "</rt>" +
+                "</ruby>"
             );
 
-        // rubyを元に戻す
-        rubyParts.forEach(
-            (html,i) => {
-
-                result =
-                    result.replaceAll(
-                        `@@RUBY_${i}@@`,
-                        html
-                    );
-            }
-        );
-
-        rubyParts.length = 0;
     });
+
+
+    // ========================================
+    // ③ 送り仮名付きのrubyを戻す
+    // ========================================
+
+    savedRuby.forEach((html,i) => {
+
+        result =
+            result.replaceAll(
+                "@@SPECIAL_" +
+                i +
+                "@@",
+                html
+            );
+
+    });
+
 
     return result;
 }

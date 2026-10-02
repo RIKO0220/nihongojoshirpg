@@ -394,13 +394,14 @@ function updateEnemy(){
     currentEnemy.image;
 
     document
-    .getElementById("enemyInfo")
-    .innerHTML =
-    `
-    ${currentEnemy.name}<br>
-    属性：${currentEnemy.element}<br>
-    HP：${currentEnemy.hp}
-    `;
+.getElementById("enemyInfo")
+.innerHTML =
+    addFurigana(currentEnemy.name) + "<br>" +
+
+    addFurigana("属性") +
+    "：" + addFurigana(currentEnemy.element) + "<br>" +
+
+    "HP：" + currentEnemy.hp;
 }
 
 // =========================
@@ -462,21 +463,30 @@ playerImage;
     : partyCharacters.join("・");
 
     document
-    .getElementById("playerInfo")
-    .innerHTML =
-    `
-    名前：${playerName}<br>
-    属性：${playerElement}<br>
-    Lv：${level}<br>
-    攻撃力：${attackPower}<br>
-    コンボ：${combo}<br>
-    撃破数：${enemyCount}<br>
-    `;
+.getElementById("playerInfo")
+.innerHTML =
+    addFurigana("名前") +
+    "：" + escapeHtml(playerName) + "<br>" +
 
-    document
-    .getElementById("solveCount")
-    .textContent =
-    "解いた問題数：" + solveCount;
+    addFurigana("属性") +
+    "：" + addFurigana(playerElement) + "<br>" +
+
+    "Lv：" + level + "<br>" +
+
+    addFurigana("攻撃力") +
+    "：" + attackPower + "<br>" +
+
+    "コンボ：" + combo + "<br>" +
+
+    addFurigana("撃破数") +
+    "：" + enemyCount + "<br>";
+
+
+document
+.getElementById("solveCount")
+.innerHTML =
+    addFurigana("解いた問題数") +
+    "：" + solveCount;
 
 // =========================
 // 仲間画像表示
