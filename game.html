@@ -266,7 +266,103 @@
 </div>
     
     <script src="furigana.js"></script>
-    <script src="script.js"></script>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+
+    // =========================
+    // ゲーム画面の固定文字
+    // =========================
+
+    const fixedTexts = [
+        ["h1", "助詞RPGバトル"],
+        ["#friendsArea h2", "仲間"],
+        ["#actionBtn", "決定"],
+        ["#specialBtn", "必殺技"],
+        ["#homeBtn", "ホームに戻る"],
+        ["#explanationTitle", "解説"],
+        ["#explanationClose", "次の問題へ"],
+        ["#tutorialPopup h2", "ゲームの遊び方"],
+        ["#tutorialClose", "ゲームを始める"]
+    ];
+
+    fixedTexts.forEach(([selector, text]) => {
+
+        const element =
+            document.querySelector(selector);
+
+        if(element){
+            element.innerHTML =
+                addFurigana(text);
+        }
+
+    });
+
+
+    // =========================
+    // 必殺ゲージの表示
+    // =========================
+
+    const specialLabel =
+        document.querySelector(
+            "#specialText"
+        );
+
+    const specialStatusLabel =
+        specialLabel
+        ?.closest(".statusBar")
+        ?.querySelector(
+            ".statusLabel span:first-child"
+        );
+
+    if(specialStatusLabel){
+        specialStatusLabel.innerHTML =
+            addFurigana("必殺");
+    }
+
+
+    // =========================
+    // チュートリアル本文
+    // =========================
+
+    const tutorialMessage =
+        document.getElementById(
+            "tutorialMessage"
+        );
+
+    if(tutorialMessage){
+
+        tutorialMessage.innerHTML = `
+            <p>
+                こんにちは！
+            </p>
+
+            <p>
+                このゲームでは、<br>
+                ${addFurigana("文の中に入る正しい助詞を選んで")}<br>
+                ${addFurigana("モンスターを倒します！")}
+            </p>
+
+            <p>
+                ${addFurigana("文をよく読んで、")}<br>
+                ${addFurigana("正しい助詞を選びましょう。")}
+            </p>
+
+            <p>
+                ${addFurigana("正解するとモンスターに攻撃できます。")}<br>
+                ${addFurigana("不正解だとダメージを受けます。")}
+            </p>
+
+            <p>
+                ${addFurigana("準備ができたらゲームを始めましょう！")}
+            </p>
+        `;
+    }
+
+});
+</script>
+
+<script src="script.js"></script>
 
 </body>
 </html>
