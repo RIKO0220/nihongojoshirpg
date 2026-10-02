@@ -16,7 +16,7 @@
 
 </head>
 
-<script src="furigana.js"></script>
+<script src="furigana.js?v=11"></script>
 
 <body>
 
@@ -233,8 +233,10 @@ function loadUser(){
         .getElementById(
             "userMessage"
         )
-        .textContent =
-        "新しいユーザーです。";
+        .innerHTML =
+addFurigana(
+    "新しいユーザーです。"
+);
 
 
         document
@@ -315,8 +317,10 @@ function loadUser(){
     .getElementById(
         "userMessage"
     )
-    .textContent =
-    "保存されているデータがあります。";
+    .innerHTML =
+addFurigana(
+    "保存されているデータがあります。"
+);
 
 
     document
@@ -349,9 +353,12 @@ function loadUser(){
     .getElementById(
         "currentElement"
     )
-    .textContent =
-    "属性：" +
-    (
+    .innerHTML =
+addFurigana("属性")
++
+"："
++
+addFurigana(
         currentUserData.playerElement
         || "火"
     );
@@ -371,12 +378,13 @@ function loadUser(){
     )
     +
     "<br>" +
-    "撃破数：" +
-    (
-        currentUserData.enemyCount
-        || 0
-    );
-
+    addFurigana("撃破数")
++
+"：" +
+(
+    currentUserData.enemyCount
+    || 0
+);
 
     showOwnedCharacters();
 
@@ -418,7 +426,13 @@ function showOwnedCharacters(){
     if(owned.length === 0){
 
         area.innerHTML =
-        "<p>現在、仲間はいません。</p>";
+"<p>"
++
+addFurigana(
+    "現在、仲間はいません。"
+)
++
+"</p>";
 
         return;
 
@@ -739,6 +753,135 @@ function startReview(element){
         + "&mode=review";
 
 }
+
+// ========================================
+// index.html ふりがな表示
+// ========================================
+
+function setupIndexFurigana(){
+
+    // ------------------------------------
+    // 見出し
+    // ------------------------------------
+
+    const h1 =
+        document.querySelector("h1");
+
+    if(h1){
+        h1.innerHTML =
+            addFurigana("日本語助詞学習RPG");
+    }
+
+
+    // ------------------------------------
+    // 固定表示されている文章
+    // ------------------------------------
+
+    const staticTexts = [
+        "ユーザー名",
+        "はじめてのユーザーです！",
+        "正しい助詞を選んでモンスターを倒そう！",
+        "最初の属性を選ぼう！",
+        "現在の属性",
+        "所持している仲間",
+        "一緒に戦う仲間を選んでください",
+        "復習モード"
+    ];
+
+
+    document
+    .querySelectorAll("p, h2")
+    .forEach(element => {
+
+        const text =
+            element.textContent.trim();
+
+        if(staticTexts.includes(text)){
+
+            element.innerHTML =
+                addFurigana(text);
+        }
+
+    });
+
+
+    // ------------------------------------
+    // ボタン
+    // ------------------------------------
+
+    document
+    .querySelectorAll("button")
+    .forEach(button => {
+
+        const text =
+            button.textContent
+            .replace(/\s+/g, " ")
+            .trim();
+
+
+        if(text === "ユーザーを読み込む"){
+
+            button.innerHTML =
+                addFurigana(
+                    "ユーザーを読み込む"
+                );
+        }
+
+
+        if(text.includes("火属性")){
+
+            button.innerHTML =
+                addFurigana("火属性") +
+                "🔥";
+        }
+
+
+        if(text.includes("水属性")){
+
+            button.innerHTML =
+                addFurigana("水属性") +
+                "💧";
+        }
+
+
+        if(text.includes("地属性")){
+
+            button.innerHTML =
+                addFurigana("地属性") +
+                "🍀";
+        }
+
+
+        if(text.includes("この組み合わせで")){
+
+            button.innerHTML =
+                addFurigana(
+                    "この組み合わせで"
+                )
+                +
+                "<br>"
+                +
+                addFurigana(
+                    "続きからプレイ"
+                );
+        }
+
+
+        if(text === "復習する"){
+
+            button.innerHTML =
+                addFurigana(
+                    "復習する"
+                );
+        }
+
+    });
+
+}
+
+
+// ページを開いたときに1回だけ実行
+setupIndexFurigana();
 
 </script>
 
