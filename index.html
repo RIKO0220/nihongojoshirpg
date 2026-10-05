@@ -166,10 +166,10 @@
     <div class="elementButtons">
 
     <button
-        onclick="startGame('','review')"
-    >
-        復習する
-    </button>
+    onclick="startReview()"
+>
+    復習する
+</button>
 
 </div>
 
@@ -718,16 +718,13 @@ function continueGame(){
 // 復習
 // =========================
 
-function startReview(element){
+function startReview(){
 
     const playerName =
         document
-        .getElementById(
-            "playerName"
-        )
+        .getElementById("playerName")
         .value
         .trim();
-
 
     if(playerName === ""){
 
@@ -736,22 +733,22 @@ function startReview(element){
         );
 
         return;
-
     }
-
 
     localStorage.setItem(
         "currentPlayer",
         playerName
     );
 
+    const element =
+        currentUserData?.playerElement
+        || "火";
 
     location.href =
         "game.html"
         + "?element="
         + encodeURIComponent(element)
         + "&mode=review";
-
 }
 
 // ========================================
