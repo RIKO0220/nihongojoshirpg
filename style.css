@@ -548,10 +548,19 @@ button{
    ふりがな
 ======================================== */
 
-ruby{
-    ruby-position:over;
-    display:inline-block;
-    line-height:1.8;
+/* ふりがな表示 */
+ruby {
+    display: ruby;
+    ruby-position: over;
+    -webkit-ruby-position: before;
+    line-height: inherit;
+}
+
+rt {
+    font-size: 0.5em;
+    font-weight: normal;
+    line-height: 1;
+    text-align: center;
 }
 
 rt{
