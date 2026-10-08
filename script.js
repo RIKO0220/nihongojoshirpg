@@ -2495,3 +2495,70 @@ function goHome(){
     location.href = "index.html";
 }
 
+// ========================================
+// パソコン用マウスドラッグ
+// ========================================
+
+let mouseChoice = null;
+let mouseGhost = null;
+
+document.addEventListener("mousedown", function(e) {
+
+    if (e.button !== 0) return;
+
+    const choice = e.target.closest(".choice");
+    if (!choice) return;
+
+    e.preventDefault();
+
+    mouseChoice = choice;
+
+    mouseGhost = choice.cloneNode(true);
+    mouseGhost.classList.add("dragging");
+
+    Object.assign(mouseGhost.style, {
+        position: "fixed",
+        left: (e.clientX - 35) + "px",
+        top: (e.clientY - 25) + "px",
+        zIndex: "9999",
+        pointerEvents: "none",
+        opacity: "0.85"
+    });
+
+    document.body.appendChild(mouseGhost);
+});
+
+document.addEventListener("mousemove", function(e) {
+
+    if (!mouseChoice || !mouseGhost) return;
+
+    mouseGhost.style.left =
+        (e.clientX - 35) + "px";
+
+    mouseGhost.style.top =
+        (e.clientY - 25) + "px";
+});
+
+document.addEventListener("mouseup", function(e) {
+
+    if (!mouseChoice) return;
+
+    const target = document.elementFromPoint(
+        e.clientX,
+        e.clientY
+    );
+
+    const drop = target?.closest(".drop");
+
+    if (drop) {
+        drop.textContent = mouseChoice.textContent;
+        drop.dataset.value = mouseChoice.textContent;
+    }
+
+    if (mouseGhost) {
+        mouseGhost.remove();
+    }
+
+    mouseChoice = null;
+    mouseGhost = null;
+});
