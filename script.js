@@ -995,101 +995,6 @@ function renderChoices(answerPatterns){
 }
 
 // =========================
-// ドラッグ開始
-// =========================
-
-document.addEventListener(
-"touchstart",
-e=>{
-
-    if(
-        e.target.classList.contains("choice")
-    ){
-
-        draggingEl = e.target;
-
-        draggingEl.classList.add("dragging");
-
-        draggingEl.style.position = "fixed";
-        draggingEl.style.zIndex = "9999";
-    }
-
-});
-
-// =========================
-// ドラッグ移動
-// =========================
-
-document.addEventListener(
-"touchmove",
-e=>{
-
-    if(!draggingEl){
-        return;
-    }
-
-    const touch =
-        e.touches[0];
-
-    draggingEl.style.left =
-        (touch.clientX - 40) + "px";
-
-    draggingEl.style.top =
-        (touch.clientY - 40) + "px";
-
-},
-{passive:false}
-);
-
-// =========================
-// ドラッグ終了
-// =========================
-
-document.addEventListener(
-"touchend",
-e=>{
-
-    if(!draggingEl){
-        return;
-    }
-
-    const touch =
-        e.changedTouches[0];
-
-    document
-    .querySelectorAll(".drop")
-    .forEach(drop=>{
-
-        const rect =
-            drop.getBoundingClientRect();
-
-        if(
-            touch.clientX >= rect.left &&
-            touch.clientX <= rect.right &&
-            touch.clientY >= rect.top &&
-            touch.clientY <= rect.bottom
-        ){
-
-            drop.textContent =
-                draggingEl.textContent;
-
-            drop.dataset.value =
-                draggingEl.textContent;
-        }
-
-    });
-
-    draggingEl.classList.remove("dragging");
-
-    draggingEl.style.position = "";
-    draggingEl.style.left = "";
-    draggingEl.style.top = "";
-
-    draggingEl = null;
-
-});
-
-// =========================
 // 必殺技
 // =========================
 
@@ -2496,52 +2401,78 @@ function goHome(){
 }
 
 // ========================================
-// パソコン用マウスドラッグ
+// iPad・パソコン共通ドラッグ操作
 // ========================================
 
-let mouseChoice = null;
-let mouseGhost = null;
+let activeDrag = null;
 
-document.addEventListener("mousedown", function(e) {
+function finishDrag() {
 
-    if (e.button !== 0) return;
+    if (!activeDrag) return;
+
+    activeDrag.ghost.remove();
+
+    activeDrag = null;
+}
+
+document.addEventListener("pointerdown", function(e) {
+
+    if (e.pointerType === "mouse" && e.button !== 0) {
+        return;
+    }
 
     const choice = e.target.closest(".choice");
+
     if (!choice) return;
 
     e.preventDefault();
 
-    mouseChoice = choice;
+    // 前のドラッグが残っていたら片付ける
+    finishDrag();
 
-    mouseGhost = choice.cloneNode(true);
-    mouseGhost.classList.add("dragging");
+    const ghost = choice.cloneNode(true);
 
-    Object.assign(mouseGhost.style, {
-        position: "fixed",
-        left: (e.clientX - 35) + "px",
-        top: (e.clientY - 25) + "px",
-        zIndex: "9999",
-        pointerEvents: "none",
-        opacity: "0.85"
-    });
+    ghost.style.position = "fixed";
+    ghost.style.zIndex = "99999";
+    ghost.style.pointerEvents = "none";
+    ghost.style.opacity = "0.85";
+    ghost.style.margin = "0";
+    ghost.style.left = e.clientX + "px";
+    ghost.style.top = e.clientY + "px";
+    ghost.style.transform = "translate(-50%, -50%)";
 
-    document.body.appendChild(mouseGhost);
+    document.body.appendChild(ghost);
+
+    activeDrag = {
+        pointerId: e.pointerId,
+        value: choice.textContent,
+        ghost: ghost
+    };
+
+    choice.setPointerCapture(e.pointerId);
+
 });
 
-document.addEventListener("mousemove", function(e) {
+document.addEventListener("pointermove", function(e) {
 
-    if (!mouseChoice || !mouseGhost) return;
+    if (!activeDrag) return;
 
-    mouseGhost.style.left =
-        (e.clientX - 35) + "px";
+    if (e.pointerId !== activeDrag.pointerId) {
+        return;
+    }
 
-    mouseGhost.style.top =
-        (e.clientY - 25) + "px";
+    activeDrag.ghost.style.left = e.clientX + "px";
+    activeDrag.ghost.style.top = e.clientY + "px";
+
 });
 
-document.addEventListener("mouseup", function(e) {
+document.addEventListener("pointerup", function(e) {
 
-    if (!mouseChoice) return;
+    if (!activeDrag) return;
+
+    if (e.pointerId !== activeDrag.pointerId) {
+        return;
+    }
 
     const target = document.elementFromPoint(
         e.clientX,
@@ -2551,14 +2482,23 @@ document.addEventListener("mouseup", function(e) {
     const drop = target?.closest(".drop");
 
     if (drop) {
-        drop.textContent = mouseChoice.textContent;
-        drop.dataset.value = mouseChoice.textContent;
+
+        drop.textContent = activeDrag.value;
+        drop.dataset.value = activeDrag.value;
+
     }
 
-    if (mouseGhost) {
-        mouseGhost.remove();
+    finishDrag();
+
+});
+
+document.addEventListener("pointercancel", function(e) {
+
+    if (
+        activeDrag &&
+        e.pointerId === activeDrag.pointerId
+    ) {
+        finishDrag();
     }
 
-    mouseChoice = null;
-    mouseGhost = null;
 });

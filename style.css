@@ -550,12 +550,20 @@ button{
 
 ruby{
     ruby-position:over;
+    display:inline-block;
+    line-height:1.8;
 }
 
 rt{
-    font-size:0.5em;
+    font-size:0.45em;
     line-height:1;
     font-weight:normal;
+}
+
+/* チュートリアルは行同士を広めにする */
+#tutorialMessage p{
+    margin:20px 0;
+    line-height:2.1;
 }
 
 /* ========================================
@@ -1293,4 +1301,19 @@ hr{
 
 #homeBtn{
     display:block;
+}
+
+.choice {
+    touch-action: none;
+    user-select: none;
+    -webkit-user-select: none;
+    cursor: grab;
+}
+
+.choice:active {
+    cursor: grabbing;
+}
+
+.drop {
+    touch-action: none;
 }
