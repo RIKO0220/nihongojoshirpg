@@ -1251,7 +1251,7 @@ function setupStaticFurigana(){
 
             <p>
                 ${addFurigana("文をよく読んで、")}<br>
-                ${addFurigana("正しい助詞を選びましょう。")}
+                ${addFurigana("正しい助詞をドラッグ＆ドロップで選んで答えましょう。")}
             </p>
 
             <p>
@@ -2046,11 +2046,6 @@ if(hpIncrease > 0){
         playerHp = maxHp;
     }
 }
-
-    // =========================
-    // 次の敵を生成
-    // ★ここが今まで無かった
-    // =========================
 
     createEnemy();
 }
