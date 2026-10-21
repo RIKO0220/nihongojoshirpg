@@ -2060,7 +2060,7 @@ saveGame();
 
     if(playerHp <= 0){
 
-        alert("ゲームオーバー");
+        alert("ゲームオーバー😭");
 
         localStorage.removeItem(
             "save_" + playerName
