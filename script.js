@@ -404,6 +404,22 @@ function updateEnemy(){
     "HP：" + currentEnemy.hp;
 }
 
+// ========================================
+// 必殺技ボタンの有効・無効を切り替える
+// ========================================
+
+function updateSpecialButton() {
+
+    const button = document.getElementById("specialBtn");
+
+    if (!button) return;
+
+    const canUseSpecial =
+        specialUnlocked && specialGauge >= 100;
+
+    button.disabled = !canUseSpecial;
+}
+
 // =========================
 // プレイヤー表示
 // =========================
@@ -590,6 +606,8 @@ if(friendsList){
 
     document.getElementById("specialBar").style.width =
     specialGauge + "%";
+
+    updateSpecialButton();
 }
 
 // =========================
