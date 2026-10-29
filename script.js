@@ -1478,17 +1478,17 @@ function showExplanation(
     // タイトル
     // =========================
 
-    if(correct){
+    if (correct) {
 
-        title.textContent =
-            "⭕ 正解！";
+    title.textContent = "⭕ 正解！";
+    title.className = "resultCorrect";
 
-    }else{
+} else {
 
-        title.textContent =
-            "❌ 不正解";
+    title.textContent = "❌ 残念！";
+    title.className = "resultWrong";
 
-    }
+}
 
 
     // =========================

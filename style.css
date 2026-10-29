@@ -1429,3 +1429,36 @@ body.battlePage #explanationPopup {
     color: #333333;
     text-shadow: none;
 }
+
+/* ========================================
+   正解・不正解を分かりやすく表示
+======================================== */
+
+/* 結果タイトル共通 */
+body.battlePage #explanationTitle {
+    font-size: 42px;
+    font-weight: bold;
+    text-align: center;
+    padding: 15px;
+    border-radius: 15px;
+    text-shadow: none;
+}
+
+/* 正解したとき */
+body.battlePage #explanationTitle.resultCorrect {
+    color: #176b35;
+    background-color: #d9f8e2;
+    border: 3px solid #28a745;
+}
+
+/* 不正解だったとき */
+body.battlePage #explanationTitle.resultWrong {
+    color: #a12222;
+    background-color: #ffe2e2;
+    border: 3px solid #e05252;
+}
+
+/* 解説文は読みやすい黒文字 */
+body.battlePage #explanationText {
+    color: #333333;
+}
