@@ -1407,3 +1407,25 @@ body.battlePage .statusLabel,
 body.battlePage #friendsArea h2 {
     text-shadow: 1px 1px 3px black;
 }
+
+/* ========================================
+   白い背景のポップアップは黒文字に戻す
+======================================== */
+
+/* 左上の「解いた問題数」 */
+body.battlePage #gameInfo {
+    color: #333333;
+    text-shadow: none;
+}
+
+/* 最初のチュートリアル */
+body.battlePage #tutorialPopup {
+    color: #333333;
+    text-shadow: none;
+}
+
+/* 問題の解説ポップアップ */
+body.battlePage #explanationPopup {
+    color: #333333;
+    text-shadow: none;
+}
