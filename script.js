@@ -2076,16 +2076,39 @@ else{
 updatePlayer();
 saveGame();
 
-    if(playerHp <= 0){
+    // ========================================
+// ゲームオーバー処理
+// アカウントと学習記録を残す
+// ========================================
 
-        alert("ゲームオーバー😭");
+if (playerHp <= 0) {
 
-        localStorage.removeItem(
-            "save_" + playerName
-        );
+    alert(
+        "ゲームオーバー！\n" +
+        "学習記録は保存されています。\n" +
+        "ホーム画面から復習できます！"
+    );
 
-        location.href = "index.html";
-    }
+    // HPを最大まで回復
+    playerHp = maxHp;
+
+    // コンボをリセット
+    combo = 0;
+
+    // 必殺技ゲージをリセット
+    specialGauge = 0;
+
+    // 倒された敵をリセット
+    currentEnemy = null;
+
+    // アカウント情報を保存
+    saveGame();
+
+    // ホーム画面に戻る
+    location.href = "index.html";
+
+    return;
+}
 }
 
 // =========================
