@@ -1358,3 +1358,52 @@ body.battlePage {
     background-repeat: no-repeat;
     background-attachment: fixed;
 }
+
+/* ========================================
+   戦闘画面の文字を白色にする
+======================================== */
+
+body.battlePage {
+    color: white;
+}
+
+/* プレイヤー情報 */
+body.battlePage #playerInfo {
+    color: white;
+}
+
+/* 敵の情報 */
+body.battlePage #enemyInfo {
+    color: white;
+}
+
+/* 問題文 */
+body.battlePage #sentence {
+    color: white;
+}
+
+/* ステータスの文字 */
+body.battlePage .statusLabel {
+    color: white;
+}
+
+/* 仲間の見出し */
+body.battlePage #friendsArea h2 {
+    color: white;
+}
+
+/* 問題の空欄 */
+body.battlePage .drop {
+    color: white;
+    border-bottom-color: white;
+}
+
+/* 白い文字に黒い影を付ける */
+body.battlePage h1,
+body.battlePage #playerInfo,
+body.battlePage #enemyInfo,
+body.battlePage #sentence,
+body.battlePage .statusLabel,
+body.battlePage #friendsArea h2 {
+    text-shadow: 1px 1px 3px black;
+}
