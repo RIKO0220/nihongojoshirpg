@@ -1345,3 +1345,16 @@ hr{
     cursor: pointer;
     opacity: 1;
 }
+
+/* ========================================
+   戦闘画面の背景画像
+======================================== */
+
+body.battlePage {
+    background-image: url("images/BB_shrine001.png");
+
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}
