@@ -1612,3 +1612,43 @@ body.battlePage #enemyInfo rt {
     color: white;
     text-shadow: none;
 }
+
+/* ========================================
+   プレイヤーステータス全体の背景
+======================================== */
+
+body.battlePage #playerStatusPanel {
+    width: 280px;
+    max-width: 100%;
+    padding: 14px 18px;
+
+    background: rgba(18, 35, 53, 0.88);
+    color: white;
+
+    border: 2px solid rgba(255, 255, 255, 0.7);
+    border-radius: 16px;
+
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+/* 名前・レベル部分の背景を透明にする */
+body.battlePage #playerStatusPanel #playerInfo {
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    padding: 0;
+    margin: 0 0 12px;
+}
+
+/* ゲージをパネル内に収める */
+body.battlePage #playerStatusPanel .statusBar {
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+/* パネル内の文字 */
+body.battlePage #playerStatusPanel .statusLabel,
+body.battlePage #playerStatusPanel rt {
+    color: white;
+    text-shadow: none;
+}
