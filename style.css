@@ -1462,3 +1462,126 @@ body.battlePage #explanationTitle.resultWrong {
 body.battlePage #explanationText {
     color: #333333;
 }
+
+/* ========================================
+   草原背景に合わせた問題エリア
+======================================== */
+
+/* 問題文：濃い紺色のパネル */
+body.battlePage #sentence {
+    display: block;
+    width: fit-content;
+    max-width: 95%;
+    margin: 0 auto 18px;
+    padding: 14px 24px;
+
+    background: rgba(18, 35, 53, 0.88);
+    color: #ffffff;
+    border: 2px solid rgba(255, 255, 255, 0.7);
+    border-radius: 16px;
+
+    text-shadow: none;
+}
+
+/* 問題文のふりがな */
+body.battlePage #sentence rt {
+    color: #ffffff;
+    text-shadow: none;
+}
+
+/* 空欄の線 */
+body.battlePage #sentence .drop {
+    color: #ffffff;
+    border-bottom-color: #ffffff;
+}
+
+/* 選択肢：草原と被らないクリーム色 */
+body.battlePage #choices .choice {
+    background: #fff1c1;
+    color: #263238;
+
+    border: 3px solid #805b28;
+    border-radius: 14px;
+
+    box-shadow: 0 4px 0 #805b28;
+    font-weight: bold;
+}
+
+/* ドラッグ中 */
+body.battlePage #choices .choice:active {
+    background: #ffe29a;
+}
+
+/* ========================================
+   味方と敵の足元をそろえる
+======================================== */
+
+/* 戦闘エリア */
+body.battlePage #battleArea {
+    display: flex;
+    justify-content: space-between;
+    align-items: stretch;
+    min-height: 560px;
+    gap: 20px;
+}
+
+/* 味方・敵のエリア */
+body.battlePage #playerArea,
+body.battlePage #enemyArea {
+    display: flex;
+    flex-direction: column;
+    width: 42%;
+    min-height: 560px;
+}
+
+/* 味方は左寄せ */
+body.battlePage #playerArea {
+    align-items: flex-start;
+}
+
+/* 敵は右寄せ */
+body.battlePage #enemyArea {
+    align-items: flex-end;
+}
+
+/* ステータスは上に配置 */
+body.battlePage #playerInfo,
+body.battlePage #enemyInfo {
+    margin-top: 0;
+}
+
+/* キャラクター画像は下に配置 */
+body.battlePage #playerImage,
+body.battlePage #enemyImage {
+    margin-top: auto;
+    flex-shrink: 0;
+}
+
+/* 味方画像 */
+body.battlePage #playerImage {
+    width: 190px;
+    height: 190px;
+    margin-left: 0;
+}
+
+/* 敵画像 */
+body.battlePage #enemyImage {
+    width: 210px;
+    height: 210px;
+    margin-left: 0;
+}
+
+/* iPadなど画面が狭い場合 */
+@media screen and (max-width: 900px) {
+    body.battlePage #battleArea,
+    body.battlePage #playerArea,
+    body.battlePage #enemyArea {
+        min-height: 460px;
+    }
+
+    body.battlePage #playerImage,
+    body.battlePage #enemyImage {
+        width: 140px;
+        height: 140px;
+    }
+}

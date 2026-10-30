@@ -14,7 +14,7 @@
 
     <title>助詞RPG</title>
 
-    <link rel="stylesheet" href="style.css?v=23">
+    <link rel="stylesheet" href="style.css?v=24">
 
 </head>
 
@@ -39,24 +39,7 @@
     ====================== -->
     <div id="playerArea">
 
-        <img
-            id="playerImage"
-            class="characterImage"
-            src="images/player.png"
-            alt="プレイヤー"
-        >
-
         <p id="playerInfo"></p>
-
-        <!-- 仲間 -->
-        <div id="friendsArea">
-
-            <h2>仲間</h2>
-
-            <div id="friendsList"></div>
-
-        </div>
-
 
         <!-- HP -->
         <div class="statusBar">
@@ -111,13 +94,31 @@
 
         </div>
 
+        <!-- 仲間 -->
+        <div id="friendsArea">
+
+            <h2>仲間</h2>
+
+            <div id="friendsList"></div>
+
+        </div>
+
+        <img
+            id="playerImage"
+            class="characterImage"
+            src="images/player.png"
+            alt="プレイヤー"
+        >
+
     </div>
 
 
     <!-- =====================
-         敵側
+         敵側ｓ
     ====================== -->
     <div id="enemyArea">
+
+        <p id="enemyInfo"></p>
 
         <img
             id="enemyImage"
@@ -125,8 +126,6 @@
             src="images/slime_fire.png"
             alt="敵"
         >
-
-        <p id="enemyInfo"></p>
 
     </div>
 
