@@ -175,10 +175,6 @@
 
 </div>
 
-
-<script>
-
-
 // =========================
 // 現在読み込んでいるユーザー
 // =========================
@@ -187,10 +183,10 @@ let currentUserData = null;
 
 
 // =========================
-// ユーザー読み込み
+// ユーザー読み込み（クラウド対応版）
 // =========================
 
-function loadUser(){
+async function loadUser(){
 
     const playerName =
         document
@@ -209,15 +205,25 @@ function loadUser(){
 
     }
 
+    // 読み込み中表示
+    document.getElementById("userMessage").innerText = "データを読み込み中...";
 
-    const saveKey =
-        "save_" + playerName;
+    // 1. クラウド（Firebase）からデータを検索
+    let savedData = null;
+    if (window.loadDataFromCloud) {
+        savedData = await window.loadDataFromCloud(playerName);
+    }
 
-
-    const savedData =
-        localStorage.getItem(
-            saveKey
-        );
+    // 2. クラウドに無ければ、ローカルストレージも確認（フォールバック）
+    if (!savedData) {
+        const saveKey = "save_" + playerName;
+        const localData = localStorage.getItem(saveKey);
+        if (localData) {
+            try {
+                savedData = JSON.parse(localData);
+            } catch(e){}
+        }
+    }
 
 
     // =========================
@@ -272,23 +278,7 @@ addFurigana(
     // 既存ユーザー
     // =========================
 
-    try{
-
-        currentUserData =
-            JSON.parse(
-                savedData
-            );
-
-    }
-    catch(error){
-
-        alert(
-            "保存データを読み込めませんでした。"
-        );
-
-        return;
-
-    }
+    currentUserData = savedData;
 
 
     // 以前のデータに
@@ -498,21 +488,17 @@ addFurigana(
 
 
 // =========================
-// 新規ゲーム開始
+// 新規ゲーム開始（クラウド保存対応）
 // =========================
 
 
-function startGame(element, mode){
+async function startGame(element, mode){
 
     const playerName =
         document.getElementById(
             "playerName"
         ).value.trim();
 
-
-    // =========================
-    // ユーザー名チェック
-    // =========================
 
     if(playerName === ""){
 
@@ -524,58 +510,17 @@ function startGame(element, mode){
     }
 
 
-    // =========================
-    // 現在のユーザーを保存
-    // =========================
-
     localStorage.setItem(
         "currentPlayer",
         playerName
     );
 
 
-    // =========================
-    // ユーザーのセーブデータ確認
-    // =========================
-
-    const saveKey =
-        "save_" + playerName;
-
-    const savedData =
-        localStorage.getItem(
-            saveKey
-        );
-
-
-    // =========================
-    // 既存ユーザー
-    // =========================
-
-    if(savedData){
-
-    // 既存ユーザーの場合は
-    // ここから直接ゲームを開始しない
-    // 仲間選択画面のチェック状態を使う
-
-    currentUserData =
-        JSON.parse(savedData);
-
-    showContinueArea();
-
-    return;
-}
-
-
-    // =========================
-    // 新規ユーザー
-    // =========================
-
     const newData = {
 
         playerName:
             playerName,
 
-        // 最初に選んだ属性
         playerElement:
             element,
 
@@ -597,7 +542,6 @@ function startGame(element, mode){
 
         combo:0,
 
-        // 最初は仲間なし
         ownedCharacters:[],
 
         specialGauge:0,
@@ -607,17 +551,14 @@ function startGame(element, mode){
         currentEnemy:null
     };
 
+    // ローカル＆クラウド両方に保存
+    localStorage.setItem("save_" + playerName, JSON.stringify(newData));
+    if (window.saveDataToCloud) {
+        await window.saveDataToCloud(playerName, newData);
+    }
 
-    localStorage.setItem(
-        saveKey,
-        JSON.stringify(newData)
-    );
 
-
-    // =========================
     // ゲーム開始
-    // =========================
-
     location.href =
         "game.html"
         + "?element="
@@ -628,10 +569,10 @@ function startGame(element, mode){
 }
 
 // =========================
-// 既存ユーザーを続きから
+// 既存ユーザーを続きから（クラウド保存対応）
 // =========================
 
-function continueGame(){
+async function continueGame(){
 
     if(!currentUserData){
 
@@ -673,25 +614,14 @@ function continueGame(){
     });
 
 
-    // パーティだけ変更
-    // 所持キャラは変更しない
+    currentUserData.partyCharacters = selectedCharacters;
+    currentUserData.playerName = playerName;
 
-    currentUserData.partyCharacters =
-        selectedCharacters;
-
-
-    // 念のためユーザー名を保存
-
-    currentUserData.playerName =
-        playerName;
-
-
-    localStorage.setItem(
-        "save_" + playerName,
-        JSON.stringify(
-            currentUserData
-        )
-    );
+    // ローカル＆クラウド両方に保存
+    localStorage.setItem("save_" + playerName, JSON.stringify(currentUserData));
+    if (window.saveDataToCloud) {
+        await window.saveDataToCloud(playerName, currentUserData);
+    }
 
 
     localStorage.setItem(
@@ -757,10 +687,6 @@ function startReview(){
 
 function setupIndexFurigana(){
 
-    // ------------------------------------
-    // 見出し
-    // ------------------------------------
-
     const h1 =
         document.querySelector("h1");
 
@@ -769,10 +695,6 @@ function setupIndexFurigana(){
             addFurigana("日本語助詞学習RPG");
     }
 
-
-    // ------------------------------------
-    // 固定表示されている文章
-    // ------------------------------------
 
     const staticTexts = [
         "ユーザー名",
@@ -801,10 +723,6 @@ function setupIndexFurigana(){
 
     });
 
-
-    // ------------------------------------
-    // ボタン
-    // ------------------------------------
 
     document
     .querySelectorAll("button")
@@ -876,9 +794,8 @@ function setupIndexFurigana(){
 
 }
 
-
-// ページを開いたときに1回だけ実行
 setupIndexFurigana();
+
 
 </script>
 
