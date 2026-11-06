@@ -280,14 +280,16 @@
   import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
   // 先ほど取得した firebaseConfig の内容をここに貼り付けます
+  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
   const firebaseConfig = {
-    apiKey: "YOUR_API_KEY",
-    authDomain: "nihongojoshi-rpg.firebaseapp.com",
-    projectId: "nihongojoshi-rpg",
-    storageBucket: "nihongojoshi-rpg.appspot.com",
-    messagingSenderId: "YOUR_SENDER_ID",
-    appId: "YOUR_APP_ID"
-  };
+  apiKey: "AIzaSyCvj9k_2hBikeZwYc0y1kkSaoj0V-qDSbU",
+  authDomain: "nihongojoshi-rpg.firebaseapp.com",
+  projectId: "nihongojoshi-rpg",
+  storageBucket: "nihongojoshi-rpg.firebasestorage.app",
+  messagingSenderId: "770880568477",
+  appId: "1:770880568477:web:0b427fe079290ed0896874",
+  measurementId: "G-YKSX8LK5BK"
+};
 
   // 初期化
   const app = initializeApp(firebaseConfig);
