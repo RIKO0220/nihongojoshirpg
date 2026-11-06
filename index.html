@@ -882,6 +882,57 @@ setupIndexFurigana();
 
 </script>
 
+<!-- Firebase SDK の読み込み -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+  import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+  // 先ほど取得した firebaseConfig の内容をここに貼り付けます
+  const firebaseConfig = {
+    apiKey: "YOUR_API_KEY",
+    authDomain: "nihongojoshi-rpg.firebaseapp.com",
+    projectId: "nihongojoshi-rpg",
+    storageBucket: "nihongojoshi-rpg.appspot.com",
+    messagingSenderId: "YOUR_SENDER_ID",
+    appId: "YOUR_APP_ID"
+  };
+
+  // 初期化
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+
+  // クラウド保存用関数
+  window.saveDataToCloud = async function(userName, playerData) {
+    if (!userName) return;
+    try {
+      await setDoc(doc(db, "users", userName), playerData);
+      console.log("クラウド保存成功！");
+    } catch (e) {
+      console.error("クラウド保存エラー:", e);
+    }
+  };
+
+  // クラウド読み込み用関数
+  window.loadDataFromCloud = async function(userName) {
+    if (!userName) return null;
+    try {
+      const docRef = doc(db, "users", userName);
+      const docSnap = await getDoc(docRef);
+
+      if (docSnap.exists()) {
+        console.log("クラウドロード成功:", docSnap.data());
+        return docSnap.data();
+      } else {
+        console.log("該当するユーザーのセーブデータがありません");
+        return null;
+      }
+    } catch (e) {
+      console.error("クラウドロードエラー:", e);
+      return null;
+    }
+  };
+</script>
+
 </body>
 
 </html>
