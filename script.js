@@ -807,7 +807,7 @@ fetch("questions.json")
 });
 
 // =========================
-// 次の問題
+// 次の問題（復習モード対応版）
 // =========================
 
 function nextQuestion(){
@@ -819,18 +819,30 @@ function nextQuestion(){
     .textContent = "";
 
     document
-.getElementById("actionBtn")
-.innerHTML =
+    .getElementById("actionBtn")
+    .innerHTML =
     addFurigana("決定");
 
     if(mode === "review"){
 
-        if(reviewQuestions.length === 0){
+        // 復習できる問題がない場合
+        if(!reviewQuestions || reviewQuestions.length === 0){
 
             document
             .getElementById("sentence")
             .innerHTML =
-            "復習問題がありません";
+            "<div style='font-size:24px; font-weight:bold; color:#ff4d4d; text-align:center; margin:20px 0;'>" +
+            addFurigana("復習できる問題がないよ！") +
+            "</div>";
+
+            document.getElementById("choices").innerHTML = "";
+            document.getElementById("questionId").textContent = "";
+
+            // 決定ボタン等を無効化または非表示にする
+            const actionBtn = document.getElementById("actionBtn");
+            if(actionBtn){
+                actionBtn.style.display = "none";
+            }
 
             return;
         }
@@ -1608,25 +1620,13 @@ function checkAnswer(){
 
     if(correct){
 
-            playerAttackAnimation();
+        playerAttackAnimation();
+        enemyDamageAnimation();
 
-    enemyDamageAnimation();
-
-        let damage =
-            attackPower +
-            combo * 5;
-
-        damage =
-            Math.floor(
-                damage *
-                getElementMultiplier(
-                    playerElement,
-                    currentEnemy.element
-                )
-            );
+        let damage = attackPower + combo * 5;
+        damage = Math.floor(damage * getElementMultiplier(playerElement, currentEnemy.element));
 
         combo++;
-
         currentEnemy.hp -= damage;
 
         if(currentEnemy.hp < 0){
@@ -1637,18 +1637,32 @@ function checkAnswer(){
         resultText += damage + " ダメージ！\n\n";
 
         exp += 20;
-
         specialGauge += 10;
 
         if(specialGauge > 100){
             specialGauge = 100;
         }
 
+        // ========================================
+        // 復習モード時：正解した問題をリストから削除
+        // ========================================
+        if(mode === "review"){
+            const wrongQuestionsKey = "wrongQuestions" + playerName;
+            
+            // 今正解した問題を復習リストから除外
+            reviewQuestions = reviewQuestions.filter(q => q.id !== currentQuestion.id);
+            
+            // ローカルストレージも更新
+            localStorage.setItem(
+                wrongQuestionsKey,
+                JSON.stringify(reviewQuestions)
+            );
+        }
+
     }
     else{
 
         combo = 0;
-
         playerHp -= 15;
 
         if(playerHp < 0){
@@ -1660,43 +1674,30 @@ function checkAnswer(){
         resultText += "不正解...\n";
         resultText += "15ダメージ受けた\n\n";
 
-        // =========================
-// 間違えた問題をユーザー別に保存
-// =========================
+        // ========================================
+        // 通常モード時：間違えた問題を保存
+        // （※復習モードでの誤答は重複追加を防ぐため保存しない）
+        // ========================================
+        if(mode !== "review"){
+            const wrongQuestionsKey = "wrongQuestions" + playerName;
 
-const wrongQuestionsKey =
-    "wrongQuestions" + playerName;
+            let savedWrong = JSON.parse(
+                localStorage.getItem(wrongQuestionsKey) || "[]"
+            );
 
-let savedWrong =
-    JSON.parse(
-        localStorage.getItem(
-            wrongQuestionsKey
-        ) || "[]"
-    );
+            const alreadySaved = savedWrong.some(
+                q => q.id === currentQuestion.id
+            );
 
-// 同じ問題を重複保存しない
-const alreadySaved =
-    savedWrong.some(
-        q => q.id === currentQuestion.id
-    );
-
-if(!alreadySaved){
-
-    savedWrong.push(currentQuestion);
-
-    localStorage.setItem(
-        wrongQuestionsKey,
-        JSON.stringify(savedWrong)
-    );
-}
+            if(!alreadySaved){
+                savedWrong.push(currentQuestion);
+                localStorage.setItem(
+                    wrongQuestionsKey,
+                    JSON.stringify(savedWrong)
+                );
+            }
+        }
     }
-
-    resultText += createAnswerText();
-
-    document
-    .getElementById("result")
-    .textContent =
-    resultText;
 
 
     // =========================
@@ -1728,8 +1729,7 @@ if(!alreadySaved){
 
     }
 
-
-    // =========================
+// =========================
 // 正解文・別解を作る
 // =========================
 
@@ -2142,6 +2142,10 @@ function checkJoinCharacters(){
     // 火・水・地を仲間にする
     // =================================
 
+    if (mode === "review") {
+        return;
+    }
+    
     const firstElements = [
         "火",
         "水",
