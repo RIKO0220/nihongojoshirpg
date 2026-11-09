@@ -614,43 +614,36 @@ if(friendsList){
 // セーブ
 // =========================
 
-function saveGame(){
+async function saveGame() {
+    const currentPlayerName = localStorage.getItem("currentPlayer");
+    if (!currentPlayerName) return;
 
+    const saveKey = "save_" + currentPlayerName;
+    
+    // 保存データオブジェクト（現在のプレイヤー状態）
     const saveData = {
-
-        playerName,
-
-        // 最初に選んだ属性
-        playerElement,
-
-        level,
-        exp,
-        expToNext,
-
-        playerHp,
-        maxHp,
-
-        attackPower,
-
-        enemyCount,
-        solveCount,
-        combo,
-
-        // 現在持っている仲間
-        ownedCharacters,
-
-        partyCharacters,
-
-        specialGauge,
-        specialUnlocked,
-
-        currentEnemy
+        playerName: currentPlayerName,
+        playerElement: playerElement,
+        level: player.level,
+        exp: player.exp,
+        expToNext: player.expToNext,
+        playerHp: player.hp,
+        maxHp: player.maxHp,
+        attackPower: player.attackPower,
+        enemyCount: player.enemyCount,
+        solveCount: player.solveCount,
+        ownedCharacters: player.ownedCharacters || [],
+        partyCharacters: player.partyCharacters || [],
+        updatedAt: new Date().toISOString()
     };
 
-    localStorage.setItem(
-        "save_" + playerName,
-        JSON.stringify(saveData)
-    );
+    // 1. ローカルに保存
+    localStorage.setItem(saveKey, JSON.stringify(saveData));
+
+    // 2. クラウド（Firebase）に保存
+    if (window.saveDataToCloud) {
+        await window.saveDataToCloud(currentPlayerName, saveData);
+    }
 }
 
 
