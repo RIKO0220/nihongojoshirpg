@@ -611,7 +611,7 @@ if(friendsList){
 }
 
 // =========================
-// セーブ
+// セーブ（正常版）
 // =========================
 
 async function saveGame() {
@@ -620,17 +620,6 @@ async function saveGame() {
 
     const saveKey = "save_" + currentPlayerName;
     
-    // =========================
-// セーブ（修正版）
-// =========================
-
-async function saveGame() {
-    const currentPlayerName = localStorage.getItem("currentPlayer");
-    if (!currentPlayerName) return;
-
-    const saveKey = "save_" + currentPlayerName;
-    
-    // 保存データオブジェクト（変数の名前を正しく修正）
     const saveData = {
         playerName: currentPlayerName,
         playerElement: playerElement,
@@ -658,7 +647,6 @@ async function saveGame() {
     if (window.saveDataToCloud) {
         await window.saveDataToCloud(currentPlayerName, saveData);
     }
-}
 }
 
 
@@ -713,145 +701,99 @@ partyCharacters = [];
 
 
 // =========================
-// ロード
+// ロード（クラウド対応版）
 // =========================
 
-function loadGame(){
+async function loadGame(){
 
-    const rawData =
-        localStorage.getItem(
-            "save_" + playerName
-        );
+    let data = null;
+
+    // 1. まずクラウド（Firebase）から取得を試みる
+    if (window.loadDataFromCloud) {
+        data = await window.loadDataFromCloud(playerName);
+    }
+
+    // 2. クラウドになければローカルストレージを確認
+    if (!data) {
+        const rawData = localStorage.getItem("save_" + playerName);
+        if (rawData) {
+            try {
+                data = JSON.parse(rawData);
+            } catch(e){}
+        }
+    }
 
     // セーブデータがない
-    if(!rawData){
-
+    if(!data){
         loadInitialCharacters();
-
         return false;
     }
 
-    const data =
-        JSON.parse(rawData);
-
     // =========================
-    // 最初に選んだ属性を読み込む
+    // データセット
     // =========================
 
     if(data.playerElement){
-
-        playerElement =
-            data.playerElement;
-
+        playerElement = data.playerElement;
     }
 
-    level =
-        data.level ?? 1;
+    level = data.level ?? 1;
+    exp = data.exp ?? 0;
+    expToNext = data.expToNext ?? 100;
+    playerHp = data.playerHp ?? 150;
+    maxHp = data.maxHp ?? 150;
+    attackPower = data.attackPower ?? 25;
+    enemyCount = data.enemyCount ?? 0;
+    solveCount = data.solveCount ?? 0;
+    combo = data.combo ?? 0;
 
-    exp =
-        data.exp ?? 0;
+    ownedCharacters = data.ownedCharacters ?? [];
 
-    expToNext =
-        data.expToNext ?? 100;
+    partyCharacters = Array.isArray(data.partyCharacters)
+        ? data.partyCharacters
+        : [];
 
-    playerHp =
-        data.playerHp ?? 150;
+    specialGauge = data.specialGauge ?? 0;
+    specialUnlocked = data.specialUnlocked ?? false;
+    currentEnemy = data.currentEnemy ?? null;
 
-    maxHp =
-        data.maxHp ?? 150;
+    if(currentEnemy && currentEnemy.hp <= 0){
+        currentEnemy = null;
+    }
 
-    attackPower =
-        data.attackPower ?? 25;
-
-    enemyCount =
-        data.enemyCount ?? 0;
-
-    solveCount =
-        data.solveCount ?? 0;
-
-    combo =
-        data.combo ?? 0;
-
-    // =========================
-    // 現在持っている仲間を読み込む
-    // =========================
-
-    ownedCharacters =
-    data.ownedCharacters ?? [];
-
-
-// 選択した仲間だけパーティにする
-partyCharacters =
-    Array.isArray(data.partyCharacters)
-    ? data.partyCharacters
-    : [];
-
-
-specialGauge =
-    data.specialGauge ?? 0;
-
-    specialUnlocked =
-        data.specialUnlocked ?? false;
-
-    currentEnemy =
-    data.currentEnemy ?? null;
-
-
-// =========================
-// HP0以下の敵はロードしない
-// =========================
-
-if(
-    currentEnemy &&
-    currentEnemy.hp <= 0
-){
-    currentEnemy = null;
-}
-
-
-return true;
+    return true;
 }
 
 // =========================
 // JSON読み込み
 // =========================
 
+// =========================
+// JSON読み込み・初期起動
+// =========================
+
 fetch("questions.json")
 .then(res => res.json())
-.then(data=>{
+.then(async data => {
 
-    questions =
-        data.filter(
-            q => q.id <= 2500
-        );
+    questions = data.filter(q => q.id <= 2500);
 
     if(mode === "review"){
-
-        const saved =
-            localStorage.getItem(
-                "wrongQuestions" + playerName
-            );
-
+        const saved = localStorage.getItem("wrongQuestions" + playerName);
         if(saved){
-
-            reviewQuestions =
-                JSON.parse(saved);
+            reviewQuestions = JSON.parse(saved);
         }
     }
 
-    loadGame();
+    // クラウド/ローカルからデータを非同期ロード
+    await loadGame();
 
     recalculatePartyStatus();
 
     if(!currentEnemy){
-
         createEnemy();
-
-    }
-    else{
-
+    } else {
         updateEnemy();
-
     }
 
     updatePlayer();
