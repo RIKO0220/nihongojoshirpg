@@ -620,20 +620,34 @@ async function saveGame() {
 
     const saveKey = "save_" + currentPlayerName;
     
-    // 保存データオブジェクト（現在のプレイヤー状態）
+    // =========================
+// セーブ（修正版）
+// =========================
+
+async function saveGame() {
+    const currentPlayerName = localStorage.getItem("currentPlayer");
+    if (!currentPlayerName) return;
+
+    const saveKey = "save_" + currentPlayerName;
+    
+    // 保存データオブジェクト（変数の名前を正しく修正）
     const saveData = {
         playerName: currentPlayerName,
         playerElement: playerElement,
-        level: player.level,
-        exp: player.exp,
-        expToNext: player.expToNext,
-        playerHp: player.hp,
-        maxHp: player.maxHp,
-        attackPower: player.attackPower,
-        enemyCount: player.enemyCount,
-        solveCount: player.solveCount,
-        ownedCharacters: player.ownedCharacters || [],
-        partyCharacters: player.partyCharacters || [],
+        level: level,
+        exp: exp,
+        expToNext: expToNext,
+        playerHp: playerHp,
+        maxHp: maxHp,
+        attackPower: attackPower,
+        enemyCount: enemyCount,
+        solveCount: solveCount,
+        combo: combo,
+        ownedCharacters: ownedCharacters || [],
+        partyCharacters: partyCharacters || [],
+        specialGauge: specialGauge,
+        specialUnlocked: specialUnlocked,
+        currentEnemy: currentEnemy,
         updatedAt: new Date().toISOString()
     };
 
@@ -644,6 +658,7 @@ async function saveGame() {
     if (window.saveDataToCloud) {
         await window.saveDataToCloud(currentPlayerName, saveData);
     }
+}
 }
 
 
@@ -2420,10 +2435,10 @@ function playerDamageAnimation(){
 // ホームに戻る
 // =========================
 
-function goHome(){
+async function goHome(){
 
-    // 現在の状態を保存
-    saveGame();
+    // 現在の状態を保存が終わるまで待つ
+    await saveGame();
 
     // ホームへ戻る
     location.href = "index.html";
