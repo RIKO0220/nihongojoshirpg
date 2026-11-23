@@ -1652,3 +1652,165 @@ body.battlePage #playerStatusPanel rt {
     color: white;
     text-shadow: none;
 }
+
+/* ========================================
+   1画面完結（スクロール不要）レイアウト調整
+   ※style.css の末尾に追記
+======================================== */
+
+body.battlePage {
+    height: 100dvh;
+    max-height: 100dvh;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 8px 16px 12px;
+}
+
+/* タイトルをコンパクトに */
+body.battlePage h1 {
+    margin: 4px 0 6px;
+    font-size: clamp(24px, 3.2vh, 34px);
+    flex-shrink: 0;
+}
+
+/* バトルエリアの固定高さを解除し、残りスペースに合わせて自動伸縮 */
+body.battlePage #battleArea {
+    flex: 1 1 auto;
+    min-height: 0 !important;
+    height: auto;
+    max-width: 1100px;
+    width: 100%;
+    margin: 0 auto;
+    align-items: stretch;
+}
+
+body.battlePage #playerArea,
+body.battlePage #enemyArea {
+    min-height: 0 !important;
+    height: 100%;
+    justify-content: space-between;
+}
+
+/* ステータスパネルを少しスリムに */
+body.battlePage #playerStatusPanel {
+    width: 260px;
+    padding: 8px 14px;
+}
+
+body.battlePage #playerStatusPanel #playerInfo {
+    font-size: 14px;
+    line-height: 1.35;
+    margin-bottom: 6px;
+}
+
+body.battlePage #playerStatusPanel .statusBar {
+    margin: 4px 0;
+}
+
+body.battlePage #playerStatusPanel .statusLabel {
+    font-size: 13px;
+}
+
+body.battlePage #playerStatusPanel .barBackground {
+    height: 13px;
+}
+
+body.battlePage #enemyInfo {
+    padding: 8px 14px;
+    font-size: 15px;
+    line-height: 1.35;
+}
+
+/* キャラクター画像を画面高さに応じて自動調整 */
+body.battlePage #playerImage {
+    width: clamp(100px, 18vh, 165px);
+    height: clamp(100px, 18vh, 165px);
+}
+
+body.battlePage #enemyImage {
+    width: clamp(110px, 20vh, 185px);
+    height: clamp(110px, 20vh, 185px);
+}
+
+body.battlePage hr {
+    margin: 4px 0;
+    flex-shrink: 0;
+}
+
+/* 問題エリアを下部にコンパクト配置 */
+body.battlePage #questionArea {
+    flex-shrink: 0;
+    margin: 4px auto 0;
+    max-width: 1100px;
+    width: 100%;
+}
+
+body.battlePage #sentence {
+    margin: 0 auto 10px;
+    padding: 10px 20px;
+    font-size: clamp(22px, 3.2vh, 32px);
+    line-height: 1.5;
+}
+
+body.battlePage .drop {
+    width: 56px;
+    height: 38px;
+    font-size: clamp(20px, 2.8vh, 26px);
+}
+
+body.battlePage #choices {
+    margin: 6px auto 0;
+    gap: 10px;
+}
+
+body.battlePage #choices .choice {
+    min-width: 66px;
+    height: clamp(44px, 6.2vh, 54px);
+    font-size: clamp(20px, 2.8vh, 25px);
+    padding: 4px 14px;
+}
+
+/* 決定・必殺技ボタン */
+body.battlePage .battleButtons {
+    margin-top: 8px;
+    gap: 10px;
+}
+
+body.battlePage #actionBtn,
+body.battlePage #specialBtn {
+    width: 135px;
+    height: 46px;
+    margin: 0;
+    font-size: 20px;
+}
+
+/* ホームに戻るボタンを右上に配置して縦幅を節約 */
+body.battlePage .homeButtonArea {
+    position: fixed;
+    top: 12px;
+    right: 12px;
+    margin: 0;
+    z-index: 1000;
+}
+
+body.battlePage #homeBtn {
+    width: auto;
+    height: auto;
+    padding: 8px 14px;
+    margin: 0;
+    font-size: 15px;
+    border-radius: 12px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+}
+
+body.battlePage #result {
+    display: none;
+}
+
+body.battlePage #questionId {
+    bottom: 6px;
+    right: 12px;
+    font-size: 14px;
+}

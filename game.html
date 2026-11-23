@@ -14,7 +14,7 @@
 
     <title>助詞RPG</title>
 
-    <link rel="stylesheet" href="style.css?v=28">
+    <link rel="stylesheet" href="style.css?v=29">
 
 </head>
 
@@ -273,12 +273,12 @@
     
 
     <script src="furigana.js?v=15"></script>
-<script src="script.js?v=18"></script>
+<script src="script.js?v=20"></script>
 
-<!-- game.html の末尾（修正版） -->
+<!-- game.html の末尾の <script type="module"> を以下に置き換え -->
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-  import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+  import { getFirestore, doc, setDoc, getDoc, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
   const firebaseConfig = {
     apiKey: "AIzaSyCvj9k_2hBikeZwYc0y1kkSaoj0V-qDSbU",
@@ -293,18 +293,18 @@
   const app = initializeApp(firebaseConfig);
   const db = getFirestore(app);
 
-  // クラウド保存関数
+  // クラウド保存関数（進行度＋間違えた問題）
   window.saveDataToCloud = async function(userName, playerData) {
     if (!userName) return;
     try {
-      await setDoc(doc(db, "users", userName), playerData);
+      await setDoc(doc(db, "users", userName), playerData, { merge: true });
       console.log("ゲーム進行度のクラウド保存成功！");
     } catch (e) {
       console.error("クラウド保存エラー:", e);
     }
   };
 
-  // クラウド読み込み関数（※追加）
+  // クラウド読み込み関数
   window.loadDataFromCloud = async function(userName) {
     if (!userName) return null;
     try {
@@ -321,6 +321,15 @@
     }
   };
 
+  // 1問ごとの解答ログをクラウド保存する関数（※新規追加）
+  window.saveAnswerLogToCloud = async function(logEntry) {
+    try {
+      await addDoc(collection(db, "answerLogs"), logEntry);
+      console.log("解答ログのクラウド保存成功:", logEntry);
+    } catch (e) {
+      console.error("解答ログクラウド保存エラー:", e);
+    }
+  };
 </script>
 </body>
 </html>

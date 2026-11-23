@@ -8,6 +8,12 @@ let draggingEl = null;
 let answered = false;
 
 // =========================
+// 実験ログ・解答時間計測用（※追加）
+// =========================
+let questionStartTime = null;
+let wrongQuestionsList = [];
+
+// =========================
 // ユーザー
 // =========================
 
@@ -637,6 +643,7 @@ async function saveGame() {
         specialGauge: specialGauge,
         specialUnlocked: specialUnlocked,
         currentEnemy: currentEnemy,
+        wrongQuestions: wrongQuestionsList || [],
         updatedAt: new Date().toISOString()
     };
 
@@ -756,6 +763,14 @@ async function loadGame(){
     specialGauge = data.specialGauge ?? 0;
     specialUnlocked = data.specialUnlocked ?? false;
     currentEnemy = data.currentEnemy ?? null;
+
+    // クラウド上の間違えた問題リストをローカルと同期（※追加）
+    if (Array.isArray(data.wrongQuestions)) {
+        wrongQuestionsList = data.wrongQuestions;
+        localStorage.setItem("wrongQuestions" + playerName, JSON.stringify(wrongQuestionsList));
+    } else {
+        wrongQuestionsList = JSON.parse(localStorage.getItem("wrongQuestions" + playerName) || "[]");
+    }
 
     if(currentEnemy && currentEnemy.hp <= 0){
         currentEnemy = null;
@@ -912,6 +927,8 @@ function renderQuestion(q){
     });
 
     renderChoices(q.answers);
+    // 問題表示完了時刻を記録（※追加）
+    questionStartTime = Date.now();
 }
 
 // =========================
@@ -1388,15 +1405,11 @@ function showTutorial(){
 
 
     // ゲーム開始
-
-    closeButton.onclick =
-        function(){
-
-            overlay.style.display =
-                "none";
-
-        };
-
+    closeButton.onclick = function(){
+        overlay.style.display = "none";
+        // チュートリアルを閉じた瞬間を1問目の開始時刻にする（※追加）
+        questionStartTime = Date.now();
+    };
 }
 
 
@@ -1583,6 +1596,11 @@ function checkAnswer(){
 
     answered = true;
 
+    // 解答時間を計算（ミリ秒・秒）（※追加）
+    const endTime = Date.now();
+    const elapsedMs = questionStartTime ? (endTime - questionStartTime) : 0;
+    const elapsedSec = Number((elapsedMs / 1000).toFixed(2));
+
     document
     .getElementById("actionBtn")
     .textContent = "つぎへ";
@@ -1696,8 +1714,31 @@ function checkAnswer(){
                     JSON.stringify(savedWrong)
                 );
             }
+            wrongQuestionsList = savedWrong;
         }
     }
+
+    // 復習モードで正解した場合も wrongQuestionsList を同期（※追加）
+    if(mode === "review" && correct){
+        wrongQuestionsList = reviewQuestions;
+    }
+
+    // =========================
+    // 1問ごとの解答ログを保存（ローカル＆クラウド）（※追加）
+    // =========================
+    recordAnswerLog({
+        playerName: playerName,
+        mode: mode,
+        questionId: currentQuestion.id,
+        sentence: currentQuestion.textParts.join("（ ）"),
+        correctAnswers: currentQuestion.answers.map(p => p.join("・")).join(" / "),
+        userAnswer: userAnswer.map(v => v || "未選択").join("・"),
+        isCorrect: correct,
+        responseTimeMs: elapsedMs,
+        responseTimeSec: elapsedSec,
+        solveNumber: solveCount,
+        timestamp: new Date().toISOString()
+    });
 
 
     // =========================
@@ -1794,16 +1835,12 @@ const answerSentences =
 const uniqueAnswerSentences =
     [...new Set(answerSentences)];
 
-
 // =========================
-// ポップアップ表示用
-// =========================
-
-// =========================
-// 自分の答えを文章にする
+// 自分の答えを文章にする（未回答対応）
 // =========================
 
 let userAnswerText = "";
+let hasBlank = false;
 
 currentQuestion.textParts.forEach(
     (part, i) => {
@@ -1811,11 +1848,21 @@ currentQuestion.textParts.forEach(
         userAnswerText += part;
 
         if(i < userAnswer.length){
-            userAnswerText += userAnswer[i];
+            const val = userAnswer[i];
+            if(!val || val === ""){
+                userAnswerText += "（ ）";
+                hasBlank = true;
+            }else{
+                userAnswerText += "【" + val + "】";
+            }
         }
 
     }
 );
+
+if(hasBlank){
+    userAnswerText += "（※空欄あり）";
+}
 
 
 // =========================
@@ -1827,7 +1874,6 @@ let alternativeAnswers = [];
 currentQuestion.answers.forEach(
     pattern => {
 
-        // 自分が答えたパターンか確認
         const isUserAnswer =
             pattern.length === userAnswer.length &&
             pattern.every(
@@ -1835,13 +1881,10 @@ currentQuestion.answers.forEach(
                     ans === userAnswer[i]
             );
 
-        // 自分の答えは別解に入れない
         if(isUserAnswer){
             return;
         }
 
-
-        // 正解パターンを文章にする
         let sentence = "";
 
         currentQuestion.textParts.forEach(
@@ -1850,7 +1893,7 @@ currentQuestion.answers.forEach(
                 sentence += part;
 
                 if(i < pattern.length){
-                    sentence += pattern[i];
+                    sentence += "【" + pattern[i] + "】";
                 }
 
             }
@@ -1861,8 +1904,6 @@ currentQuestion.answers.forEach(
     }
 );
 
-
-// 重複削除
 alternativeAnswers =
     [...new Set(alternativeAnswers)];
 
@@ -1880,7 +1921,6 @@ if(correct){
         "あなたの答え：\n" +
         userAnswerText;
 
-    // 別解がある場合だけ表示
     if(alternativeAnswers.length > 0){
 
         correctAnswerText +=
@@ -1893,7 +1933,6 @@ if(correct){
 // 不正解の場合
 else{
 
-    // 不正解のときは正しい答えを表示
     let correctSentences = [];
 
     currentQuestion.answers.forEach(
@@ -1907,7 +1946,7 @@ else{
                     sentence += part;
 
                     if(i < pattern.length){
-                        sentence += pattern[i];
+                        sentence += "【" + pattern[i] + "】";
                     }
 
                 }
@@ -1921,10 +1960,18 @@ else{
     correctSentences =
         [...new Set(correctSentences)];
 
-    correctAnswerText =
+    correctAnswerText +=
+        "あなたの答え：\n" +
+        userAnswerText +
+        "\n\n正しい答え：\n" +
         correctSentences.join("\n");
 
 }
+
+
+// 重複削除
+alternativeAnswers =
+    [...new Set(alternativeAnswers)];
 
 
     // =========================
@@ -2492,3 +2539,92 @@ document.addEventListener("pointercancel", function(e) {
     }
 
 });
+
+// ========================================
+// 解答ログ記録＆CSVダウンロード機能
+// ========================================
+
+function recordAnswerLog(logEntry) {
+    // 1. プレイヤー別のローカルストレージに追記保存
+    const logKey = "answerLogs_" + logEntry.playerName;
+    const logs = JSON.parse(localStorage.getItem(logKey) || "[]");
+    logs.push(logEntry);
+    localStorage.setItem(logKey, JSON.stringify(logs));
+
+    // 2. クラウド（Firebase Firestore: answerLogs）に保存
+    if (window.saveAnswerLogToCloud) {
+        window.saveAnswerLogToCloud(logEntry);
+    }
+}
+
+// 端末内の全プレイヤーの解答ログをCSVでダウンロードする関数
+function downloadAllLogsCSV() {
+    const allLogs = [];
+
+    for (let i = 0; i < localStorage.length; i++) {
+        const key = localStorage.key(i);
+        if (key && key.startsWith("answerLogs_")) {
+            try {
+                const userLogs = JSON.parse(localStorage.getItem(key) || "[]");
+                allLogs.push(...userLogs);
+            } catch (e) {
+                console.error("ログ読み込みエラー:", key, e);
+            }
+        }
+    }
+
+    if (allLogs.length === 0) {
+        alert("保存されている解答ログがまだありません。");
+        return;
+    }
+
+    // 日時順に並び替え
+    allLogs.sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
+
+    const headers = [
+        "ユーザー名",
+        "モード",
+        "解いた順番",
+        "問題ID",
+        "問題文",
+        "正解",
+        "選んだ助詞",
+        "正誤(1=正解,0=不正解)",
+        "解答時間(秒)",
+        "解答時間(ミリ秒)",
+        "日時"
+    ];
+
+    const escapeCsv = (val) => {
+        const str = String(val ?? "");
+        return '"' + str.replaceAll('"', '""') + '"';
+    };
+
+    const rows = allLogs.map(log => [
+        escapeCsv(log.playerName),
+        escapeCsv(log.mode),
+        escapeCsv(log.solveNumber),
+        escapeCsv(log.questionId),
+        escapeCsv(log.sentence),
+        escapeCsv(log.correctAnswers),
+        escapeCsv(log.userAnswer),
+        escapeCsv(log.isCorrect ? 1 : 0),
+        escapeCsv(log.responseTimeSec),
+        escapeCsv(log.responseTimeMs),
+        escapeCsv(log.timestamp)
+    ].join(","));
+
+    // Excelで文字化けしないようBOM付きUTF-8で出力
+    const csvContent = "\uFEFF" + [headers.join(","), ...rows].join("\n");
+    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+
+    const a = document.createElement("a");
+    const dateStr = new Date().toISOString().slice(0, 10);
+    a.href = url;
+    a.download = `joshi_rpg_logs_${dateStr}.csv`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+}

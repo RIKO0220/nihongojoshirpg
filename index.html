@@ -171,6 +171,13 @@
     復習する
 </button>
 
+<!-- index.html の reviewArea の下に追記 -->
+<div style="margin-top: 80px; text-align: center; opacity: 0.7;">
+    <button onclick="downloadAllLogsCSVFromIndex()" style="font-size: 14px; padding: 8px 16px;">
+        押さないでね！
+    </button>
+</div>
+
 </div>
 
 </div>
@@ -797,6 +804,35 @@ function setupIndexFurigana(){
 }
 
 setupIndexFurigana();
+
+function downloadAllLogsCSVFromIndex() {
+    const allLogs = [];
+    for (let i = 0; i < localStorage.length; i++) {
+        const key = localStorage.key(i);
+        if (key && key.startsWith("answerLogs_")) {
+            try {
+                allLogs.push(...JSON.parse(localStorage.getItem(key) || "[]"));
+            } catch (e) {}
+        }
+    }
+    if (allLogs.length === 0) {
+        alert("この端末にはまだ解答ログが保存されていません。");
+        return;
+    }
+    allLogs.sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
+    const headers = ["ユーザー名","モード","解いた順番","問題ID","問題文","正解","選んだ助詞","正誤(1=正解,0=不正解)","解答時間(秒)","解答時間(ミリ秒)","日時"];
+    const esc = (v) => '"' + String(v ?? "").replaceAll('"', '""') + '"';
+    const rows = allLogs.map(l => [
+        esc(l.playerName), esc(l.mode), esc(l.solveNumber), esc(l.questionId),
+        esc(l.sentence), esc(l.correctAnswers), esc(l.userAnswer),
+        esc(l.isCorrect ? 1 : 0), esc(l.responseTimeSec), esc(l.responseTimeMs), esc(l.timestamp)
+    ].join(","));
+    const blob = new Blob(["\uFEFF" + [headers.join(","), ...rows].join("\n")], { type: "text/csv;charset=utf-8;" });
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = `joshi_rpg_logs_${new Date().toISOString().slice(0, 10)}.csv`;
+    a.click();
+}
 
 
 </script>
