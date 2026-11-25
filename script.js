@@ -350,17 +350,17 @@ function getElementMultiplier(
 }
 
 // =========================
-// 敵生成
+// 敵生成（5体ごとにボス出現）
 // =========================
 
 function createEnemy(){
 
     if(
         enemyCount > 0 &&
-        enemyCount % 10 === 0
+        enemyCount % 5 === 0
     ){
         const bossIndex =
-            Math.floor(enemyCount / 10) - 1;
+            Math.floor(enemyCount / 5) - 1;
 
         currentEnemy =
             cloneObject(
@@ -368,6 +368,7 @@ function createEnemy(){
                     bossIndex % bosses.length
                 ]
             );
+        currentEnemy.isBoss = true;
     }
     else{
         currentEnemy =
@@ -379,13 +380,14 @@ function createEnemy(){
                     )
                 ]
             );
+        currentEnemy.isBoss = false;
     }
 
     updateEnemy();
 }
 
 // =========================
-// 敵表示
+// 敵表示（ボス出現表示対応）
 // =========================
 
 function updateEnemy(){
@@ -394,20 +396,32 @@ function updateEnemy(){
         return;
     }
 
-    document
-    .getElementById("enemyImage")
-    .src =
-    currentEnemy.image;
+    const enemyImage = document.getElementById("enemyImage");
+    const enemyInfo = document.getElementById("enemyInfo");
 
-    document
-.getElementById("enemyInfo")
-.innerHTML =
-    addFurigana(currentEnemy.name) + "<br>" +
+    enemyImage.src = currentEnemy.image;
 
-    addFurigana("属性") +
-    "：" + addFurigana(currentEnemy.element) + "<br>" +
+    // ロード直後など isBoss フラグがない場合も名前や撃破数から判定できるようにする
+    const isBoss = currentEnemy.isBoss || bosses.some(b => b.name === currentEnemy.name);
 
-    "HP：" + currentEnemy.hp;
+    let bossBadge = "";
+    if (isBoss) {
+        bossBadge =
+            "<div style='background:#d32f2f; color:#fff; font-weight:bold; font-size:14px; padding:2px 8px; border-radius:8px; margin-bottom:4px; text-align:center;'>" +
+            "⚠️ <ruby>ボス出現<rt>ぼすしゅつげん</rt></ruby>！" +
+            "</div>";
+        enemyInfo.style.borderColor = "#ff5252";
+        enemyInfo.style.boxShadow = "0 0 14px rgba(255, 82, 82, 0.85)";
+    } else {
+        enemyInfo.style.borderColor = "rgba(255, 255, 255, 0.7)";
+        enemyInfo.style.boxShadow = "0 4px 10px rgba(0, 0, 0, 0.25)";
+    }
+
+    enemyInfo.innerHTML =
+        bossBadge +
+        addFurigana(currentEnemy.name) + "<br>" +
+        addFurigana("属性") + "：" + addFurigana(currentEnemy.element) + "<br>" +
+        "HP：" + currentEnemy.hp;
 }
 
 // ========================================
@@ -1513,8 +1527,13 @@ function showExplanation(
     // 表示
     // =========================
 
-    overlay.style.display =
-        "flex";
+    overlay.style.display = "flex";
+
+    const popup = document.getElementById("explanationPopup");
+    if (popup) {
+        popup.scrollTop = 0;
+    }
+    text.scrollTop = 0;
 
 
     // =========================
@@ -2193,11 +2212,6 @@ function createAnswerText(){
 
 function checkJoinCharacters(){
 
-    // =================================
-    // 最初に選ばなかった
-    // 火・水・地を仲間にする
-    // =================================
-
     if (mode === "review") {
         return;
     }
@@ -2208,145 +2222,89 @@ function checkJoinCharacters(){
         "地"
     ];
 
-    // 最初に選んだ属性以外
     const otherElements =
         firstElements.filter(
             element =>
                 element !== playerElement
         );
 
-    // =========================
-    // 5体撃破
-    // → 最初に選ばなかった属性①
-    // =========================
+    const joinGuideText =
+        "\n「ホームに戻る」を押して、仲間を設定しよう！";
 
+    // =========================
+    // 5体撃破 → 最初に選ばなかった属性①
+    // =========================
     if(
         enemyCount >= 5 &&
         otherElements[0] &&
-        !ownedCharacters.includes(
-            otherElements[0]
-        )
+        !ownedCharacters.includes(otherElements[0])
     ){
-
-        ownedCharacters.push(
-            otherElements[0]
-        );
-
-        alert(
-            otherElements[0] +
-            "属性が仲間になった！"
-        );
+        ownedCharacters.push(otherElements[0]);
+        alert(otherElements[0] + "属性が仲間になった！" + joinGuideText);
     }
 
-
     // =========================
-    // 10体撃破
-    // → 最初に選ばなかった属性②
+    // 10体撃破 → 最初に選ばなかった属性②
     // =========================
-
     if(
         enemyCount >= 10 &&
         otherElements[1] &&
-        !ownedCharacters.includes(
-            otherElements[1]
-        )
+        !ownedCharacters.includes(otherElements[1])
     ){
-
-        ownedCharacters.push(
-            otherElements[1]
-        );
-
-        alert(
-            otherElements[1] +
-            "属性が仲間になった！"
-        );
+        ownedCharacters.push(otherElements[1]);
+        alert(otherElements[1] + "属性が仲間になった！" + joinGuideText);
     }
 
-
     // =========================
-    // 15体撃破
-    // → 風
+    // 15体撃破 → 風
     // =========================
-
     if(
         enemyCount >= 15 &&
         !ownedCharacters.includes("風") &&
         playerElement !== "風"
     ){
-
         ownedCharacters.push("風");
-
-        alert(
-            "風属性が仲間になった！"
-        );
+        alert("風属性が仲間になった！" + joinGuideText);
     }
 
-
     // =========================
-    // 30体撃破
-    // → 雷
+    // 30体撃破 → 雷
     // =========================
-
     if(
         enemyCount >= 30 &&
         !ownedCharacters.includes("雷") &&
         playerElement !== "雷"
     ){
-
         ownedCharacters.push("雷");
-
-        alert(
-            "雷属性が仲間になった！"
-        );
+        alert("雷属性が仲間になった！" + joinGuideText);
     }
 
-
     // =========================
-    // 50体撃破
-    // → 光
+    // 50体撃破 → 光
     // =========================
-
     if(
         enemyCount >= 50 &&
         !ownedCharacters.includes("光") &&
         playerElement !== "光"
     ){
-
         ownedCharacters.push("光");
-
-        alert(
-            "光属性が仲間になった！"
-        );
+        alert("光属性が仲間になった！" + joinGuideText);
     }
 
-
     // =========================
-    // 70体撃破
-    // → 闇
+    // 70体撃破 → 闇
     // =========================
-
     if(
         enemyCount >= 70 &&
         !ownedCharacters.includes("闇") &&
         playerElement !== "闇"
     ){
-
         ownedCharacters.push("闇");
-
-        alert(
-            "闇属性が仲間になった！"
-        );
+        alert("闇属性が仲間になった！" + joinGuideText);
     }
 
-
-    // =========================
-    // ステータス再計算
-    // =========================
-
     recalculatePartyStatus();
-
     updatePlayer();
-
     saveGame();
 }
 
