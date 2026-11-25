@@ -1228,6 +1228,15 @@ function setupStaticFurigana(){
     // チュートリアル本文
     // =========================
 
+    const helpBtn = document.getElementById("helpBtn");
+    if (helpBtn) {
+        helpBtn.innerHTML = addFurigana("遊び方");
+    }
+
+    // =========================
+    // チュートリアル本文（ルール・仕様まとめ）
+    // =========================
+
     const tutorialMessage =
         document.getElementById(
             "tutorialMessage"
@@ -1236,29 +1245,29 @@ function setupStaticFurigana(){
     if(tutorialMessage){
 
         tutorialMessage.innerHTML = `
-            <p>
-                こんにちは！
-            </p>
+            <div style="text-align: left; font-size: 18px; line-height: 1.8;">
+                <p style="margin: 8px 0;">
+                    <strong>【基本ルール・目標】</strong><br>
+                    ${addFurigana("文の空欄に入る正しい助詞をドラッグして入れ、「決定」を押そう！")}<br>
+                    ${addFurigana("正解すると敵に攻撃！10体倒すごとに強力なボスが出現するよ。")}
+                </p>
 
-            <p>
-                ${addFurigana("このゲームでは、")}<br>
-                ${addFurigana("文の中に入る正しい助詞を選んで")}<br>
-                ${addFurigana("モンスターを倒します！")}
-            </p>
+                <p style="margin: 8px 0;">
+                    <strong>【属性の相性】</strong><br>
+                    ${addFurigana("得意な属性の敵にはダメージが1.5倍！苦手な属性だと0.5倍になるよ。")}<br>
+                    ${addFurigana("（火→風・地 ／ 水→火 ／ 地→水・雷 ／ 風→地・雷 ／ 雷→水・風 ／ 光⇔闇）")}
+                </p>
 
-            <p>
-                ${addFurigana("文をよく読んで、")}<br>
-                ${addFurigana("正しい助詞をドラッグ＆ドロップで選んで答えましょう。")}
-            </p>
+                <p style="margin: 8px 0;">
+                    <strong>【仲間キャラクター】</strong><br>
+                    ${addFurigana("敵をたくさん倒すと新しい属性の仲間が増えるよ！ホームの「パーティ編成」で最大2人まで連れていけて、HPや攻撃力がアップするよ。")}
+                </p>
 
-            <p>
-                ${addFurigana("正解するとモンスターに攻撃できます。")}<br>
-                ${addFurigana("不正解だとダメージを受けます。")}
-            </p>
-
-            <p>
-                ${addFurigana("準備ができたらゲームを始めましょう！")}
-            </p>
+                <p style="margin: 8px 0;">
+                    <strong>【必殺技】</strong><br>
+                    ${addFurigana("レベル5以上になり、正解して「必殺ゲージ」が100になると使える超強力な攻撃だよ！")}
+                </p>
+            </div>
         `;
 
     }
@@ -2627,4 +2636,29 @@ function downloadAllLogsCSV() {
     a.click();
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
+}
+
+// ========================================
+// バトル中にいつでも遊び方・ルールを開く
+// ========================================
+function openHelpModal() {
+    const overlay = document.getElementById("tutorialOverlay");
+    const closeButton = document.getElementById("tutorialClose");
+    const timer = document.getElementById("tutorialTimer");
+
+    if (!overlay || !closeButton) return;
+
+    if (timer) {
+        timer.innerHTML = addFurigana("確認できたら閉じてバトルに戻ろう！");
+    }
+
+    closeButton.disabled = false;
+    closeButton.innerHTML = addFurigana("閉じる");
+
+    overlay.style.display = "flex";
+
+    closeButton.onclick = function() {
+        overlay.style.display = "none";
+        closeButton.innerHTML = addFurigana("ゲームを始める");
+    };
 }

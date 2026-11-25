@@ -1814,3 +1814,103 @@ body.battlePage #questionId {
     right: 12px;
     font-size: 14px;
 }
+
+/* ========================================
+   キャラクター・仲間・ステータスの視認性向上＆右上ボタン整理
+   ※style.css の一番下に追記
+======================================== */
+
+/* 右上の「遊び方」「ホームに戻る」ボタンを横並びに整理 */
+body.battlePage .homeButtonArea {
+    position: fixed;
+    top: 12px;
+    right: 12px;
+    margin: 0;
+    display: flex;
+    gap: 8px;
+    z-index: 1000;
+}
+
+body.battlePage #helpBtn,
+body.battlePage #homeBtn {
+    width: auto;
+    height: auto;
+    padding: 8px 14px;
+    margin: 0;
+    font-size: 15px;
+    font-weight: bold;
+    border-radius: 12px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+}
+
+body.battlePage #helpBtn {
+    background-color: #7bd389;
+    color: #1b3a24;
+}
+
+/* ステータスパネルを見やすく調整 */
+body.battlePage #playerStatusPanel {
+    width: 280px;
+    padding: 10px 14px;
+}
+
+body.battlePage #playerStatusPanel #playerInfo {
+    font-size: 15px;
+    line-height: 1.4;
+    margin-bottom: 6px;
+}
+
+body.battlePage #enemyInfo {
+    padding: 10px 16px;
+    font-size: 16px;
+    line-height: 1.4;
+}
+
+/* プレイヤーと仲間を足元で横並びに配置 */
+body.battlePage #partyVisualArea {
+    display: flex;
+    align-items: flex-end;
+    gap: 12px;
+    margin-top: auto;
+}
+
+/* メインキャラと敵キャラを一回り大きく拡大 */
+body.battlePage #playerImage {
+    width: clamp(135px, 22vh, 210px) !important;
+    height: clamp(135px, 22vh, 210px) !important;
+    margin: 0 !important;
+}
+
+body.battlePage #enemyImage {
+    width: clamp(150px, 24vh, 230px) !important;
+    height: clamp(150px, 24vh, 230px) !important;
+}
+
+/* 仲間エリアをキャラの横にスッキリ配置 */
+body.battlePage #friendsArea {
+    margin: 0 0 6px 0;
+    padding: 6px 10px;
+    background: rgba(18, 35, 53, 0.72);
+    border: 1.5px solid rgba(255, 255, 255, 0.6);
+    border-radius: 12px;
+}
+
+body.battlePage #friendsArea h2 {
+    font-size: 14px;
+    margin: 0 0 4px 0;
+    text-align: center;
+}
+
+body.battlePage #friendsList {
+    display: flex;
+    gap: 6px;
+    min-height: 54px;
+    align-items: center;
+    justify-content: center;
+}
+
+body.battlePage #friendsList img,
+body.battlePage .friendImage {
+    width: clamp(48px, 8vh, 68px) !important;
+    height: clamp(48px, 8vh, 68px) !important;
+}

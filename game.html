@@ -100,23 +100,21 @@
         </div>
         <!-- プレイヤーステータスパネルここまで -->
 
-        <!-- 仲間 -->
-        <div id="friendsArea">
+        <!-- プレイヤーと仲間を並べるエリア -->
+        <div id="partyVisualArea">
+            <img
+                id="playerImage"
+                class="characterImage"
+                src="images/player.png"
+                alt="プレイヤー"
+            >
 
-            <h2>仲間</h2>
-
-            <div id="friendsList"></div>
-
+            <!-- 仲間 -->
+            <div id="friendsArea">
+                <h2>仲間</h2>
+                <div id="friendsList"></div>
+            </div>
         </div>
-
-        <img
-            id="playerImage"
-            class="characterImage"
-            src="images/player.png"
-            alt="プレイヤー"
-        >
-
-    </div>
 
 
     <!-- =====================
@@ -165,6 +163,13 @@
 </div>
 
 <div class="homeButtonArea">
+
+    <button
+        id="helpBtn"
+        onclick="openHelpModal()"
+    >
+        あそびかた
+    </button>
 
     <button
         id="homeBtn"
