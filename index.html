@@ -889,6 +889,35 @@ function downloadAllLogsCSVFromIndex() {
   };
 </script>
 
+<!-- 権利表記フッター（画面下部固定・大学リンク＆閉じるボタン付き） -->
+<footer id="copyrightFooter" style="
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: rgba(255, 255, 255, 0.92);
+    color: #555;
+    font-size: 12px;
+    text-align: center;
+    padding: 8px 32px 8px 12px;
+    box-sizing: border-box;
+    border-top: 1px solid #ddd;
+    z-index: 9999;
+">
+    このアプリは<a href="https://www.osakac.ac.jp/" target="_blank" rel="noopener noreferrer" style="color: #555;">大阪電気通信大学</a>の中原研究室が開発したものです。本アプリに関係する権利は中原研究室に帰属します。お問合せは <a href="mailto:nakahara@osakac.ac.jp" style="color: #555;">nakahara@osakac.ac.jp</a> までお願いします。
+    <button onclick="document.getElementById('copyrightFooter').style.display='none'" style="
+        position: absolute;
+        right: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+        background: none;
+        border: none;
+        font-size: 14px;
+        color: #888;
+        cursor: pointer;
+    " aria-label="閉じる">×</button>
+</footer>
+
 </body>
 
 </html>
