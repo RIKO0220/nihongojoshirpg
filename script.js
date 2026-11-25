@@ -1230,11 +1230,11 @@ function setupStaticFurigana(){
 
     const helpBtn = document.getElementById("helpBtn");
     if (helpBtn) {
-        helpBtn.innerHTML = addFurigana("遊び方");
+        helpBtn.innerHTML = "<ruby>遊<rt>あそ</rt></ruby>び<ruby>方<rt>かた</rt></ruby>";
     }
 
     // =========================
-    // チュートリアル本文（ルール・仕様まとめ）
+    // チュートリアル本文（正しいルビ直書き版）
     // =========================
 
     const tutorialMessage =
@@ -1245,27 +1245,27 @@ function setupStaticFurigana(){
     if(tutorialMessage){
 
         tutorialMessage.innerHTML = `
-            <div style="text-align: left; font-size: 18px; line-height: 1.8;">
+            <div style="text-align: left; font-size: 17px; line-height: 1.9;">
                 <p style="margin: 8px 0;">
-                    <strong>【基本ルール・目標】</strong><br>
-                    ${addFurigana("文の空欄に入る正しい助詞をドラッグして入れ、「決定」を押そう！")}<br>
-                    ${addFurigana("正解すると敵に攻撃！10体倒すごとに強力なボスが出現するよ。")}
+                    <strong>【<ruby>基本<rt>きほん</rt></ruby>ルール・<ruby>目標<rt>もくひょう</rt></ruby>】</strong><br>
+                    <ruby>文<rt>ぶん</rt></ruby>の<ruby>空欄<rt>くうらん</rt></ruby>に<ruby>入<rt>はい</rt></ruby>る<ruby>正<rt>ただ</rt></ruby>しい<ruby>助詞<rt>じょし</rt></ruby>をドラッグして<ruby>入<rt>い</rt></ruby>れ、「<ruby>決定<rt>けってい</rt></ruby>」を<ruby>押<rt>お</rt></ruby>そう！<br>
+                    <ruby>正解<rt>せいかい</rt></ruby>すると<ruby>敵<rt>てき</rt></ruby>に<ruby>攻撃<rt>こうげき</rt></ruby>！10<ruby>体<rt>たい</rt></ruby><ruby>倒<rt>たお</rt></ruby>すごとに<ruby>強力<rt>きょうりょく</rt></ruby>なボスが<ruby>出現<rt>しゅつげん</rt></ruby>するよ。
                 </p>
 
                 <p style="margin: 8px 0;">
-                    <strong>【属性の相性】</strong><br>
-                    ${addFurigana("得意な属性の敵にはダメージが1.5倍！苦手な属性だと0.5倍になるよ。")}<br>
-                    ${addFurigana("（火→風・地 ／ 水→火 ／ 地→水・雷 ／ 風→地・雷 ／ 雷→水・風 ／ 光⇔闇）")}
+                    <strong>【<ruby>属性<rt>ぞくせい</rt></ruby>の<ruby>相性<rt>あいしょう</rt></ruby>】</strong><br>
+                    <ruby>得意<rt>とくい</rt></ruby>な<ruby>属性<rt>ぞくせい</rt></ruby>の<ruby>敵<rt>てき</rt></ruby>にはダメージが1.5<ruby>倍<rt>ばい</rt></ruby>！<ruby>苦手<rt>にがて</rt></ruby>な<ruby>属性<rt>ぞくせい</rt></ruby>だと0.5<ruby>倍<rt>ばい</rt></ruby>になるよ。<br>
+                    （<ruby>火<rt>ひ</rt></ruby>→<ruby>風<rt>かぜ</rt></ruby>・<ruby>地<rt>ち</rt></ruby> ／ <ruby>水<rt>みず</rt></ruby>→<ruby>火<rt>ひ</rt></ruby> ／ <ruby>地<rt>ち</rt></ruby>→<ruby>水<rt>みず</rt></ruby>・<ruby>雷<rt>かみなり</rt></ruby> ／ <ruby>風<rt>かぜ</rt></ruby>→<ruby>地<rt>ち</rt></ruby>・<ruby>雷<rt>かみなり</rt></ruby> ／ <ruby>雷<rt>かみなり</rt></ruby>→<ruby>水<rt>みず</rt></ruby>・<ruby>風<rt>かぜ</rt></ruby> ／ <ruby>光<rt>ひかり</rt></ruby>⇔<ruby>闇<rt>やみ</rt></ruby>）
                 </p>
 
                 <p style="margin: 8px 0;">
-                    <strong>【仲間キャラクター】</strong><br>
-                    ${addFurigana("敵をたくさん倒すと新しい属性の仲間が増えるよ！ホームの「パーティ編成」で最大2人まで連れていけて、HPや攻撃力がアップするよ。")}
+                    <strong>【<ruby>仲間<rt>なかま</rt></ruby>キャラクター】</strong><br>
+                    <ruby>敵<rt>てき</rt></ruby>をたくさん<ruby>倒<rt>たお</rt></ruby>すと<ruby>新<rt>あたら</rt></ruby>しい<ruby>属性<rt>ぞくせい</rt></ruby>の<ruby>仲間<rt>なかま</rt></ruby>が<ruby>増<rt>ふ</rt></ruby>えるよ！ホームの「パーティ<ruby>編成<rt>へんせい</rt></ruby>」で<ruby>最大<rt>さいだい</rt></ruby>2<ruby>人<rt>にん</rt></ruby>まで<ruby>連<rt>つ</rt></ruby>れていけて、HPや<ruby>攻撃力<rt>こうげきりょく</rt></ruby>がアップするよ。
                 </p>
 
                 <p style="margin: 8px 0;">
-                    <strong>【必殺技】</strong><br>
-                    ${addFurigana("レベル5以上になり、正解して「必殺ゲージ」が100になると使える超強力な攻撃だよ！")}
+                    <strong>【<ruby>必殺技<rt>ひっさつわざ</rt></ruby>】</strong><br>
+                    レベル5<ruby>以上<rt>いじょう</rt></ruby>になり、<ruby>正解<rt>せいかい</rt></ruby>して「<ruby>必殺<rt>ひっさつ</rt></ruby>ゲージ」が100になると<ruby>使<rt>つか</rt></ruby>える<ruby>超強力<rt>ちょうきょうりょく</rt></ruby>な<ruby>攻撃<rt>こうげき</rt></ruby>だよ！
                 </p>
             </div>
         `;
@@ -2649,16 +2649,16 @@ function openHelpModal() {
     if (!overlay || !closeButton) return;
 
     if (timer) {
-        timer.innerHTML = addFurigana("確認できたら閉じてバトルに戻ろう！");
+        timer.innerHTML = "<ruby>確認<rt>かくにん</rt></ruby>できたら<ruby>閉<rt>と</rt></ruby>じてバトルに<ruby>戻<rt>もど</rt></ruby>ろう！";
     }
 
     closeButton.disabled = false;
-    closeButton.innerHTML = addFurigana("閉じる");
+    closeButton.innerHTML = "<ruby>閉<rt>と</rt></ruby>じる";
 
     overlay.style.display = "flex";
 
     closeButton.onclick = function() {
         overlay.style.display = "none";
-        closeButton.innerHTML = addFurigana("ゲームを始める");
+        closeButton.innerHTML = "<ruby>ゲーム<rt></rt></ruby>を<ruby>始<rt>はじ</rt></ruby>める";
     };
 }
