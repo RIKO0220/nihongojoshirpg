@@ -1263,7 +1263,7 @@ function setupStaticFurigana(){
                 <p style="margin: 8px 0;">
                     <strong>【<ruby>基本<rt>きほん</rt></ruby>ルール・<ruby>目標<rt>もくひょう</rt></ruby>】</strong><br>
                     <ruby>文<rt>ぶん</rt></ruby>の<ruby>空欄<rt>くうらん</rt></ruby>に<ruby>入<rt>はい</rt></ruby>る<ruby>正<rt>ただ</rt></ruby>しい<ruby>助詞<rt>じょし</rt></ruby>をドラッグして<ruby>入<rt>い</rt></ruby>れ、「<ruby>決定<rt>けってい</rt></ruby>」を<ruby>押<rt>お</rt></ruby>そう！<br>
-                    <ruby>正解<rt>せいかい</rt></ruby>すると<ruby>敵<rt>てき</rt></ruby>に<ruby>攻撃<rt>こうげき</rt></ruby>！10<ruby>体<rt>たい</rt></ruby><ruby>倒<rt>たお</rt></ruby>すごとに<ruby>強力<rt>きょうりょく</rt></ruby>なボスが<ruby>出現<rt>しゅつげん</rt></ruby>するよ。
+                    <ruby>正解<rt>せいかい</rt></ruby>すると<ruby>敵<rt>てき</rt></ruby>に<ruby>攻撃<rt>こうげき</rt></ruby>！5<ruby>体<rt>たい</rt></ruby><ruby>倒<rt>たお</rt></ruby>すごとに<ruby>強力<rt>きょうりょく</rt></ruby>なボスが<ruby>出現<rt>しゅつげん</rt></ruby>するよ。
                 </p>
 
                 <p style="margin: 8px 0;">
